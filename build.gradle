@@ -8,17 +8,37 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.2.1'
-        
+        classpath 'com.google.gms:google-services:4.0.1'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
 }
 
+
 allprojects {
     repositories {
         google()
         jcenter()
+    }
+    ext {
+        androidSupportVersion = "28.0.0"
+        picassoVersion = "2.5.2"
+        butterKnifeVersion = "8.8.1"
+        constraintLayoutVersion = "1.1.3"
+        retrofitVersion = "2.5.0"
+        firebaseuiVersion = "4.2.1"
+
+        //firebase
+        firebaseCrashVersion = "2.9.5"
+        firebaseFirestoreVersion = "17.1.1"
+        firebaseGeneralVersion = "16.0.4"
+
+
+        //test
+        junitVersion = "4.12"
+        espressoVersion = "3.0.2"
+        runnerVersion = "1.0.2"
     }
 }
 
