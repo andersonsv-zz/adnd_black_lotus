@@ -33,6 +33,12 @@ allprojects {
         firebaseCrashVersion = "2.9.5"
         firebaseFirestoreVersion = "17.1.1"
         firebaseGeneralVersion = "16.0.4"
+
+
+        //test
+        junitVersion = "4.12"
+        espressoVersion = "3.0.2"
+        runnerVersion = "1.0.2"
     }
 }
 
