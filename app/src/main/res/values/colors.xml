@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#061f40</color>
     <color name="colorPrimaryDark">#051933</color>
-    <color name="colorAccent">#2e8ea4</color>
+    <color name="colorAccent">#7045af</color>
 
     <!--rarity-->
     <color name="colorRarityCommon">#413b3b</color>
