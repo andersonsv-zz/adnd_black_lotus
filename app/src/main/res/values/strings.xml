@@ -1,17 +1,17 @@
 <resources>
     <string name="app_name">Black Lotus</string>
     <string name="title_activity_user">UserActivity</string>
-    <string name="default_email">E-mail</string>
-    <string name="default_password">Password</string>
-    <string name="default_password_confirmation">Password Confirmation</string>
 
-    <string name="register_user_email_hint">Enter e-mail</string>
-    <string name="register_user_email_help">Enter a registered email</string>
-
-    <string name="register_user_password_hint">Enter password</string>
-    <string name="register_user_password_help">Enter a password</string>
-    <string name="register_user_password_confirmation_hint">Enter confirmation password</string>
-    <string name="register_user_password_confirmation_help">Enter same password</string>
+    <!-- Create user -->
+    <string name="register_user_email_hint">E-mail</string>
+    <string name="register_user_email_help">Enter a valid email</string>
+    <string name="register_user_name_hint">Name</string>
+    <string name="register_user_name_help">Enter your name</string>
+    <string name="register_user_password_hint">Password</string>
+    <string name="register_user_password_help">Enter a password (min. 10 chars)</string>
+    <string name="register_user_password_confirmation_hint">Password Confirmation</string>
+    <string name="register_user_password_confirmation_help">Enter the same password</string>
+    <string name="register_user_signup">sign up</string>
 
 
 </resources>
