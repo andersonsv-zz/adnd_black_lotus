@@ -38,13 +38,16 @@ dependencies {
     implementation "com.firebaseui:firebase-ui-auth:$firebaseuiVersion"
 
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
 
     implementation "com.jakewharton:butterknife:$butterKnifeVersion"
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     annotationProcessor "com.jakewharton:butterknife-compiler:$butterKnifeVersion"
 
     testImplementation "junit:junit:$junitVersion"
     androidTestImplementation "com.android.support.test:runner:$runnerVersion"
     androidTestImplementation "com.android.support.test.espresso:espresso-core:$espressoVersion"
+    testImplementation "org.mockito:mockito-core:2.+"
 
 }
 

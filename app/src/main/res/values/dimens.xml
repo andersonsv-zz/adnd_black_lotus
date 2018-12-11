@@ -1,0 +1,66 @@
+<resources>
+    \    <!-- Elevation -->
+    <dimen name="elevation_normal">4dp</dimen>
+
+    <!-- Default margins -->
+    <dimen name="margin_smaller">4dp</dimen>
+    <dimen name="margin_small">6dp</dimen>
+    <dimen name="margin_normal">8dp</dimen>
+    <dimen name="margin_normal_plus">12dp</dimen>
+    <dimen name="margin_large">16dp</dimen>
+    <dimen name="margin_larger">24dp</dimen>
+    <dimen name="margin_huge">32dp</dimen>
+    <dimen name="margin_42dp">42dp</dimen>
+    <dimen name="margin_40dp">40dp</dimen>
+    <dimen name="margin_80dp">80dp</dimen>
+
+    <!-- Common -->
+    <dimen name="height_card_view_line">4dp</dimen>
+    <dimen name="radius_card_view_corner">4dp</dimen>
+    <dimen name="width_custom_ir_adapter">100dp</dimen>
+    <dimen name="height_cart_item_line">1dp</dimen>
+
+    <!-- Size Margins -->
+    <dimen name="margin_10dp">10dp</dimen>
+    <dimen name="margin_20dp">20dp</dimen>
+    <dimen name="margin_68dp">68dp</dimen>
+    <dimen name="margin_84dp">84dp</dimen>
+    <dimen name="margin_18dp">18dp</dimen>
+
+    <!-- Font Size -->
+    <dimen name="textSize12sp">12sp</dimen>
+    <dimen name="textSize14sp">14sp</dimen>
+    <dimen name="textSize16sp">16sp</dimen>
+    <dimen name="textSize17sp">17sp</dimen>
+    <dimen name="textSize18sp">18sp</dimen>
+    <dimen name="textSize20sp">20sp</dimen>
+    <dimen name="textSize21sp">21sp</dimen>
+    <dimen name="textSize24sp">24sp</dimen>
+    <dimen name="textSize27sp">27sp</dimen>
+    <dimen name="textSize29sp">29sp</dimen>
+    <dimen name="textSize32sp">32sp</dimen>
+    <dimen name="textSize36sp">36sp</dimen>
+    <dimen name="textSize66sp">66sp</dimen>
+
+    <!-- Size -->
+    <dimen name="size100dp">100dp</dimen>
+    <dimen name="size110dp">110dp</dimen>
+    <dimen name="size124dp">124dp</dimen>
+    <dimen name="size48dp">48dp</dimen>
+    <dimen name="size36dp">36dp</dimen>
+    <dimen name="size5dp">5dp</dimen>
+    <dimen name="size25dp">25dp</dimen>
+
+    <!-- Radius -->
+    <dimen name="radius_bg_gradient">2dp</dimen>
+
+    <!-- Separator -->
+    <dimen name="separator_height">1dp</dimen>
+    <dimen name="separator_height_2dp">2dp</dimen>
+
+    <!-- Indicator -->
+    <dimen name="indicator_height">24dp</dimen>
+
+    <!-- Bottom Navigation -->
+    <dimen name="main_bottom_navigation_height">64dp</dimen>
+</resources>
