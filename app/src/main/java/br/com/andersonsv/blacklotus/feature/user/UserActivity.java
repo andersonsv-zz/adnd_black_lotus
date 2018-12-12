@@ -3,9 +3,15 @@ package br.com.andersonsv.blacklotus.feature.user;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.util.Patterns;
 import android.view.View;
+import android.view.WindowManager;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
@@ -40,6 +46,15 @@ public class UserActivity extends AppCompatActivity {
     private FirebaseAuth mFirebaseAuth;
     private List<AuthUI.IdpConfig> providers;
 
+    @BindView(R.id.textInputLayoutName)
+    TextInputLayout mLayoutName;
+
+    @BindView(R.id.textInputEditTextName)
+    TextInputEditText mName;
+
+    @BindView(R.id.textInputLayoutEmail)
+    TextInputLayout mLayoutEmail;
+
     @BindView(R.id.textInputEditTextEmail)
     TextInputEditText mEmail;
 
@@ -62,6 +77,8 @@ public class UserActivity extends AppCompatActivity {
 
         mFirebaseAuth = FirebaseAuth.getInstance();
 
+        mName.addTextChangedListener(new MyTextWatcher(mName));
+        mEmail.addTextChangedListener(new MyTextWatcher(mEmail));
     }
 
     @OnClick(R.id.buttonSignUp)
@@ -69,16 +86,81 @@ public class UserActivity extends AppCompatActivity {
 
         String email = mEmail.getText().toString();
         String password = mPassword.getText().toString();
-        String name = mPasswordConfirmation.getText().toString();
+        String passwordConfirmation = mPasswordConfirmation.getText().toString();
 
-        mFirebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
+        validate(mLayoutName,mName);
+        validateEmail(mLayoutEmail,mEmail);
 
-            }
-        });
+       // mFirebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+        //    @Override
+        //    public void onComplete(@NonNull Task<AuthResult> task) {
+//
+       //     }
+        //});
 
         //check email Patterns.EMAIL_ADDRESS.matcher(email).matches()
 
+
+    }
+
+    private boolean validate(@NonNull TextInputLayout textInputLayout, @NonNull TextInputEditText textInputEditText) {
+        if (textInputEditText.getText().toString().trim().isEmpty()) {
+            textInputLayout.setError(getString(R.string.default_required));
+            requestFocus(textInputEditText);
+            return false;
+        } else {
+            textInputLayout.setErrorEnabled(false);
+        }
+        return true;
+    }
+
+    private boolean validateEmail(@NonNull TextInputLayout textInputLayout, @NonNull TextInputEditText textInputEditText) {
+        if (textInputEditText.getText().toString().trim().isEmpty()) {
+            textInputLayout.setError(getString(R.string.default_required));
+            requestFocus(textInputEditText);
+            return false;
+        }else if(!Patterns.EMAIL_ADDRESS.matcher(textInputEditText.getText().toString().trim()).matches()){
+            textInputLayout.setError(getString(
+                        R.string.default_email_error));
+
+        } else {
+            textInputLayout.setErrorEnabled(false);
+        }
+        return true;
+    }
+
+    private void requestFocus(View view) {
+        if (view.requestFocus()) {
+            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        }
+    }
+
+    private class MyTextWatcher implements TextWatcher {
+
+        private View view;
+
+        private MyTextWatcher(View view) {
+            this.view = view;
+        }
+
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        }
+
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        }
+
+        public void afterTextChanged(Editable editable) {
+            switch (view.getId()) {
+                case R.id.name:
+                    validate(mLayoutName, mEmail);
+                    break;
+                case R.id.email:
+                    validateEmail(mLayoutEmail, mEmail);
+                    break;
+                /*case R.id.input_password:
+                    validatePassword();
+                    break;*/
+            }
+        }
     }
 }
