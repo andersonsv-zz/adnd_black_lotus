@@ -1,7 +1,11 @@
 package br.com.andersonsv.blacklotus.feature.user;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.os.NetworkOnMainThreadException;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +16,9 @@ import android.text.TextWatcher;
 import android.util.Patterns;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.BaseAdapter;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
@@ -31,20 +38,23 @@ import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 import java.util.Arrays;
 import java.util.List;
 
 import br.com.andersonsv.blacklotus.R;
+import br.com.andersonsv.blacklotus.feature.base.BaseActivity;
+import br.com.andersonsv.blacklotus.util.NetworkUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class UserActivity extends AppCompatActivity {
+public class UserActivity extends BaseActivity {
 
     private User mUser;
     private FirebaseAuth mFirebaseAuth;
-    private List<AuthUI.IdpConfig> providers;
 
     @BindView(R.id.textInputLayoutName)
     TextInputLayout mLayoutName;
@@ -58,8 +68,14 @@ public class UserActivity extends AppCompatActivity {
     @BindView(R.id.textInputEditTextEmail)
     TextInputEditText mEmail;
 
+    @BindView(R.id.textInputLayoutPassword)
+    TextInputLayout mLayoutPassword;
+
     @BindView(R.id.textInputEditTextPassword)
     TextInputEditText mPassword;
+
+    @BindView(R.id.textInputLayoutPasswordConfirmation)
+    TextInputLayout mLayoutPasswordConfirmation;
 
     @BindView(R.id.textInputEditTextPasswordConfirmation)
     TextInputEditText mPasswordConfirmation;
@@ -67,11 +83,21 @@ public class UserActivity extends AppCompatActivity {
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
+    @BindView(R.id.progressBar)
+    ProgressBar mProgressBar;
+
+    @BindView(R.id.layoutCreateUser)
+    CoordinatorLayout layout;
+
+    private Context context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
         ButterKnife.bind(this);
+
+        this.context = this;
 
         setSupportActionBar(mToolbar);
 
@@ -79,29 +105,76 @@ public class UserActivity extends AppCompatActivity {
 
         mName.addTextChangedListener(new MyTextWatcher(mName));
         mEmail.addTextChangedListener(new MyTextWatcher(mEmail));
+        mPassword.addTextChangedListener(new MyTextWatcher(mPassword));
+        mPasswordConfirmation.addTextChangedListener(new MyTextWatcher(mPasswordConfirmation));
     }
 
     @OnClick(R.id.buttonSignUp)
     public void signUp(View view) {
 
-        String email = mEmail.getText().toString();
-        String password = mPassword.getText().toString();
-        String passwordConfirmation = mPasswordConfirmation.getText().toString();
+        NetworkUtils.isNetworkConnected(view.getContext());
 
-        validate(mLayoutName,mName);
-        validateEmail(mLayoutEmail,mEmail);
+        if (!NetworkUtils.isNetworkConnected(this)) {
+            Snackbar snackbar = Snackbar.make(layout, R.string.offline_no_internet, Snackbar.LENGTH_INDEFINITE)
+                    .setAction(R.string.offline_no_internet_retry, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            signUp(view);
+                        }
+                    });
+            snackbar.show();
+        }else{
 
-       // mFirebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-        //    @Override
-        //    public void onComplete(@NonNull Task<AuthResult> task) {
-//
-       //     }
-        //});
+            mProgressBar.setVisibility(View.VISIBLE);
 
-        //check email Patterns.EMAIL_ADDRESS.matcher(email).matches()
+            String email = mEmail.getText().toString();
+            String password = mPassword.getText().toString();
+            final String name = mName.getText().toString();
 
-
+            if(validateForm()){
+               createUser(email, password, name);
+            }
+        }
     }
+
+    private void createUser(final String email, final String password, final String name){
+        mFirebaseAuth.createUserWithEmailAndPassword(email, password)
+                .addOnFailureListener(this, new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        mProgressBar.setVisibility(View.GONE);
+                        //snack(layout,);
+                    }
+                })
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                mProgressBar.setVisibility(View.GONE);
+
+                                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+                                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(name).build();
+                                user.updateProfile(profileUpdates);
+                            }
+                        }
+                );
+    }
+
+    private boolean validateForm(){
+        boolean valid = true;
+
+        valid = validate(mLayoutName, mName);
+        valid = validateEmail(mLayoutEmail, mEmail);
+        valid = validate(mLayoutPassword, mPassword);
+        valid = validate(mLayoutPasswordConfirmation, mPasswordConfirmation);
+
+        if (mPassword.getText().toString().trim().equals(mPasswordConfirmation.getText().toString().trim())) {
+
+        }
+
+        return valid;
+    }
+
 
     private boolean validate(@NonNull TextInputLayout textInputLayout, @NonNull TextInputEditText textInputEditText) {
         if (textInputEditText.getText().toString().trim().isEmpty()) {

@@ -5,6 +5,9 @@
     <string name="default_email_error">Invalid e-mail</string>
     <string name="default_required">Required</string>
 
+    <string name="offline_no_internet">Without internet?</string>
+    <string name="offline_no_internet_retry">Retry again</string>
+
     <!-- Create user -->
     <string name="register_user_email_hint">E-mail</string>
     <string name="register_user_email_help">Enter a valid email</string>
