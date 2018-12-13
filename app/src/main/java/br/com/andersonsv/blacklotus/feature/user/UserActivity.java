@@ -2,47 +2,25 @@ package br.com.andersonsv.blacklotus.feature.user;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.NetworkOnMainThreadException;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Patterns;
 import android.view.View;
-import android.view.WindowManager;
-import android.widget.BaseAdapter;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
-import com.firebase.ui.auth.AuthUI;
-import com.firebase.ui.auth.IdpResponse;
-import com.firebase.ui.auth.data.model.Resource;
 import com.firebase.ui.auth.data.model.User;
-import com.firebase.ui.auth.util.GoogleApiUtils;
-import com.firebase.ui.auth.util.ui.fieldvalidators.BaseValidator;
-import com.firebase.ui.auth.util.ui.fieldvalidators.EmailFieldValidator;
-import com.firebase.ui.auth.util.ui.fieldvalidators.PasswordFieldValidator;
-import com.firebase.ui.auth.viewmodel.email.EmailProviderResponseHandler;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
-import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
-
-import java.util.Arrays;
-import java.util.List;
 
 import br.com.andersonsv.blacklotus.R;
 import br.com.andersonsv.blacklotus.feature.base.BaseActivity;

@@ -18,6 +18,13 @@
     <string name="register_user_password_confirmation_hint">Password Confirmation</string>
     <string name="register_user_password_confirmation_help">Enter the same password</string>
     <string name="register_user_signup">sign up</string>
+    <string name="login_sign_message">Don\'t have an account?</string>
+    <string name="login_signup"><u>Sign up</u></string>
+    <string name="login_forgot_password">Forgot password?</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
 
 
 </resources>
