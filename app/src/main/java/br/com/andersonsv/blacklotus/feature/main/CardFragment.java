@@ -8,21 +8,19 @@ import android.view.ViewGroup;
 
 import br.com.andersonsv.blacklotus.R;
 
-public class DeckFragment extends Fragment {
+public class CardFragment extends Fragment {
 
-    public static DeckFragment newInstance() {
-        return new DeckFragment();
+    public static CardFragment newInstance() {
+        return new CardFragment();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_deck, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_card, container, false);
 
 
         return rootView;
     }
-
-
 }

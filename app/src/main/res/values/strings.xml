@@ -22,9 +22,11 @@
     <string name="login_signup"><u>Sign up</u></string>
     <string name="login_forgot_password">Forgot password?</string>
     <string name="title_activity_main">MainActivity</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+
+    <!-- Navigation bottom -->
+    <string name="navigation_decks">Decks</string>
+    <string name="navigation_cards">Cards</string>
+    <string name="navigation_settings">Settings</string>
 
 
 </resources>

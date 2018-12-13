@@ -19,6 +19,7 @@ public class BaseActivity extends AppCompatActivity {
     public void openActivity(Class destination){
         Intent intent = new Intent(this, destination);
         startActivity(intent);
+        finish();
     }
 
     public void snack(View view, String message){

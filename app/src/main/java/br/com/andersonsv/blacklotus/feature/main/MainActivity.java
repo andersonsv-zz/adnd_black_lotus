@@ -4,24 +4,15 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import br.com.andersonsv.blacklotus.R;
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
 
-    @BindView(R.id.fragment)
-    FrameLayout mFragment;
-
-    private List<Fragment> fragments = new ArrayList<>(1);
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -30,14 +21,20 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    switchFragment(0, "tag_fragment_decks");
+                    getSupportActionBar().setTitle("Decks");
+                    Fragment albunsFragment = DeckFragment.newInstance();
+                    openFragment(albunsFragment);
                     return true;
-                //case R.id.navigation_dashboard:
-
-                 //   return true;
-                //case R.id.navigation_notifications:
-
-                 //   return true;
+                case R.id.navigation_dashboard:
+                    getSupportActionBar().setTitle("Cards");
+                    Fragment cardsFragment = CardFragment.newInstance();
+                    openFragment(cardsFragment);
+                    return true;
+                case R.id.navigation_notifications:
+                    getSupportActionBar().setTitle("Settings");
+                    Fragment settingFragment = SettingFragment.newInstance();
+                    openFragment(settingFragment);
+                    return true;
             }
             return false;
         }
@@ -48,26 +45,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ButterKnife.bind(this);
-
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        buildFragmentsList();
-
-        switchFragment(0, "tag_fragment_decks");
+        getSupportActionBar().setTitle("Decks");
+        Fragment albunsFragment = DeckFragment.newInstance();
+        openFragment(albunsFragment);
     }
-
-    private void switchFragment(int pos, String tag) {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.navigation, fragments.get(pos), tag)
-                .commit();
-    }
-
-    private void buildFragmentsList() {
-        DeckFragment deckFragment = new DeckFragment();
-
-        fragments.add(deckFragment);
+    private void openFragment(Fragment fragment) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 }
