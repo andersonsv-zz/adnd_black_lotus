@@ -133,6 +133,8 @@ public class UserActivity extends BaseActivity {
 
             if(validateForm()){
                createUser(email, password, name);
+            }else{
+                mProgressBar.setVisibility(View.INVISIBLE);
             }
         }
     }
@@ -143,7 +145,7 @@ public class UserActivity extends BaseActivity {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         mProgressBar.setVisibility(View.GONE);
-                        //snack(layout,);
+                        snack(layout, e.getLocalizedMessage());
                     }
                 })
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -151,10 +153,12 @@ public class UserActivity extends BaseActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 mProgressBar.setVisibility(View.GONE);
 
-                                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                                if (task.isSuccessful()){
+                                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-                                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(name).build();
-                                user.updateProfile(profileUpdates);
+                                    UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(name).build();
+                                    user.updateProfile(profileUpdates);
+                                }
                             }
                         }
                 );
@@ -175,38 +179,6 @@ public class UserActivity extends BaseActivity {
         return valid;
     }
 
-
-    private boolean validate(@NonNull TextInputLayout textInputLayout, @NonNull TextInputEditText textInputEditText) {
-        if (textInputEditText.getText().toString().trim().isEmpty()) {
-            textInputLayout.setError(getString(R.string.default_required));
-            requestFocus(textInputEditText);
-            return false;
-        } else {
-            textInputLayout.setErrorEnabled(false);
-        }
-        return true;
-    }
-
-    private boolean validateEmail(@NonNull TextInputLayout textInputLayout, @NonNull TextInputEditText textInputEditText) {
-        if (textInputEditText.getText().toString().trim().isEmpty()) {
-            textInputLayout.setError(getString(R.string.default_required));
-            requestFocus(textInputEditText);
-            return false;
-        }else if(!Patterns.EMAIL_ADDRESS.matcher(textInputEditText.getText().toString().trim()).matches()){
-            textInputLayout.setError(getString(
-                        R.string.default_email_error));
-
-        } else {
-            textInputLayout.setErrorEnabled(false);
-        }
-        return true;
-    }
-
-    private void requestFocus(View view) {
-        if (view.requestFocus()) {
-            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-        }
-    }
 
     private class MyTextWatcher implements TextWatcher {
 
