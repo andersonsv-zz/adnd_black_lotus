@@ -10,43 +10,23 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import br.com.andersonsv.blacklotus.R;
+import br.com.andersonsv.blacklotus.feature.base.BaseActivity;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
-
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.navigation_home:
-                    getSupportActionBar().setTitle("Decks");
-                    Fragment albunsFragment = DeckFragment.newInstance();
-                    openFragment(albunsFragment);
-                    return true;
-                case R.id.navigation_dashboard:
-                    getSupportActionBar().setTitle("Cards");
-                    Fragment cardsFragment = CardFragment.newInstance();
-                    openFragment(cardsFragment);
-                    return true;
-                case R.id.navigation_notifications:
-                    getSupportActionBar().setTitle("Settings");
-                    Fragment settingFragment = SettingFragment.newInstance();
-                    openFragment(settingFragment);
-                    return true;
-            }
-            return false;
-        }
-    };
+    @BindView(R.id.navigation)
+    BottomNavigationView mNavigation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        ButterKnife.bind(this);
+
+        mNavigation.setOnNavigationItemSelectedListener(this);
 
         getSupportActionBar().setTitle("Decks");
         Fragment albunsFragment = DeckFragment.newInstance();
@@ -57,5 +37,27 @@ public class MainActivity extends AppCompatActivity {
         transaction.replace(R.id.container, fragment);
         transaction.addToBackStack(null);
         transaction.commit();
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case R.id.navigation_home:
+                getSupportActionBar().setTitle("Decks");
+                Fragment albunsFragment = DeckFragment.newInstance();
+                openFragment(albunsFragment);
+                return true;
+            case R.id.navigation_dashboard:
+                getSupportActionBar().setTitle("Cards");
+                Fragment cardsFragment = CardFragment.newInstance();
+                openFragment(cardsFragment);
+                return true;
+            case R.id.navigation_notifications:
+                getSupportActionBar().setTitle("Settings");
+                Fragment settingFragment = SettingFragment.newInstance();
+                openFragment(settingFragment);
+                return true;
+        }
+        return true;
     }
 }
