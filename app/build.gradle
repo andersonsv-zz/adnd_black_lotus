@@ -10,8 +10,19 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
+    def FIREBASE_COLLECTION = "FIREBASE_COLLECTION"
+    def FIREBASE_DOCUMENT = "FIREBASE_DOCUMENT"
+
     buildTypes {
+        debug {
+            buildConfigField "String", FIREBASE_COLLECTION, '"develop"'
+            buildConfigField "String", FIREBASE_DOCUMENT, '"6Dfh0Shkwz0ds2Ch6EHa"'
+        }
         release {
+            buildConfigField "String", FIREBASE_COLLECTION, '"production"'
+            buildConfigField "String", FIREBASE_DOCUMENT, '"6Dfh0Shkwz0ds2Ch6EHa"'
+
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }

@@ -28,5 +28,8 @@
     <string name="navigation_cards">Cards</string>
     <string name="navigation_settings">Settings</string>
 
+    <!-- Decks -->
+    <string name="decks_number_cards">%s card(s)</string>
+
 
 </resources>
