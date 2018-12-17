@@ -2,10 +2,15 @@ package br.com.andersonsv.blacklotus.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.LinearGradient;
 import android.graphics.RadialGradient;
 import android.graphics.Shader;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
+import android.graphics.drawable.PaintDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
+import android.graphics.drawable.shapes.RectShape;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +23,10 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import br.com.andersonsv.blacklotus.R;
 import br.com.andersonsv.blacklotus.firebase.Deck;
 import br.com.andersonsv.blacklotus.holder.DecksViewHolder;
+import br.com.andersonsv.blacklotus.util.ShaderUtils;
+
+import static android.graphics.Color.BLACK;
+import static com.google.common.primitives.Floats.min;
 
 public class DeckAdapter extends FirestoreRecyclerAdapter<Deck, DecksViewHolder> {
 
@@ -35,28 +44,31 @@ public class DeckAdapter extends FirestoreRecyclerAdapter<Deck, DecksViewHolder>
 
         String numberOfCards = model.getNumberOfCards() != null ? model.getNumberOfCards().toString() : "0";
         holder.getmNumberOfCards().setText(String.format(context.getString(R.string.decks_number_cards), numberOfCards));
+        int [] colors = new int[] { 0xff0000ff, 0xff00ff00, 0xffff0000 };
+        Float positionX = 0.5F;
+        Float positionY = 0.5F;
+        Float size = 1.0F;
 
+        //holder.getmColor().setImageDrawable(ShaderUtils.radialGradientBackground(colors, positionX, positionY, size));
         ShapeDrawable.ShaderFactory sf = new ShapeDrawable.ShaderFactory() {
             @Override
             public Shader resize(int width, int height) {
 
-                int [] colors = new int[] { 0xff0000ff, 0xff00ff00, 0xffff0000 };
-                float [] positions = new float[] { 0.4f, 0.7f, 0.9f };
-                RadialGradient rg = new RadialGradient(0, 0, height, colors, positions, Shader.TileMode.CLAMP);
+                int [] colors = new int[] { Color.RED, Color.BLACK, Color.WHITE };
+                float [] positions = new float[] { 0.0f, 0.5f, 1.0f};
+
+
+
+                RadialGradient rg = new  RadialGradient(
+                        width * 1.0f,
+                        height * 1.0f,
+                        min(width, height) * 1.0f,
+                        colors,
+                        null,
+                        Shader.TileMode.CLAMP);
+
 
                 return rg;
-                       /* LinearGradient lg = new LinearGradient(0, 0, width, height,
-                                new int[]{Color.GREEN, Color.WHITE, Color.BLACK, Color.RED},
-                                new float[]{0,0.5f,.55f,1}, Shader.TileMode.REPEAT);
-                        return lg;*/
-
-                        /*int [] colors = new int[] { 0xff0000ff, 0xff00ff00, 0xffff0000 };
-                        float [] positions = new float[] { 0.4f, 0.7f, 0.9f };
-
-                        RadialGradient gradient = new RadialGradient(50, 50, 50, colors, positions, TileMode.CLAMP);
-                        mPaint = new Paint();
-                        mPaint.setDither(true);
-                        mPaint.setShader(gradient);*/
             }
         };
 
@@ -67,38 +79,6 @@ public class DeckAdapter extends FirestoreRecyclerAdapter<Deck, DecksViewHolder>
 
         badge.setShaderFactory(sf);
         holder.getmColor().setImageDrawable (badge);
-
-
-                /*addView (image);
-
-                ShapeDrawable.ShaderFactory sf = new ShapeDrawable.ShaderFactory() {
-                    @Override
-                    public Shader resize(int width, int height) {
-                        LinearGradient lg = new LinearGradient(0, 0, width, height,
-                                new int[]{Color.GREEN, Color.WHITE, Color.BLACK, Color.RED},
-                                new float[]{0,0.5f,.55f,1}, Shader.TileMode.REPEAT);
-                        return lg;
-                    }
-                };
-
-                PaintDrawable p= new PaintDrawable();
-                p.setShape(new RectShape());
-                p.setShaderFactory(sf);
-
-                holder.mColor.setImageDrawable(p);*/
-
-                /*progressBar.setVisibility(View.GONE);
-                holder.textName.setText(model.getName());
-                holder.textTitle.setText(model.getTitle());
-                holder.textCompany.setText(model.getCompany());
-                Glide.with(getApplicationContext())
-                        .load(model.getImage())
-                        .into(holder.imageView);
-
-                holder.itemView.setOnClickListener(v -> {
-                    Snackbar.make(friendList, model.getName()+", "+model.getTitle()+" at "+model.getCompany(), Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-                });*/
     }
 
     @Override

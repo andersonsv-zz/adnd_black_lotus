@@ -1,9 +1,7 @@
 package br.com.andersonsv.blacklotus.feature.main;
 
-import android.arch.lifecycle.SingleGeneratedAdapterObserver;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
@@ -29,7 +27,6 @@ import br.com.andersonsv.blacklotus.R;
 import br.com.andersonsv.blacklotus.adapter.DeckAdapter;
 import br.com.andersonsv.blacklotus.feature.base.BaseFragment;
 import br.com.andersonsv.blacklotus.firebase.Deck;
-import br.com.andersonsv.blacklotus.holder.DecksViewHolder;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -91,6 +88,27 @@ public class DeckFragment extends BaseFragment {
         FirestoreRecyclerOptions<Deck> response = new FirestoreRecyclerOptions.Builder<Deck>()
                 .setQuery(query, Deck.class)
                 .build();
+
+
+        response.getSnapshots().addChangeEventListener(new ChangeEventListener() {
+            @Override
+            public void onChildChanged(@NonNull ChangeEventType type, @NonNull DocumentSnapshot snapshot, int newIndex, int oldIndex) {
+                if (type != null){
+
+                }
+            }
+
+            @Override
+            public void onDataChanged() {
+
+            }
+
+            @Override
+            public void onError(@NonNull FirebaseFirestoreException e) {
+
+            }
+        });
+
 
         mAdapter = new DeckAdapter(response);
         mAdapter.notifyDataSetChanged();
