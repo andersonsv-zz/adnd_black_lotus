@@ -21,7 +21,6 @@ import br.com.andersonsv.blacklotus.holder.DecksViewHolder;
 
 public class DeckAdapter extends FirestoreRecyclerAdapter<Deck, DecksViewHolder> {
 
-
     private Context context;
 
     public DeckAdapter(FirestoreRecyclerOptions recyclerOptions) {
@@ -65,9 +64,7 @@ public class DeckAdapter extends FirestoreRecyclerAdapter<Deck, DecksViewHolder>
         badge.setIntrinsicHeight (200);
         badge.getPaint().setColor(Color.RED);
 
-
         badge.setShaderFactory(sf);
-
         holder.getmColor().setImageDrawable (badge);
 
 

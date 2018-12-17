@@ -1,13 +1,11 @@
 package br.com.andersonsv.blacklotus.feature.main;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
@@ -31,7 +29,6 @@ public class DeckFragment extends BaseFragment {
     private FirebaseFirestore mDb;
     private String mUserUid;
     private FirestoreRecyclerAdapter mAdapter;
-    private LinearLayoutManager linearLayoutManager;
 
     private final static String DECK_LIST = "decks";
     private final static String USER_ID = "userId";
@@ -41,6 +38,9 @@ public class DeckFragment extends BaseFragment {
 
     @BindView(R.id.progressBar)
     ProgressBar mProgressBar;
+
+    @BindView(R.id.linearLayoutEmptyState)
+    LinearLayout mEmptyState;
 
     public static DeckFragment newInstance() {
         return new DeckFragment();
@@ -84,6 +84,13 @@ public class DeckFragment extends BaseFragment {
         mAdapter = new DeckAdapter(response);
         mAdapter.notifyDataSetChanged();
         mDeckRecycler.setAdapter(mAdapter);
+
+
+        if (response.getSnapshots().isEmpty()){
+            mEmptyState.setVisibility(View.VISIBLE);
+        } else {
+            mEmptyState.setVisibility(View.GONE);
+        }
     }
 
     @Override

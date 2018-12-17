@@ -32,4 +32,32 @@
         app:layout_constraintTop_toTopOf="parent" >
 
     </android.support.v7.widget.RecyclerView>
+
+    <LinearLayout
+        android:id="@+id/linearLayoutEmptyState"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imageViewEmptyState"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            app:srcCompat="@drawable/deck_empty_state" />
+
+        <TextView
+            android:id="@+id/textViewEmptyState"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:lines="2"
+            android:text="@string/deck_empty_state"
+            android:textAlignment="center"
+            style="@style/Text.14sp.SemiBold"
+            android:textColor="@color/lightGray"/>
+    </LinearLayout>
 </android.support.constraint.ConstraintLayout>

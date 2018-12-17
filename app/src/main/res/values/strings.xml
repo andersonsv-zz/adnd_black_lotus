@@ -30,6 +30,7 @@
 
     <!-- Decks -->
     <string name="decks_number_cards">%s card(s)</string>
+    <string name="deck_empty_state">There are no decks. Register a new deck</string>
 
 
 </resources>
