@@ -1,6 +1,8 @@
 package br.com.andersonsv.blacklotus.feature.main;
 
+import android.arch.lifecycle.SingleGeneratedAdapterObserver;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,11 +10,15 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
+import com.firebase.ui.common.ChangeEventType;
+import com.firebase.ui.firestore.ChangeEventListener;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 
 import br.com.andersonsv.blacklotus.BuildConfig;
@@ -84,13 +90,6 @@ public class DeckFragment extends BaseFragment {
         mAdapter = new DeckAdapter(response);
         mAdapter.notifyDataSetChanged();
         mDeckRecycler.setAdapter(mAdapter);
-
-
-        if (response.getSnapshots().isEmpty()){
-            mEmptyState.setVisibility(View.VISIBLE);
-        } else {
-            mEmptyState.setVisibility(View.GONE);
-        }
     }
 
     @Override

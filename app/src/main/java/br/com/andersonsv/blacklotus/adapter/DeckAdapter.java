@@ -22,6 +22,7 @@ import br.com.andersonsv.blacklotus.holder.DecksViewHolder;
 public class DeckAdapter extends FirestoreRecyclerAdapter<Deck, DecksViewHolder> {
 
     private Context context;
+    private Boolean isEmpty = false;
 
     public DeckAdapter(FirestoreRecyclerOptions recyclerOptions) {
         super(recyclerOptions);
@@ -114,5 +115,19 @@ public class DeckAdapter extends FirestoreRecyclerAdapter<Deck, DecksViewHolder>
         context = view.getContext();
 
         return new DecksViewHolder(view);
+    }
+
+    @Override
+    public void onDataChanged() {
+        notifyDataSetChanged();
+        if (getItemCount() == 0) {
+            isEmpty = true;
+        } else {
+            isEmpty = false;
+        }
+    }
+
+    public Boolean getEmpty() {
+        return isEmpty;
     }
 }
