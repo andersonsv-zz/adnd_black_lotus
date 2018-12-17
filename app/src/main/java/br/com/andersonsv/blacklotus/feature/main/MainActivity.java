@@ -32,6 +32,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
         Fragment albunsFragment = DeckFragment.newInstance();
         openFragment(albunsFragment);
     }
+
     private void openFragment(Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.container, fragment);
@@ -44,8 +45,8 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
         switch (menuItem.getItemId()) {
             case R.id.navigation_home:
                 getSupportActionBar().setTitle("Decks");
-                Fragment albunsFragment = DeckFragment.newInstance();
-                openFragment(albunsFragment);
+                Fragment decksFragment = DeckFragment.newInstance();
+                openFragment(decksFragment);
                 return true;
             case R.id.navigation_dashboard:
                 getSupportActionBar().setTitle("Cards");

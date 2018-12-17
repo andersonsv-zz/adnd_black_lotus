@@ -106,6 +106,10 @@ public class DeckAdapter extends FirestoreRecyclerAdapter<Deck, DecksViewHolder>
         Log.e("error", e.getMessage());
     }
 
+    @Override
+    public int getItemCount() {
+        return super.getItemCount();
+    }
 
     @Override
     public DecksViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

@@ -3,6 +3,9 @@ package br.com.andersonsv.blacklotus.feature.main;
 import android.arch.lifecycle.SingleGeneratedAdapterObserver;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,8 +29,10 @@ import br.com.andersonsv.blacklotus.R;
 import br.com.andersonsv.blacklotus.adapter.DeckAdapter;
 import br.com.andersonsv.blacklotus.feature.base.BaseFragment;
 import br.com.andersonsv.blacklotus.firebase.Deck;
+import br.com.andersonsv.blacklotus.holder.DecksViewHolder;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class DeckFragment extends BaseFragment {
 
@@ -89,7 +94,18 @@ public class DeckFragment extends BaseFragment {
 
         mAdapter = new DeckAdapter(response);
         mAdapter.notifyDataSetChanged();
+        mAdapter.getItemCount();
         mDeckRecycler.setAdapter(mAdapter);
+    }
+
+    @OnClick(R.id.fabAddDeck)
+    public void addDeck(View view){
+        Fragment addDeckFragment = AddDeckFragment.newInstance();
+
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, addDeckFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     @Override
