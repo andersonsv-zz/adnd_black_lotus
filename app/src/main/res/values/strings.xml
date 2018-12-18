@@ -32,6 +32,8 @@
     <string name="decks_number_cards">%s card(s)</string>
     <string name="deck_empty_state">There are no decks. Register a new deck</string>
     <string name="default_signout">Sign out</string>
-
+    <string name="deck_name_hint">Deck name</string>
+    <string name="deck_name_help">Enter your deck name</string>
+    <string name="deck_change">Deck change</string>
 
 </resources>

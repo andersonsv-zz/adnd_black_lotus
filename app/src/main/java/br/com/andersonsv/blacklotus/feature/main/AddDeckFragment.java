@@ -10,8 +10,8 @@ import br.com.andersonsv.blacklotus.R;
 
 public class AddDeckFragment extends Fragment {
 
-    public static CardFragment newInstance() {
-        return new CardFragment();
+    public static AddDeckFragment newInstance() {
+        return new AddDeckFragment();
     }
 
     @Override

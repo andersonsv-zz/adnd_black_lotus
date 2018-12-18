@@ -70,4 +70,8 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
+    <!-- Deck -->
+    <dimen name="empty_state_height">200dp</dimen>
+    <dimen name="empty_state_width">200dp</dimen>
+
 </resources>

@@ -80,6 +80,8 @@ public class DeckFragment extends BaseFragment {
             //TODO - usuario nao identificado, escrever mensagem
         }
 
+        mProgressBar.setVisibility(View.VISIBLE);
+
         Query query = mDb.collection(BuildConfig.FIREBASE_COLLECTION)
                 .document(BuildConfig.FIREBASE_DOCUMENT)
                 .collection(DECK_LIST)
@@ -89,28 +91,7 @@ public class DeckFragment extends BaseFragment {
                 .setQuery(query, Deck.class)
                 .build();
 
-
-        response.getSnapshots().addChangeEventListener(new ChangeEventListener() {
-            @Override
-            public void onChildChanged(@NonNull ChangeEventType type, @NonNull DocumentSnapshot snapshot, int newIndex, int oldIndex) {
-                if (type != null){
-
-                }
-            }
-
-            @Override
-            public void onDataChanged() {
-
-            }
-
-            @Override
-            public void onError(@NonNull FirebaseFirestoreException e) {
-
-            }
-        });
-
-
-        mAdapter = new DeckAdapter(response);
+        mAdapter = new DeckAdapter(response, mProgressBar, mEmptyState);
         mAdapter.notifyDataSetChanged();
         mAdapter.getItemCount();
         mDeckRecycler.setAdapter(mAdapter);
