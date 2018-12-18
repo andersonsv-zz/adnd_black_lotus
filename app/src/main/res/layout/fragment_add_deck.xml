@@ -71,5 +71,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textView" />
 
+    <Button
+        android:id="@+id/buttonSaveDeck"
+        style="@style/ActionButtonStyle"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/main_bottom_navigation_height"
+        android:text="@string/deck_save_button"
+        android:textAllCaps="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
 
 </android.support.constraint.ConstraintLayout>

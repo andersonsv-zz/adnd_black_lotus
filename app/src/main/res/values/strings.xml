@@ -18,10 +18,13 @@
     <string name="register_user_password_confirmation_hint">Password Confirmation</string>
     <string name="register_user_password_confirmation_help">Enter the same password</string>
     <string name="register_user_signup">sign up</string>
+
+    <!-- Login -->
     <string name="login_sign_message">Don\'t have an account?</string>
     <string name="login_signup"><u>Sign up</u></string>
     <string name="login_forgot_password">Forgot password?</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="login_signin">Sign in</string>
 
     <!-- Navigation bottom -->
     <string name="navigation_decks">Decks</string>
@@ -35,5 +38,7 @@
     <string name="deck_name_hint">Deck name</string>
     <string name="deck_name_help">Enter your deck name</string>
     <string name="deck_change">Deck change</string>
+    <string name="deck_save_button">save</string>
+
 
 </resources>

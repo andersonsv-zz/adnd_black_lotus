@@ -1,10 +1,13 @@
 package br.com.andersonsv.blacklotus.feature.login;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.view.View;
+import android.widget.ProgressBar;
 
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,6 +38,9 @@ public class LoginActivity extends BaseActivity {
     @BindView(R.id.textInputEditTextPassword)
     TextInputEditText mPassword;
 
+    @BindView(R.id.progressBar)
+    ProgressBar mProgressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,17 +63,28 @@ public class LoginActivity extends BaseActivity {
 
     @OnClick(R.id.buttonLogin)
     public void login(View view) {
+        mProgressBar.setVisibility(View.VISIBLE);
 
         String email = mEmail.getText().toString();
         String password = mPassword.getText().toString();
 
-        mFirebaseAuth.signInWithEmailAndPassword(email, password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-            @Override
-            public void onSuccess(AuthResult authResult) {
-                if (authResult.getUser() != null) {
-                    openActivity(MainActivity.class);
+        mFirebaseAuth.signInWithEmailAndPassword(email, password)
+            .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                    @Override
+                    public void onSuccess(AuthResult authResult) {
+                        if (authResult.getUser() != null) {
+                            mProgressBar.setVisibility(View.GONE);
+                            openActivity(MainActivity.class);
+                        }
+                    }
+
+        })
+            .addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    mProgressBar.setVisibility(View.GONE);
+                    toast(LoginActivity.this, "Ocorreu um erro na autenticacao" + e.getLocalizedMessage());
                 }
-            }
-        });
+            });
     }
 }
