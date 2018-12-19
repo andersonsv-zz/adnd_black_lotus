@@ -43,4 +43,19 @@
     <color name="wheelFade">#e1fafafa</color>
     <color name="wheelFadeWhiteBackground">#e1ffffff</color>
     <color name="yellow_orange">#fbba00</color>
+
+    <!-- decks -->
+    <color name="deck_red">#81001f</color>
+    <color name="deck_white">#efedd0</color>
+    <color name="deck_green">#006639</color>
+    <color name="deck_black">#3d3c33</color>
+    <color name="deck_blue">#24468b</color>
+
+    <array name="deck_colors">
+        <item>@color/deck_white</item>
+        <item>@color/deck_red</item>
+        <item>@color/deck_green</item>
+        <item>@color/deck_blue</item>
+        <item>@color/deck_black</item>
+    </array>
 </resources>

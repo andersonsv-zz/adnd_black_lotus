@@ -4,9 +4,14 @@
 
     <string name="default_email_error">Invalid e-mail</string>
     <string name="default_required">Required</string>
+    <string name="default_color">Color</string>
 
     <string name="offline_no_internet">Without internet?</string>
     <string name="offline_no_internet_retry">Retry again</string>
+
+    <!-- General -->
+    <string name="default_description">Description</string>
+    <string name="default_clear_underline"><u>Clear</u></string>
 
     <!-- Create user -->
     <string name="register_user_email_hint">E-mail</string>
@@ -38,7 +43,9 @@
     <string name="deck_name_hint">Deck name</string>
     <string name="deck_name_help">Enter your deck name</string>
     <string name="deck_change">Deck change</string>
+    <string name="deck_select_color_title">Select deck color</string>
+    <string name="deck_select_color_confirm">confirm</string>
+    <string name="deck_add_color_title">Add deck color</string>
     <string name="deck_save_button">save</string>
-
-
+    <string name="deck_color_exists_error">Color already selected</string>
 </resources>

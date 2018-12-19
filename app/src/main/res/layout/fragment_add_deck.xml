@@ -31,36 +31,66 @@
             app:errorEnabled="true" />
     </android.support.design.widget.TextInputLayout>
 
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/textInputLayoutDescription"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_large"
+        android:layout_marginTop="@dimen/margin_large"
+        android:layout_marginEnd="@dimen/margin_large"
+        app:counterEnabled="true"
+        app:counterMaxLength="100"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayoutName">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/textInputEditTextDescription"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:gravity="top|left"
+            android:hint="@string/default_description"
+            android:imeOptions="actionDone"
+            android:inputType="textMultiLine"
+            android:maxLength="100"
+            android:lines="3"
+            app:errorEnabled="true" />
+    </android.support.design.widget.TextInputLayout>
+
     <ImageView
         android:id="@+id/imageViewColor"
         android:layout_width="@dimen/size48dp"
         android:layout_height="@dimen/size48dp"
-        android:layout_marginStart="@dimen/margin_large"
-        android:layout_marginTop="@dimen/margin_large"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayoutName" />
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toEndOf="@+id/textViewColor"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <ImageButton
-        android:id="@+id/imageButton"
-        android:layout_width="wrap_content"
+        android:id="@+id/buttonAddColor"
+        style="@style/ActionButtonStyle"
+        android:layout_width="50dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_large"
-        android:layout_marginTop="@dimen/margin_large"
-        app:layout_constraintStart_toEndOf="@+id/imageViewColor"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayoutName"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewColor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageViewColor"
         app:srcCompat="@drawable/ic_plus_24dp" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="@dimen/margin_large"
+        android:layout_marginTop="@dimen/margin_large"
+        android:layout_marginEnd="@dimen/margin_normal"
         android:text="@string/deck_change"
+        style="@style/Text.14sp"
         app:layout_constraintEnd_toStartOf="@+id/switchDeckChange"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewColor" />
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayoutDescription" />
 
     <Switch
         android:id="@+id/switchDeckChange"
@@ -81,6 +111,28 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewColor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        style="@style/Text.14sp"
+        android:text="@string/default_color"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewColor"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageViewColor" />
+
+    <TextView
+        android:id="@+id/textViewClear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/default_clear_underline"
+        style="@style/Text.14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewColor"
+        app:layout_constraintStart_toEndOf="@+id/imageViewColor"
+        app:layout_constraintTop_toTopOf="@+id/imageViewColor" />
 
 
 </android.support.constraint.ConstraintLayout>
