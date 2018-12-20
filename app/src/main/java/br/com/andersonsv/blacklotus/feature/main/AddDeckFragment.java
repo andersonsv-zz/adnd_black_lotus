@@ -1,35 +1,50 @@
 package br.com.andersonsv.blacklotus.feature.main;
 
 import android.graphics.Color;
-import android.graphics.LinearGradient;
-import android.graphics.Paint;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
+import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.Switch;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.common.primitives.Ints;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.thebluealliance.spectrum.SpectrumDialog;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.andersonsv.blacklotus.BuildConfig;
 import br.com.andersonsv.blacklotus.R;
+import br.com.andersonsv.blacklotus.feature.base.BaseFragment;
 import br.com.andersonsv.blacklotus.firebase.Deck;
+import br.com.andersonsv.blacklotus.util.ColorDeckUtil;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class AddDeckFragment extends Fragment {
+import static br.com.andersonsv.blacklotus.util.Constants.DECK_ID;
+import static br.com.andersonsv.blacklotus.util.Constants.DECK_LIST;
+
+public class AddDeckFragment extends BaseFragment {
 
     public static AddDeckFragment newInstance() {
         return new AddDeckFragment();
@@ -38,7 +53,28 @@ public class AddDeckFragment extends Fragment {
     @BindView(R.id.imageViewColor)
     ImageView mColor;
 
+    @BindView(R.id.containerAddDeck)
+    ConstraintLayout containerAddDeck;
+
+    @BindView(R.id.textInputLayoutName)
+    TextInputLayout mLayoutName;
+
+    @BindView(R.id.textInputEditTextName)
+    TextInputEditText mName;
+
+    @BindView(R.id.textInputEditTextDescription)
+    TextInputEditText mDescription;
+
+    @BindView(R.id.switchDeckChange)
+    Switch mDeckChange;
+
+    @BindView(R.id.progressBar)
+    ProgressBar mProgressBar;
+
     private Deck deck;
+
+    private FirebaseFirestore mDb;
+    private String mUserUid;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -47,6 +83,9 @@ public class AddDeckFragment extends Fragment {
 
         ButterKnife.bind(this, rootView);
         deck = new Deck();
+
+        mDb = FirebaseFirestore.getInstance();
+        mUserUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         updateColor();
 
@@ -69,6 +108,71 @@ public class AddDeckFragment extends Fragment {
             }).build().show(getFragmentManager(), "dialog_demo_1");
     }
 
+    @OnClick(R.id.textViewClear)
+    public void clearColors(View view){
+        deck.setColor1(null);
+        deck.setColor2(null);
+        deck.setColor3(null);
+        deck.setColor4(null);
+        deck.setColor5(null);
+
+        updateColor();
+    }
+
+    @OnClick(R.id.buttonSaveDeck)
+    public void saveDeck() {
+
+        mProgressBar.setVisibility(View.VISIBLE);
+
+        if (validateForm()){
+            deck.setName(mName.getText().toString());
+            deck.setDescription(mDescription.getText().toString());
+            deck.setChangeDeck(mDeckChange.isChecked());
+            deck.setNumberOfCards(0);
+
+
+            mDb.collection(BuildConfig.FIREBASE_COLLECTION)
+                .document(BuildConfig.FIREBASE_DOCUMENT)
+                .collection(DECK_LIST)
+                .add(deck.objectMap(mUserUid))
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Fragment cardFragment = CardFragment.newInstance();
+
+                        Bundle bundle = new Bundle();
+                        bundle.putString(DECK_ID, documentReference.getId());
+                        cardFragment.setArguments(bundle);
+
+                        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.container, cardFragment);
+                        transaction.addToBackStack(null);
+                        transaction.commit();
+
+                        mProgressBar.setVisibility(View.GONE);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getContext(), R.string.default_error_save, Toast.LENGTH_LONG).show();
+                        mProgressBar.setVisibility(View.GONE);
+                    }
+                });
+        }
+    }
+
+    private boolean validateForm(){
+        boolean valid;
+        valid = validate(mLayoutName, mName);
+
+        if (deck.getColor1() == null) {
+
+        }
+
+        return valid;
+    }
+
     private void checkNextColor(int color){
 
         String colorHex = "#".concat(Integer.toHexString(color).toUpperCase());
@@ -76,7 +180,7 @@ public class AddDeckFragment extends Fragment {
         boolean existsColor = checkColorExists(colorHex);
 
         if (existsColor) {
-            Toast.makeText(getContext(), R.string.deck_color_exists_error, Toast.LENGTH_LONG);
+            Toast.makeText(getContext(), R.string.deck_color_exists_error, Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -114,20 +218,20 @@ public class AddDeckFragment extends Fragment {
         List<Integer> colors = new ArrayList<>();
 
         if (deck.getColor1() == null) {
-            setOneColor(Color.GRAY);
+            ColorDeckUtil.setOneColor(Color.GRAY, mColor);
             return;
         } else if (deck.getColor1() != null && deck.getColor2() == null) {
 
             int colorValue = Color.parseColor(deck.getColor1());
-            setOneColor(colorValue);
+            ColorDeckUtil.setOneColor(colorValue, mColor);
             return;
 
         } else {
-            addColorIfNonNull(deck.getColor1(), colors);
-            addColorIfNonNull(deck.getColor2(), colors);
-            addColorIfNonNull(deck.getColor3(), colors);
-            addColorIfNonNull(deck.getColor4(), colors);
-            addColorIfNonNull(deck.getColor5(), colors);
+            ColorDeckUtil.addColorIfNonNull(deck.getColor1(), colors);
+            ColorDeckUtil.addColorIfNonNull(deck.getColor2(), colors);
+            ColorDeckUtil.addColorIfNonNull(deck.getColor3(), colors);
+            ColorDeckUtil.addColorIfNonNull(deck.getColor4(), colors);
+            ColorDeckUtil.addColorIfNonNull(deck.getColor5(), colors);
         }
 
         int[] colorArray = Ints.toArray(colors);
@@ -139,22 +243,7 @@ public class AddDeckFragment extends Fragment {
             gradientDrawable.setShape(GradientDrawable.OVAL);
             mColor.setImageDrawable(gradientDrawable);
         } else {
-            setOneColor(Color.GRAY);
-        }
-    }
-
-    private void setOneColor(int color){
-        ShapeDrawable sd = new ShapeDrawable(new OvalShape());
-        sd.setIntrinsicHeight(100);
-        sd.setIntrinsicWidth(100);
-        sd.getPaint().setColor(color);
-        mColor.setBackground(sd);
-    }
-
-    private void addColorIfNonNull(final String color, final List<Integer> colors){
-        if (color != null) {
-            int colorValue = Color.parseColor(color);
-            colors.add(colorValue);
+            ColorDeckUtil.setOneColor(Color.GRAY, mColor);
         }
     }
 }

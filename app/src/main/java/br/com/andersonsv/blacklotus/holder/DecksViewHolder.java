@@ -9,7 +9,7 @@ import br.com.andersonsv.blacklotus.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class DecksViewHolder extends RecyclerView.ViewHolder {
+public class DecksViewHolder extends RecyclerView.ViewHolder{
     @BindView(R.id.textViewDeckName)
     TextView mDeckName;
 
@@ -22,9 +22,27 @@ public class DecksViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.imageViewColor)
     ImageView mColor;
 
+    private DecksViewHolder.ClickListener mClickListener;
+
+    public interface ClickListener{
+        void onItemClick(View view, int position);
+    }
+
+    public void setOnClickListener(DecksViewHolder.ClickListener clickListener){
+        mClickListener = clickListener;
+    }
+
     public DecksViewHolder(View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
+
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mClickListener.onItemClick(v, getAdapterPosition());
+
+            }
+        });
     }
 
     public TextView getmDeckName() {
@@ -42,4 +60,6 @@ public class DecksViewHolder extends RecyclerView.ViewHolder {
     public ImageView getmColor() {
         return mColor;
     }
+
+
 }

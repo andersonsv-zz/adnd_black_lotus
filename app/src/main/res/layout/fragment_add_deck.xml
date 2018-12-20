@@ -4,7 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:id="@+id/containerAddDeck">
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/textInputLayoutName"
@@ -68,16 +69,18 @@
         app:layout_constraintStart_toEndOf="@+id/textViewColor"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
-    <ImageButton
+    <Button
         android:id="@+id/buttonAddColor"
         style="@style/ActionButtonStyle"
-        android:layout_width="50dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="@dimen/margin_large"
+        android:text="@string/deck_add_color"
+        android:textAllCaps="true"
         app:layout_constraintBottom_toBottomOf="@+id/imageViewColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/imageViewColor"
-        app:srcCompat="@drawable/ic_plus_24dp" />
+        android:padding="@dimen/margin_normal"/>
 
     <TextView
         android:id="@+id/textView"
@@ -96,10 +99,33 @@
         android:id="@+id/switchDeckChange"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="@dimen/margin_large"
         app:layout_constraintBottom_toBottomOf="@+id/textView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textView" />
+
+
+    <TextView
+        android:id="@+id/textViewColor"
+        style="@style/Text.14sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_large"
+        android:text="@string/default_color"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewColor"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageViewColor" />
+
+    <TextView
+        android:id="@+id/textViewClear"
+        style="@style/Text.14sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="@string/deck_clear_color_underline"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewColor"
+        app:layout_constraintStart_toEndOf="@+id/imageViewColor"
+        app:layout_constraintTop_toTopOf="@+id/imageViewColor" />
 
     <Button
         android:id="@+id/buttonSaveDeck"
@@ -112,27 +138,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <TextView
-        android:id="@+id/textViewColor"
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        style="@style/Text.14sp"
-        android:text="@string/default_color"
-        app:layout_constraintBottom_toBottomOf="@+id/imageViewColor"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imageViewColor" />
-
-    <TextView
-        android:id="@+id/textViewClear"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="@string/default_clear_underline"
-        style="@style/Text.14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageViewColor"
-        app:layout_constraintStart_toEndOf="@+id/imageViewColor"
-        app:layout_constraintTop_toTopOf="@+id/imageViewColor" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </android.support.constraint.ConstraintLayout>

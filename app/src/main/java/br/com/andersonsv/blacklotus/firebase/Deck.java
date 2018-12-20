@@ -1,10 +1,14 @@
 package br.com.andersonsv.blacklotus.firebase;
 
 import com.google.firebase.firestore.IgnoreExtraProperties;
+
+import java.util.HashMap;
+import java.util.Map;
+
 @IgnoreExtraProperties
 public class Deck {
+    private String id;
 
-    private String userId;
     private String name;
     private Integer numberOfCards;
     private String description;
@@ -17,11 +21,10 @@ public class Deck {
 
     public Deck() { }
 
-    public Deck(String userId, String name, Integer numberOfCards,
+    public Deck(String name, Integer numberOfCards,
                 String description, Boolean changeDeck,
                 String color1, String color2, String color3,
                 String color4, String color5) {
-        this.userId = userId;
         this.name = name;
         this.numberOfCards = numberOfCards;
         this.description = description;
@@ -31,14 +34,6 @@ public class Deck {
         this.color3 = color3;
         this.color4 = color4;
         this.color5 = color5;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
     }
 
     public String getName() {
@@ -55,6 +50,10 @@ public class Deck {
 
     public String getColor1() {
         return color1;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getColor2() {
@@ -111,5 +110,33 @@ public class Deck {
 
     public void setColor5(String color5) {
         this.color5 = color5;
+    }
+
+    // Mapper to insert / update
+    public Map<String, Object> objectMap (String userId){
+        Map<String, Object> deck = new HashMap<>();
+        deck.put("name", name);
+
+        if (numberOfCards != null)
+            deck.put("numberOfCards", numberOfCards);
+
+        if (description != null)
+            deck.put("description", description);
+
+        deck.put("changeDeck", changeDeck);
+        deck.put("color1", color1);
+
+        if (color2 != null)
+            deck.put("color2", color2);
+        if (color3 != null)
+            deck.put("color3", color3);
+        if (color4 != null)
+            deck.put("color4", color4);
+        if (color5 != null)
+            deck.put("color5", color5);
+
+        deck.put("userId", userId);
+
+        return deck;
     }
 }

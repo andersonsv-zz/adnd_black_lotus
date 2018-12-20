@@ -2,11 +2,11 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="80dp">
 
     <TextView
         android:id="@+id/textViewDeckName"
-        style="@style/Text.21sp.SemiBold"
+        style="@style/Text.16sp.SemiBold"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_normal"
@@ -27,7 +27,7 @@
 
     <TextView
         android:id="@+id/textViewDeckDescription"
-        style="@style/Text.14sp"
+        style="@style/Text.12sp.Light"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_normal"
@@ -43,7 +43,7 @@
 
     <TextView
         android:id="@+id/textViewNumberOfCards"
-        style="@style/Text.14sp"
+        style="@style/Text.12sp.Bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/margin_normal"

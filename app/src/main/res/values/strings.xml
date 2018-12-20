@@ -11,7 +11,7 @@
 
     <!-- General -->
     <string name="default_description">Description</string>
-    <string name="default_clear_underline"><u>Clear</u></string>
+    <string name="default_error_save">Description</string>
 
     <!-- Create user -->
     <string name="register_user_email_hint">E-mail</string>
@@ -48,4 +48,6 @@
     <string name="deck_add_color_title">Add deck color</string>
     <string name="deck_save_button">save</string>
     <string name="deck_color_exists_error">Color already selected</string>
+    <string name="deck_clear_color_underline"><u>Clear colors</u></string>
+    <string name="deck_add_color">Add color</string>
 </resources>

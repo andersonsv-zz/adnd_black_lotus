@@ -8,7 +8,11 @@ import android.view.ViewGroup;
 
 import br.com.andersonsv.blacklotus.R;
 
+import static br.com.andersonsv.blacklotus.util.Constants.DECK_ID;
+
 public class CardFragment extends Fragment {
+
+    private String deckId;
 
     public static CardFragment newInstance() {
         return new CardFragment();
@@ -17,9 +21,12 @@ public class CardFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_card, container, false);
 
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            deckId = bundle.getString(DECK_ID, "");
+        }
 
         return rootView;
     }
