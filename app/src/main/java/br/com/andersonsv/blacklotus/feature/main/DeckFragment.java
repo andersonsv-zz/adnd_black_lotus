@@ -21,7 +21,7 @@ import br.com.andersonsv.blacklotus.BuildConfig;
 import br.com.andersonsv.blacklotus.R;
 import br.com.andersonsv.blacklotus.adapter.DeckAdapter;
 import br.com.andersonsv.blacklotus.feature.base.BaseFragment;
-import br.com.andersonsv.blacklotus.firebase.Deck;
+import br.com.andersonsv.blacklotus.firebase.DeckModel;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -82,8 +82,8 @@ public class DeckFragment extends BaseFragment {
                 .collection(DECK_LIST)
                 .whereEqualTo(USER_ID, mUserUid);
 
-        FirestoreRecyclerOptions<Deck> response = new FirestoreRecyclerOptions.Builder<Deck>()
-                .setQuery(query, Deck.class)
+        FirestoreRecyclerOptions<DeckModel> response = new FirestoreRecyclerOptions.Builder<DeckModel>()
+                .setQuery(query, DeckModel.class)
                 .build();
 
         mAdapter = new DeckAdapter(response, mProgressBar, mEmptyState, this.getFragmentManager().beginTransaction());

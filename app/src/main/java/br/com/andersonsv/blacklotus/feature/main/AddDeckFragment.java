@@ -2,8 +2,6 @@ package br.com.andersonsv.blacklotus.feature.main;
 
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.OvalShape;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
@@ -24,7 +22,6 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.common.primitives.Ints;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.thebluealliance.spectrum.SpectrumDialog;
@@ -35,7 +32,7 @@ import java.util.List;
 import br.com.andersonsv.blacklotus.BuildConfig;
 import br.com.andersonsv.blacklotus.R;
 import br.com.andersonsv.blacklotus.feature.base.BaseFragment;
-import br.com.andersonsv.blacklotus.firebase.Deck;
+import br.com.andersonsv.blacklotus.firebase.DeckModel;
 import br.com.andersonsv.blacklotus.util.ColorDeckUtil;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -71,7 +68,7 @@ public class AddDeckFragment extends BaseFragment {
     @BindView(R.id.progressBar)
     ProgressBar mProgressBar;
 
-    private Deck deck;
+    private DeckModel deck;
 
     private FirebaseFirestore mDb;
     private String mUserUid;
@@ -82,7 +79,7 @@ public class AddDeckFragment extends BaseFragment {
         View rootView = inflater.inflate(R.layout.fragment_add_deck, container, false);
 
         ButterKnife.bind(this, rootView);
-        deck = new Deck();
+        deck = new DeckModel();
 
         mDb = FirebaseFirestore.getInstance();
         mUserUid = FirebaseAuth.getInstance().getCurrentUser().getUid();

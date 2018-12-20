@@ -1,14 +1,28 @@
 package br.com.andersonsv.blacklotus.firebase;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.firebase.firestore.IgnoreExtraProperties;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @IgnoreExtraProperties
-public class Deck {
-    private String id;
+public class DeckModel implements Parcelable {
+    public static final Creator<DeckModel> CREATOR = new Creator<DeckModel>() {
+        @Override
+        public DeckModel createFromParcel(Parcel in) {
+            return new DeckModel(in);
+        }
 
+        @Override
+        public DeckModel[] newArray(int size) {
+            return new DeckModel[size];
+        }
+    };
+
+    private String id;
     private String name;
     private Integer numberOfCards;
     private String description;
@@ -19,12 +33,44 @@ public class Deck {
     private String color4;
     private String color5;
 
-    public Deck() { }
+    private DeckModel(Parcel in) {
+        this.id = in.readString();
+        this.name = in.readString();
+        this.numberOfCards = in.readInt();
+        this.description = in.readString();
+        this.changeDeck = in.readByte() != 0;
+        this.color1 = in.readString();
+        this.color2 = in.readString();
+        this.color3 = in.readString();
+        this.color4 = in.readString();
+        this.color5 = in.readString();
+    }
 
-    public Deck(String name, Integer numberOfCards,
-                String description, Boolean changeDeck,
-                String color1, String color2, String color3,
-                String color4, String color5) {
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int flags) {
+        parcel.writeString(id);
+        parcel.writeString(name);
+        parcel.writeInt(numberOfCards);
+        parcel.writeString(description);
+        parcel.writeByte((byte) (changeDeck ? 1: 0));
+        parcel.writeString(color1);
+        parcel.writeString(color2);
+        parcel.writeString(color3);
+        parcel.writeString(color4);
+        parcel.writeString(color5);
+    }
+
+    public DeckModel() { }
+
+    public DeckModel(String name, Integer numberOfCards,
+                     String description, Boolean changeDeck,
+                     String color1, String color2, String color3,
+                     String color4, String color5) {
         this.name = name;
         this.numberOfCards = numberOfCards;
         this.description = description;

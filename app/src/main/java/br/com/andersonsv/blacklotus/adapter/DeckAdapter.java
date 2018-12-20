@@ -2,26 +2,15 @@ package br.com.andersonsv.blacklotus.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.LinearGradient;
-import android.graphics.RadialGradient;
-import android.graphics.Shader;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.LayerDrawable;
-import android.graphics.drawable.PaintDrawable;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.OvalShape;
-import android.graphics.drawable.shapes.RectShape;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
@@ -35,16 +24,14 @@ import java.util.List;
 
 import br.com.andersonsv.blacklotus.R;
 import br.com.andersonsv.blacklotus.feature.main.CardFragment;
-import br.com.andersonsv.blacklotus.firebase.Deck;
+import br.com.andersonsv.blacklotus.firebase.DeckModel;
 import br.com.andersonsv.blacklotus.holder.DecksViewHolder;
 import br.com.andersonsv.blacklotus.util.ColorDeckUtil;
-import br.com.andersonsv.blacklotus.util.ShaderUtils;
 
-import static android.graphics.Color.BLACK;
 import static br.com.andersonsv.blacklotus.util.Constants.DECK_ID;
-import static com.google.common.primitives.Floats.min;
+import static br.com.andersonsv.blacklotus.util.Constants.DECK_PARCELABLE;
 
-public class DeckAdapter extends FirestoreRecyclerAdapter<Deck, DecksViewHolder> {
+public class DeckAdapter extends FirestoreRecyclerAdapter<DeckModel, DecksViewHolder> {
 
     private Context context;
     private ProgressBar mProgressBar;
@@ -59,7 +46,7 @@ public class DeckAdapter extends FirestoreRecyclerAdapter<Deck, DecksViewHolder>
     }
 
     @Override
-    protected void onBindViewHolder(DecksViewHolder holder, int position, final Deck model) {
+    protected void onBindViewHolder(DecksViewHolder holder, int position, final DeckModel model) {
         mProgressBar.setVisibility(View.GONE);
 
         final String docId = getSnapshots().getSnapshot(position).getId();
@@ -112,6 +99,7 @@ public class DeckAdapter extends FirestoreRecyclerAdapter<Deck, DecksViewHolder>
 
                 Bundle bundle = new Bundle();
                 bundle.putString(DECK_ID, docId);
+                bundle.putParcelable(DECK_PARCELABLE, model);
                 cardFragment.setArguments(bundle);
                 fragmentTransaction.replace(R.id.container, cardFragment);
                 fragmentTransaction.addToBackStack(null);
