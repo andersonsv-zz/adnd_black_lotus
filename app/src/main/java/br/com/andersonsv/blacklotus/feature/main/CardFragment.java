@@ -1,9 +1,9 @@
 package br.com.andersonsv.blacklotus.feature.main;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -20,20 +20,16 @@ import com.google.firebase.firestore.Query;
 import br.com.andersonsv.blacklotus.BuildConfig;
 import br.com.andersonsv.blacklotus.R;
 import br.com.andersonsv.blacklotus.adapter.CardAdapter;
-import br.com.andersonsv.blacklotus.adapter.DeckAdapter;
 import br.com.andersonsv.blacklotus.feature.base.BaseFragment;
 import br.com.andersonsv.blacklotus.firebase.CardModel;
 import br.com.andersonsv.blacklotus.firebase.DeckModel;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static br.com.andersonsv.blacklotus.util.Constants.CARD_LAND;
 import static br.com.andersonsv.blacklotus.util.Constants.CARD_LIST;
-import static br.com.andersonsv.blacklotus.util.Constants.CARD_TYPE;
-import static br.com.andersonsv.blacklotus.util.Constants.CARD_TYPE_LAND;
 import static br.com.andersonsv.blacklotus.util.Constants.DECK_ID;
-import static br.com.andersonsv.blacklotus.util.Constants.DECK_LIST;
 import static br.com.andersonsv.blacklotus.util.Constants.DECK_PARCELABLE;
-import static br.com.andersonsv.blacklotus.util.Constants.USER_ID;
 
 public class CardFragment extends BaseFragment {
 
@@ -56,6 +52,9 @@ public class CardFragment extends BaseFragment {
 
     @BindView(R.id.recyclerViewCardLand)
     RecyclerView mCardLandRecycler;
+
+    @BindView(R.id.recyclerViewCard)
+    RecyclerView mCardRecycler;
 
     public static CardFragment newInstance() {
         return new CardFragment();
@@ -94,13 +93,13 @@ public class CardFragment extends BaseFragment {
     }
 
     private void getCardList() {
-        setLinearLayoutVerticalWithDivider(mCardLandRecycler);
+        setLinearLayoutVerticalWithDivider(mCardRecycler);
 
         Query query = mDb.collection(BuildConfig.FIREBASE_COLLECTION)
                 .document(BuildConfig.FIREBASE_DOCUMENT)
-                .collection(CARD_LIST);
-               // .whereEqualTo(USER_ID, mUserUid);
-                //.whereEqualTo(CARD_TYPE, CARD_TYPE_LAND);
+                .collection(CARD_LIST)
+                .whereEqualTo(DECK_ID, deckId)
+                .whereEqualTo(CARD_LAND, false);
 
         FirestoreRecyclerOptions<CardModel> response = new FirestoreRecyclerOptions.Builder<CardModel>()
                 .setQuery(query, CardModel.class)
@@ -108,11 +107,36 @@ public class CardFragment extends BaseFragment {
 
         mAdapter = new CardAdapter(getContext(), response, mProgressBar, mEmptyState, this.getFragmentManager().beginTransaction());
         mAdapter.notifyDataSetChanged();
-        mAdapter.getItemCount();
-        mCardLandRecycler.setAdapter(mAdapter);
-
+        mCardRecycler.setAdapter(mAdapter);
     }
 
     private void getLandList() {
+        setLinearLayoutVerticalWithDivider(mCardLandRecycler);
+
+        Query query = mDb.collection(BuildConfig.FIREBASE_COLLECTION)
+                .document(BuildConfig.FIREBASE_DOCUMENT)
+                .collection(CARD_LIST)
+                .whereEqualTo(DECK_ID, deckId)
+                .whereEqualTo(CARD_LAND, true);
+
+        FirestoreRecyclerOptions<CardModel> response = new FirestoreRecyclerOptions.Builder<CardModel>()
+                .setQuery(query, CardModel.class)
+                .build();
+
+        mAdapter = new CardAdapter(getContext(), response, mProgressBar, mEmptyState, this.getFragmentManager().beginTransaction());
+        mAdapter.notifyDataSetChanged();
+        mCardLandRecycler.setAdapter(mAdapter);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mAdapter.startListening();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mAdapter.stopListening();
     }
 }

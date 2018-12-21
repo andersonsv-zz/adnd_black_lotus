@@ -88,7 +88,6 @@ public class DeckFragment extends BaseFragment {
 
         mAdapter = new DeckAdapter(response, mProgressBar, mEmptyState, this.getFragmentManager().beginTransaction());
         mAdapter.notifyDataSetChanged();
-        mAdapter.getItemCount();
         mDeckRecycler.setAdapter(mAdapter);
 
        /* new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
