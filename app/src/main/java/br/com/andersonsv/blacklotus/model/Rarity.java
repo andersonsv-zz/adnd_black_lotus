@@ -1,5 +1,8 @@
 package br.com.andersonsv.blacklotus.model;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import br.com.andersonsv.blacklotus.R;
 
 public enum Rarity  {
@@ -13,6 +16,8 @@ public enum Rarity  {
     private String typeId;
     private int color;
     private String namePtBR;
+
+    private static Map<String, Rarity> rarityByType = new HashMap<>();
 
     Rarity(String typeId, int color, String namePtBR) {
         this.typeId = typeId;
@@ -30,5 +35,16 @@ public enum Rarity  {
 
     public String getNamePtBR() {
         return namePtBR;
+    }
+
+    static {
+
+        for (final Rarity type : values()) {
+            rarityByType.put(type.getTypeId(), type);
+        }
+    }
+
+    public static Rarity getByType(final String typeId)  {
+        return rarityByType.get(typeId);
     }
 }

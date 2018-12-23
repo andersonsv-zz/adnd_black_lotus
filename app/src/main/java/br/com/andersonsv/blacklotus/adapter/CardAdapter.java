@@ -3,21 +3,30 @@ package br.com.andersonsv.blacklotus.adapter;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import br.com.andersonsv.blacklotus.R;
+import br.com.andersonsv.blacklotus.data.Card;
 import br.com.andersonsv.blacklotus.firebase.CardModel;
 import br.com.andersonsv.blacklotus.holder.CardsViewHolder;
+import br.com.andersonsv.blacklotus.model.Rarity;
 
 public class CardAdapter extends FirestoreRecyclerAdapter<CardModel, CardsViewHolder> {
     private Context mContext;
@@ -42,25 +51,45 @@ public class CardAdapter extends FirestoreRecyclerAdapter<CardModel, CardsViewHo
         final String docId = getSnapshots().getSnapshot(position).getId();
 
         holder.getmCardName().setText(model.getName());
+        holder.getmQuantity().setText(model.getQuantity().toString());
+        holder.getmType().setText(model.getType());
+
+        if (model.getCost() != null) {
+
+        }
+        Rarity rarity = Rarity.getByType(model.getRarity());
+
+        if(rarity != null){
+            holder.getmRarity().setText(rarity.getTypeId());
+
+            int color = mInflater.getContext().getResources().getColor(rarity.getColor());
+            holder.getmRarity().setTextColor(color);
+        }
 
         Picasso.with(mInflater.getContext())
                 .load(model.getImage())
                 .into(holder.getmCardImage());
 
-        /*holder.setOnClickListener(new DecksViewHolder.ClickListener() {
+        holder.setOnClickListener(new CardsViewHolder.ClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Fragment cardFragment = CardFragment.newInstance();
-
-                Bundle bundle = new Bundle();
-                bundle.putString(DECK_ID, docId);
-                bundle.putParcelable(DECK_PARCELABLE, model);
-                cardFragment.setArguments(bundle);
-                fragmentTransaction.replace(R.id.container, cardFragment);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
+                Toast.makeText(view.getContext(), "Card id" + docId, Toast.LENGTH_LONG).show();
             }
-        });*/
+        });
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
+        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+
+        List<String> costs = new ArrayList<>();
+        //List<String> items = Arrays.asList(model.getCost().split(","));
+
+        holder.getmRecyclerCost().setLayoutManager(linearLayoutManager);
+
+        costs.add("{2}");
+        costs.add("{B}");
+
+        CostAdapter costAdapter = new CostAdapter(mContext, costs);
+        holder.getmRecyclerCost().setAdapter(costAdapter);
     }
 
     @Override

@@ -50,4 +50,6 @@
     <string name="deck_color_exists_error">Color already selected</string>
     <string name="deck_clear_color_underline"><u>Clear colors</u></string>
     <string name="deck_add_color">Add color</string>
+    <string name="card_land_title">Land(s)</string>
+    <string name="card_title">Card(s)</string>
 </resources>

@@ -1,7 +1,9 @@
 package br.com.andersonsv.blacklotus.feature.main;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 
 import android.view.View;
@@ -39,7 +41,8 @@ public class CardFragment extends BaseFragment {
     private FirebaseUser mUser;
     private FirebaseFirestore mDb;
     private String mUserUid;
-    private FirestoreRecyclerAdapter mAdapter;
+    private FirestoreRecyclerAdapter mLandAdapter;
+    private FirestoreRecyclerAdapter mCardAdapter;
 
     @BindView(R.id.deckName)
     TextView mDeckName;
@@ -105,9 +108,9 @@ public class CardFragment extends BaseFragment {
                 .setQuery(query, CardModel.class)
                 .build();
 
-        mAdapter = new CardAdapter(getContext(), response, mProgressBar, mEmptyState, this.getFragmentManager().beginTransaction());
-        mAdapter.notifyDataSetChanged();
-        mCardRecycler.setAdapter(mAdapter);
+        mCardAdapter = new CardAdapter(getContext(), response, mProgressBar, mEmptyState, this.getFragmentManager().beginTransaction());
+        mCardAdapter.notifyDataSetChanged();
+        mCardRecycler.setAdapter(mCardAdapter);
     }
 
     private void getLandList() {
@@ -123,20 +126,22 @@ public class CardFragment extends BaseFragment {
                 .setQuery(query, CardModel.class)
                 .build();
 
-        mAdapter = new CardAdapter(getContext(), response, mProgressBar, mEmptyState, this.getFragmentManager().beginTransaction());
-        mAdapter.notifyDataSetChanged();
-        mCardLandRecycler.setAdapter(mAdapter);
+        mLandAdapter = new CardAdapter(getContext(), response, mProgressBar, mEmptyState, this.getFragmentManager().beginTransaction());
+        mLandAdapter.notifyDataSetChanged();
+        mCardLandRecycler.setAdapter(mLandAdapter);
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        mAdapter.startListening();
+        mLandAdapter.startListening();
+        mCardAdapter.startListening();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        mAdapter.stopListening();
+        mLandAdapter.stopListening();
+        mCardAdapter.stopListening();
     }
 }

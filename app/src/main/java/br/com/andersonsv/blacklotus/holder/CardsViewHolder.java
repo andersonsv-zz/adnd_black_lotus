@@ -6,6 +6,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import br.com.andersonsv.blacklotus.R;
+import br.com.andersonsv.blacklotus.widget.CostWidget;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -17,10 +18,26 @@ public class CardsViewHolder extends RecyclerView.ViewHolder{
     @BindView(R.id.imageViewCardImage)
     ImageView mCardImage;
 
+    @BindView(R.id.textViewQuantity)
+    TextView mQuantity;
+
+    @BindView(R.id.textViewRarity)
+    TextView mRarity;
+
+    @BindView(R.id.textViewType)
+    TextView mType;
+
+    @BindView(R.id.recyclerViewCost)
+    RecyclerView mRecyclerCost;
+
     private CardsViewHolder.ClickListener mClickListener;
 
     public interface ClickListener{
         void onItemClick(View view, int position);
+    }
+
+    public void setOnClickListener(CardsViewHolder.ClickListener clickListener){
+        mClickListener = clickListener;
     }
 
     public CardsViewHolder(View itemView) {
@@ -44,7 +61,19 @@ public class CardsViewHolder extends RecyclerView.ViewHolder{
         return mCardImage;
     }
 
-    public ClickListener getmClickListener() {
-        return mClickListener;
+    public TextView getmQuantity() {
+        return mQuantity;
+    }
+
+    public TextView getmRarity() {
+        return mRarity;
+    }
+
+    public TextView getmType() {
+        return mType;
+    }
+
+    public RecyclerView getmRecyclerCost() {
+        return mRecyclerCost;
     }
 }

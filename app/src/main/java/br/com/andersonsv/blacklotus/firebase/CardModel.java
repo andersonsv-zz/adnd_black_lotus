@@ -19,7 +19,7 @@ public class CardModel implements Parcelable {
 
     private String id;
     private String name;
-    private Integer numberOfCards;
+    private Integer quantity;
     private String cost;
     private String rarity;
     private String type;
@@ -28,7 +28,7 @@ public class CardModel implements Parcelable {
     private CardModel(Parcel in) {
         this.id = in.readString();
         this.name = in.readString();
-        this.numberOfCards = in.readInt();
+        this.quantity = in.readInt();
         this.cost = in.readString();
         this.rarity = in.readString();
         this.type = in.readString();
@@ -39,7 +39,7 @@ public class CardModel implements Parcelable {
     public void writeToParcel(Parcel parcel, int flags) {
         parcel.writeString(id);
         parcel.writeString(name);
-        parcel.writeInt(numberOfCards);
+        parcel.writeInt(quantity);
         parcel.writeString(cost);
         parcel.writeString(rarity);
         parcel.writeString(type);
@@ -56,7 +56,7 @@ public class CardModel implements Parcelable {
     public CardModel(String name, Integer numberOfCards,
                 String cost, String rarity, String type, String image) {
         this.name = name;
-        this.numberOfCards = numberOfCards;
+        this.quantity = numberOfCards;
         this.cost = cost;
         this.rarity = rarity;
         this.type  = type;
@@ -79,12 +79,12 @@ public class CardModel implements Parcelable {
         this.name = name;
     }
 
-    public Integer getNumberOfCards() {
-        return numberOfCards;
+    public Integer getQuantity() {
+        return quantity;
     }
 
-    public void setNumberOfCards(Integer numberOfCards) {
-        this.numberOfCards = numberOfCards;
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 
     public String getCost() {
