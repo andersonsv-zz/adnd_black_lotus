@@ -85,7 +85,7 @@ public class CardAdapter extends FirestoreRecyclerAdapter<CardModel, CardsViewHo
                 ImageView imgRefInflated = layoutDialog.findViewById(R.id.imageViewDialog);
                 Picasso.with(mInflater.getContext()).load(model.getImage()).into(imgRefInflated);
 
-                final Dialog dialog=new Dialog(mContext,android.R.style.Theme_Black_NoTitleBar_Fullscreen); //default fullscreen titlebar
+                final Dialog dialog = new Dialog(mContext,android.R.style.Theme_Light_NoTitleBar_Fullscreen); //default fullscreen titlebar
 
                 dialog.setContentView(layoutDialog);
                 dialog.show();

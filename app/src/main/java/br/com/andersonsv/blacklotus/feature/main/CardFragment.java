@@ -1,7 +1,8 @@
 package br.com.andersonsv.blacklotus.feature.main;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +26,7 @@ import br.com.andersonsv.blacklotus.firebase.CardModel;
 import br.com.andersonsv.blacklotus.firebase.DeckModel;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 import static br.com.andersonsv.blacklotus.util.Constants.CARD_LAND;
 import static br.com.andersonsv.blacklotus.util.Constants.CARD_LIST;
@@ -67,6 +69,8 @@ public class CardFragment extends BaseFragment {
         View rootView = inflater.inflate(R.layout.fragment_card, container, false);
 
         ButterKnife.bind(this, rootView);
+
+      //  ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {
@@ -141,5 +145,15 @@ public class CardFragment extends BaseFragment {
         super.onStop();
         mLandAdapter.stopListening();
         mCardAdapter.stopListening();
+    }
+
+    @OnClick(R.id.fabAddCard)
+    public void addCard(View view){
+        Fragment searchCardFragment = SearchCardFragment.newInstance();
+
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, searchCardFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 }

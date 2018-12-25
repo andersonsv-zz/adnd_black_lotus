@@ -6,7 +6,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import br.com.andersonsv.blacklotus.R;
-import br.com.andersonsv.blacklotus.widget.CostWidget;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
