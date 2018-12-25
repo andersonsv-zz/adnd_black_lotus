@@ -1,11 +1,9 @@
 package br.com.andersonsv.blacklotus.feature.main;
 
-import android.content.Context;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.RecyclerView;
-import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
-
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -75,7 +73,7 @@ public class CardFragment extends BaseFragment {
             deckId = bundle.getString(DECK_ID, "");
             deck = bundle.getParcelable(DECK_PARCELABLE);
 
-            mDeckName.setText(deck.getName());
+             mDeckName.setText(deck.getName());
         }
 
         mDb = FirebaseFirestore.getInstance();

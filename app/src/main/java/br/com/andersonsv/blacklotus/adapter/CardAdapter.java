@@ -1,6 +1,9 @@
 package br.com.andersonsv.blacklotus.adapter;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,6 +12,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -21,6 +26,8 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import br.com.andersonsv.blacklotus.R;
 import br.com.andersonsv.blacklotus.data.Card;
@@ -70,6 +77,28 @@ public class CardAdapter extends FirestoreRecyclerAdapter<CardModel, CardsViewHo
                 .load(model.getImage())
                 .into(holder.getmCardImage());
 
+        holder.getmCardImage().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                View layoutDialog = View.inflate(mContext, R.layout.dialog_card_image, null);
+                ImageView imgRefInflated = layoutDialog.findViewById(R.id.imageViewDialog);
+                Picasso.with(mInflater.getContext()).load(model.getImage()).into(imgRefInflated);
+
+                final Dialog dialog=new Dialog(mContext,android.R.style.Theme_Black_NoTitleBar_Fullscreen); //default fullscreen titlebar
+
+                dialog.setContentView(layoutDialog);
+                dialog.show();
+
+                imgRefInflated.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View paramView) {
+                        dialog.cancel();
+                    }
+                });
+            }
+        });
+
+
         holder.setOnClickListener(new CardsViewHolder.ClickListener() {
             @Override
             public void onItemClick(View view, int position) {
@@ -81,12 +110,18 @@ public class CardAdapter extends FirestoreRecyclerAdapter<CardModel, CardsViewHo
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
 
         List<String> costs = new ArrayList<>();
-        //List<String> items = Arrays.asList(model.getCost().split(","));
+
+        if (model.getCost() != null) {
+
+            Pattern p = Pattern.compile("\\{([^}]*)\\}");
+            Matcher m = p.matcher(model.getCost());
+
+            while (m.find()) {
+                costs.add(m.group(1));
+            }
+        }
 
         holder.getmRecyclerCost().setLayoutManager(linearLayoutManager);
-
-        costs.add("{2}");
-        costs.add("{B}");
 
         CostAdapter costAdapter = new CostAdapter(mContext, costs);
         holder.getmRecyclerCost().setAdapter(costAdapter);
