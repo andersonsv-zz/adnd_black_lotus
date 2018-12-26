@@ -3,6 +3,7 @@ package br.com.andersonsv.blacklotus.feature.main;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,17 +15,40 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.security.ProviderInstaller;
+
+import java.net.URL;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.net.ssl.SSLContext;
+
 import br.com.andersonsv.blacklotus.R;
+import br.com.andersonsv.blacklotus.data.Cards;
+import br.com.andersonsv.blacklotus.network.CardService;
+import br.com.andersonsv.blacklotus.network.RetrofitClientInstance;
+import butterknife.BindView;
 import butterknife.ButterKnife;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SearchCardFragment extends ListFragment implements SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener {
 
     List<String> mAllValues;
     private ArrayAdapter<String> mAdapter;
     private Context mContext;
+
+    @BindView(android.R.id.list)
+    ListView listView;
+
+    @BindView(android.R.id.empty)
+    TextView emptyTextView;
 
     public static SearchCardFragment newInstance() {
         return new SearchCardFragment();
@@ -46,8 +70,6 @@ public class SearchCardFragment extends ListFragment implements SearchView.OnQue
 
         ButterKnife.bind(this, rootView);
 
-        ListView listView =  rootView.findViewById(android.R.id.list);
-        TextView emptyTextView = rootView.findViewById(android.R.id.empty);
         listView.setEmptyView(emptyTextView);
 
         return rootView;
@@ -60,6 +82,8 @@ public class SearchCardFragment extends ListFragment implements SearchView.OnQue
         MenuItem searchItem = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView) searchItem.getActionView();
         searchView.setOnQueryTextListener(this);
+
+        //TODO - alterar para string xml
         searchView.setQueryHint("Search");
 
         super.onCreateOptionsMenu(menu, inflater);
@@ -86,22 +110,61 @@ public class SearchCardFragment extends ListFragment implements SearchView.OnQue
 
     @Override
     public boolean onQueryTextChange(String newText) {
+
         if (newText == null || newText.trim().isEmpty()) {
             resetSearch();
             return false;
         }
 
-        List<String> filteredValues = new ArrayList<>(mAllValues);
-        for (String value : mAllValues) {
-            if (!value.toLowerCase().contains(newText.toLowerCase())) {
-                filteredValues.remove(value);
+        if(newText.length() > 3){
+
+            CardService service = RetrofitClientInstance.getRetrofitInstance().create(CardService.class);
+
+
+            Call<Cards> call = service.getCards(newText.toLowerCase(), 10);
+            call.enqueue(new Callback<Cards>() {
+                @Override
+                public void onResponse(Call<Cards> call, Response<Cards> response) {
+                    if (response.isSuccessful()){
+                        Log.d("OK", "ok" + response.body().getCards().size());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Cards> call, Throwable t) {
+                    Log.e("ERROR", t.getLocalizedMessage());
+                }
+            });
+
+            List<String> filteredValues = new ArrayList<>(mAllValues);
+
+            for (String value : mAllValues) {
+                if (!value.toLowerCase().contains(newText.toLowerCase())) {
+                    filteredValues.remove(value);
+                }
             }
+
+            mAdapter = new ArrayAdapter<>(mContext, android.R.layout.simple_list_item_1, filteredValues);
+            setListAdapter(mAdapter);
+
+            return false;
         }
-
-        mAdapter = new ArrayAdapter<>(mContext, android.R.layout.simple_list_item_1, filteredValues);
-        setListAdapter(mAdapter);
-
         return false;
+    }
+
+    public static void initializeSSLContext(Context mContext){
+        try {
+            SSLContext.getInstance("TLSv1.2");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        try {
+            ProviderInstaller.installIfNeeded(mContext.getApplicationContext());
+        } catch (GooglePlayServicesRepairableException e) {
+            e.printStackTrace();
+        } catch (GooglePlayServicesNotAvailableException e) {
+            e.printStackTrace();
+        }
     }
 
     public void resetSearch() {

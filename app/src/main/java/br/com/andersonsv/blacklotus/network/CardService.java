@@ -8,9 +8,13 @@ import retrofit2.http.Query;
 
 public interface CardService {
 
-    @GET("/cards")
-    Call<Cards> getCards(@Query("page") Integer page, @Query("language") String language, @Query("api_key") String apiKey);
+    @GET("/v1/cards")
+    Call<Cards> getCardsByLanguage(@Query("name") String name, @Query("pageSize") Integer pageSize, @Query("language") String language);
 
-    @GET("/cards/{id}")
+    @GET("/v1/cards")
+    Call<Cards> getCards(@Query("name") String name, @Query("pageSize") Integer pageSize);
+
+
+    @GET("/v1/cards/{id}")
     Call<Card> getCard(@Query("id") String id);
 }

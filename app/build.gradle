@@ -11,6 +11,7 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
+
     def FIREBASE_COLLECTION = "FIREBASE_COLLECTION"
     def FIREBASE_DOCUMENT = "FIREBASE_DOCUMENT"
 
