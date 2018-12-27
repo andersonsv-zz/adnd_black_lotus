@@ -118,7 +118,7 @@ public class SearchCardFragment extends ListFragment implements SearchView.OnQue
 
         if(newText.length() > 3){
 
-            CardService service = RetrofitClientInstance.getRetrofitInstance().create(CardService.class);
+            CardService service = RetrofitClientInstance.getRetrofitInstance(mContext).create(CardService.class);
 
 
             Call<Cards> call = service.getCards(newText.toLowerCase(), 10);
