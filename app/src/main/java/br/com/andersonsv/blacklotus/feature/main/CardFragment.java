@@ -1,10 +1,14 @@
 package br.com.andersonsv.blacklotus.feature.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -17,6 +21,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+
+import java.util.stream.Collectors;
 
 import br.com.andersonsv.blacklotus.BuildConfig;
 import br.com.andersonsv.blacklotus.R;
@@ -93,6 +99,7 @@ public class CardFragment extends BaseFragment {
 
         getLandList();
         getCardList();
+        setHasOptionsMenu(true);
 
         return rootView;
     }
@@ -147,6 +154,12 @@ public class CardFragment extends BaseFragment {
         mCardAdapter.stopListening();
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.deck_menu, menu);
+        super.onCreateOptionsMenu(menu,inflater);
+    }
+
     @OnClick(R.id.fabAddCard)
     public void addCard(View view){
         Fragment searchCardFragment = SearchCardFragment.newInstance();
@@ -155,5 +168,24 @@ public class CardFragment extends BaseFragment {
         transaction.replace(R.id.container, searchCardFragment);
         transaction.addToBackStack(null);
         transaction.commit();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.deck_share:
+
+
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.");
+                sendIntent.setType("text/plain");
+                startActivity(sendIntent);
+
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

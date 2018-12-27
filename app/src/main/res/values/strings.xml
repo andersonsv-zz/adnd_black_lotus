@@ -5,6 +5,8 @@
     <string name="default_email_error">Invalid e-mail</string>
     <string name="default_required">Required</string>
     <string name="default_color">Color</string>
+    <string name="default_not_found">No results found</string>
+    <string name="default_share">Share</string>
 
     <string name="offline_no_internet">Without internet?</string>
     <string name="offline_no_internet_retry">Retry again</string>

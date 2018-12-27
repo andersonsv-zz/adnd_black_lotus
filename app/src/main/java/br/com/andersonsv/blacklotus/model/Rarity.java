@@ -1,16 +1,24 @@
 package br.com.andersonsv.blacklotus.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.HashMap;
 import java.util.Map;
 
 import br.com.andersonsv.blacklotus.R;
 
 public enum Rarity  {
+    @SerializedName("Common")
     COMMON("Common", R.color.colorRarityCommon, "Comum"),
+    @SerializedName("Uncommon")
     UNCOMMON("Uncommon", R.color.colorRarityUncommon, "Incomum"),
+    @SerializedName("Rare")
     RARE("Rare", R.color.colorRarityRare, "Rara"),
+    @SerializedName("Mythic Rare")
     MYTHIC_RARE("Mythic Rare", R.color.colorRarityMithicRare, "Mítica Rara"),
+    @SerializedName("Special")
     SPECIAL("Special", R.color.colorRarityTimeshifted, "Especial"),
+    @SerializedName("Basic Land")
     BASIC_LAND("Basic Land", R.color.colorRarityMasterpice, "Terreno");
 
     private String typeId;
