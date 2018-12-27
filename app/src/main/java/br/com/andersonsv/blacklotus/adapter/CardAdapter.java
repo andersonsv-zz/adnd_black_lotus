@@ -113,7 +113,7 @@ public class CardAdapter extends FirestoreRecyclerAdapter<CardModel, CardsViewHo
 
         if (model.getCost() != null) {
 
-            Pattern p = Pattern.compile("\\{([^}]*)}");
+            Pattern p = Pattern.compile("\\{([^}]*)\\}");
             Matcher m = p.matcher(model.getCost());
 
             while (m.find()) {
