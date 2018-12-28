@@ -130,7 +130,14 @@ public class CardEditorFragment extends BaseFragment implements Html.ImageGetter
 
         } else {
             empty = getResources().getDrawable(R.drawable.ic_add_circle_24dp);
-
+            /*loaded show the actual image
+            LevelListDrawable levelListDrawable = new LevelListDrawable ();
+            levelListDrawable.addLevel (0, 0, ContextCompat.getDrawable(context, R.drawable.embed_img));
+            ssb.setSpan (new ImageSpan (levelListDrawable, ImageSpan.ALIGN_BOTTOM), 0, 6, flag);
+//load image in async task and then set to levelListDrawable
+            levelListDrawable.addLevel (1, 1, no);
+            levelListDrawable.setLevel(1);
+            textView.setText(textView.getText ());*/
         }
         d.addLevel(0, 0, empty);
         d.setBounds(0, 0, 32, 32);
