@@ -17,12 +17,8 @@ import android.widget.TextView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-
-import java.util.stream.Collectors;
 
 import br.com.andersonsv.blacklotus.BuildConfig;
 import br.com.andersonsv.blacklotus.R;
@@ -41,12 +37,9 @@ import static br.com.andersonsv.blacklotus.util.Constants.DECK_PARCELABLE;
 
 public class CardFragment extends BaseFragment {
 
-    private String deckId;
+    private String mDeckId;
     private DeckModel deck;
-
-    private FirebaseUser mUser;
     private FirebaseFirestore mDb;
-    private String mUserUid;
     private FirestoreRecyclerAdapter mLandAdapter;
     private FirestoreRecyclerAdapter mCardAdapter;
 
@@ -76,26 +69,15 @@ public class CardFragment extends BaseFragment {
 
         ButterKnife.bind(this, rootView);
 
-      //  ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
-
         Bundle bundle = this.getArguments();
         if (bundle != null) {
-            deckId = bundle.getString(DECK_ID, "");
+            mDeckId = bundle.getString(DECK_ID, "");
             deck = bundle.getParcelable(DECK_PARCELABLE);
 
              mDeckName.setText(deck.getName());
         }
 
         mDb = FirebaseFirestore.getInstance();
-        mUser = FirebaseAuth.getInstance().getCurrentUser();
-
-        if(mUser != null){
-            mUserUid = mUser.getUid();
-        } else {
-
-            //snack
-            //TODO - usuario nao identificado, escrever mensagem
-        }
 
         getLandList();
         getCardList();
@@ -110,7 +92,7 @@ public class CardFragment extends BaseFragment {
         Query query = mDb.collection(BuildConfig.FIREBASE_COLLECTION)
                 .document(BuildConfig.FIREBASE_DOCUMENT)
                 .collection(CARD_LIST)
-                .whereEqualTo(DECK_ID, deckId)
+                .whereEqualTo(DECK_ID, mDeckId)
                 .whereEqualTo(CARD_LAND, false);
 
         FirestoreRecyclerOptions<CardModel> response = new FirestoreRecyclerOptions.Builder<CardModel>()
@@ -128,7 +110,7 @@ public class CardFragment extends BaseFragment {
         Query query = mDb.collection(BuildConfig.FIREBASE_COLLECTION)
                 .document(BuildConfig.FIREBASE_DOCUMENT)
                 .collection(CARD_LIST)
-                .whereEqualTo(DECK_ID, deckId)
+                .whereEqualTo(DECK_ID, mDeckId)
                 .whereEqualTo(CARD_LAND, true);
 
         FirestoreRecyclerOptions<CardModel> response = new FirestoreRecyclerOptions.Builder<CardModel>()
@@ -163,6 +145,11 @@ public class CardFragment extends BaseFragment {
     @OnClick(R.id.fabAddCard)
     public void addCard(View view){
         Fragment searchCardFragment = SearchCardFragment.newInstance();
+
+        Bundle bundle = new Bundle();
+        bundle.putString(DECK_ID, mDeckId);
+        searchCardFragment.setArguments(bundle);
+
 
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.container, searchCardFragment);

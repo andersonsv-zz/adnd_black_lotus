@@ -1,17 +1,12 @@
 package br.com.andersonsv.blacklotus.adapter;
 
-import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextPaint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
@@ -19,40 +14,59 @@ import java.util.List;
 
 import br.com.andersonsv.blacklotus.R;
 import br.com.andersonsv.blacklotus.data.Card;
-import br.com.andersonsv.blacklotus.holder.CardsSearchViewHolder;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
-public class CardSearchAdapter extends RecyclerView.Adapter<CardsSearchViewHolder>{
-    private final Context mContext;
-    private final LayoutInflater mInflater;
+public class CardSearchAdapter extends RecyclerView.Adapter<CardSearchAdapter.ViewHolder>{
+    private LayoutInflater mInflater;
     private List<Card> mData;
+    private String mDeckId;
+    private final CardSearchRecyclerOnClickHandler mClickHandler;
 
-    public CardSearchAdapter(Context context, List<Card> data) {
-        mContext = context;
+    public CardSearchAdapter(List<Card> data, String deckId, CardSearchRecyclerOnClickHandler clickHandler) {
         mData = data;
-        this.mInflater = LayoutInflater.from(context);
+        mDeckId = deckId;
+        mClickHandler = clickHandler;
     }
     @NonNull
     @Override
-    public CardsSearchViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext)
-                .inflate(R.layout.item_search_card, parent, false);
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        return new CardsSearchViewHolder(view);
+        this.mInflater = LayoutInflater.from(parent.getContext());
+        View view = mInflater.inflate(R.layout.item_search_card, parent, false);
+
+        return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CardsSearchViewHolder holder, int i) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int i) {
 
-        Card card = mData.get(i);
+        final Card card = mData.get(i);
 
-        holder.getmCardName().setText(card.getName());
+        holder.mCardName.setText(card.getName());
 
         if (card.getImage() != null) {
             Picasso.with(mInflater.getContext())
                     .load(card.getImage())
-                    .into(holder.getmCardImage());
+                    .into(holder.mCardImage);
         }
-        holder.getmRarity().setText(card.getRarity().getTypeId());
+        holder.mRarity.setText(card.getRarity().getTypeId());
+        holder.mRarity.setTextColor(card.getRarity().getColor());
+
+        /*holder.setOnClickListener(new CardsSearchViewHolder.ClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Fragment cardEditorFragment = CardEditorFragment.newInstance();
+
+                Bundle bundle = new Bundle();
+                bundle.putParcelable(CARD_PARCELABLE, card);
+                bundle.putString(DECK_ID, mDeckId);
+                cardEditorFragment.setArguments(bundle);
+                mFragmentTransaction.replace(R.id.container, cardEditorFragment);
+                mFragmentTransaction.addToBackStack(null);
+                mFragmentTransaction.commit();
+            }
+        });*/
     }
 
     public void setCards(List<Card> data) {
@@ -66,5 +80,37 @@ public class CardSearchAdapter extends RecyclerView.Adapter<CardsSearchViewHolde
             return 0;
         }
         return mData.size();
+    }
+
+    public interface CardSearchRecyclerOnClickHandler {
+        void onClick(Card card);
+    }
+
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+        @BindView(R.id.textViewCardName)
+        TextView mCardName;
+
+        @BindView(R.id.imageViewCard)
+        ImageView mCardImage;
+
+        @BindView(R.id.textViewRarity)
+        TextView mRarity;
+
+        @BindView(R.id.textViewType)
+        TextView mType;
+
+        ViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            int adapterPosition = getAdapterPosition();
+            Card movie = mData.get(adapterPosition);
+            mClickHandler.onClick(movie);
+        }
     }
 }

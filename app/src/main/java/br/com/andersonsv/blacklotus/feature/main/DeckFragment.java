@@ -4,10 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -29,14 +26,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static br.com.andersonsv.blacklotus.util.Constants.DECK_ID;
 import static br.com.andersonsv.blacklotus.util.Constants.DECK_LIST;
 import static br.com.andersonsv.blacklotus.util.Constants.USER_ID;
 
 public class DeckFragment extends BaseFragment {
 
-    private FirebaseUser mUser;
-    private FirebaseFirestore mDb;
-    private String mUserUid;
     private FirestoreRecyclerAdapter mAdapter;
 
     @BindView(R.id.recyclerViewDeck)
@@ -64,26 +59,17 @@ public class DeckFragment extends BaseFragment {
     }
 
     private void getDeckList() {
-        mDb = FirebaseFirestore.getInstance();
+        FirebaseFirestore mDb = FirebaseFirestore.getInstance();
+        FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
 
         setLinearLayoutVerticalWithDivider(mDeckRecycler);
-
-        mUser = FirebaseAuth.getInstance().getCurrentUser();
-
-        if(mUser != null){
-            mUserUid = mUser.getUid();
-        } else {
-
-            //snack
-            //TODO - usuario nao identificado, escrever mensagem
-        }
 
         mProgressBar.setVisibility(View.VISIBLE);
 
         Query query = mDb.collection(BuildConfig.FIREBASE_COLLECTION)
                 .document(BuildConfig.FIREBASE_DOCUMENT)
                 .collection(DECK_LIST)
-                .whereEqualTo(USER_ID, mUserUid);
+                .whereEqualTo(USER_ID, mUser.getUid());
 
         FirestoreRecyclerOptions<DeckModel> response = new FirestoreRecyclerOptions.Builder<DeckModel>()
                 .setQuery(query, DeckModel.class)

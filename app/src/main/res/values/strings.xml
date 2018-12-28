@@ -7,6 +7,9 @@
     <string name="default_color">Color</string>
     <string name="default_not_found">No results found</string>
     <string name="default_share">Share</string>
+    <string name="default_search">Search</string>
+    <string name="default_rarity">Rarity</string>
+    <string name="default_set">Set</string>
 
     <string name="offline_no_internet">Without internet?</string>
     <string name="offline_no_internet_retry">Retry again</string>
@@ -52,6 +55,13 @@
     <string name="deck_color_exists_error">Color already selected</string>
     <string name="deck_clear_color_underline"><u>Clear colors</u></string>
     <string name="deck_add_color">Add color</string>
+
+    <!--Card-->
     <string name="card_land_title">Land(s)</string>
     <string name="card_title">Card(s)</string>
+
+    <!--Card Editor-->
+    <string name="card_editor_quantity">Quantity</string>
+    <string name="card_editor_format_power_toughness">%d/%d</string>
+    <string name="card_editor_add">add card</string>
 </resources>

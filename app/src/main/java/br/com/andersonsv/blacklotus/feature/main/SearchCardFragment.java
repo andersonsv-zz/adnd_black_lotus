@@ -1,8 +1,8 @@
 package br.com.andersonsv.blacklotus.feature.main;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.os.CountDownTimer;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,14 +15,11 @@ import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
 
-import java.util.List;
-
 import br.com.andersonsv.blacklotus.R;
 import br.com.andersonsv.blacklotus.adapter.CardSearchAdapter;
 import br.com.andersonsv.blacklotus.data.Card;
 import br.com.andersonsv.blacklotus.data.Cards;
 import br.com.andersonsv.blacklotus.feature.base.BaseFragment;
-import br.com.andersonsv.blacklotus.holder.CardsSearchViewHolder;
 import br.com.andersonsv.blacklotus.network.CardService;
 import br.com.andersonsv.blacklotus.network.RetrofitClientInstance;
 import butterknife.BindView;
@@ -31,10 +28,15 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SearchCardFragment extends BaseFragment implements SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener, CardsSearchViewHolder.ClickListener {
+import static br.com.andersonsv.blacklotus.util.Constants.CARD_PARCELABLE;
+import static br.com.andersonsv.blacklotus.util.Constants.DECK_ID;
+
+
+public class SearchCardFragment extends BaseFragment implements SearchView.OnQueryTextListener, CardSearchAdapter.CardSearchRecyclerOnClickHandler{
 
     private CardSearchAdapter mAdapter;
-    private Context mContext;
+    private String mDeckId;
+    private Card mCard;
 
     @BindView(R.id.recyclerViewSearchCard)
     RecyclerView mRecyclerCard;
@@ -52,7 +54,6 @@ public class SearchCardFragment extends BaseFragment implements SearchView.OnQue
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mContext = getActivity();
         setHasOptionsMenu(true);
     }
 
@@ -63,7 +64,14 @@ public class SearchCardFragment extends BaseFragment implements SearchView.OnQue
 
         ButterKnife.bind(this, rootView);
 
-        mAdapter = new CardSearchAdapter(mContext, null);
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            mDeckId = bundle.getString(DECK_ID, "");
+        }
+
+
+        mAdapter = new CardSearchAdapter(null, mDeckId, this);
+
 
         setLinearLayoutVerticalWithDivider(mRecyclerCard);
         mRecyclerCard.setAdapter(mAdapter);
@@ -79,8 +87,7 @@ public class SearchCardFragment extends BaseFragment implements SearchView.OnQue
         SearchView searchView = (SearchView) searchItem.getActionView();
         searchView.setOnQueryTextListener(this);
 
-        //TODO - alterar para string xml
-        searchView.setQueryHint("Search");
+        searchView.setQueryHint(getString(R.string.default_search));
 
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -118,10 +125,9 @@ public class SearchCardFragment extends BaseFragment implements SearchView.OnQue
                         mProgressBar.setVisibility(View.GONE);
                         mEmptyTextView.setVisibility(View.GONE);
 
-                        if (response.body().getCards().size() > 0) {
+                        if (response.body().getCards().size() <= 0) {
                             mEmptyTextView.setVisibility(View.VISIBLE);
                         }
-
                     }
                 }
 
@@ -137,17 +143,16 @@ public class SearchCardFragment extends BaseFragment implements SearchView.OnQue
     }
 
     @Override
-    public boolean onMenuItemActionExpand(MenuItem item) {
-        return true;
-    }
+    public void onClick(Card card) {
+        Fragment cardEditorFragment = CardEditorFragment.newInstance();
 
-    @Override
-    public boolean onMenuItemActionCollapse(MenuItem item) {
-        return true;
-    }
-
-    @Override
-    public void onItemClick(View view, int position) {
-
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(CARD_PARCELABLE, card);
+        bundle.putString(DECK_ID, mDeckId);
+        cardEditorFragment.setArguments(bundle);
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, cardEditorFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 }

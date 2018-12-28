@@ -1,7 +1,5 @@
 package br.com.andersonsv.blacklotus.network;
 
-import android.content.Context;
-
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 

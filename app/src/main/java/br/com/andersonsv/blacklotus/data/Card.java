@@ -42,8 +42,8 @@ public class Card implements Parcelable {
     @SerializedName("manaCost")
     private final String manaCost;
 
-    @SerializedName("originalText")
-    private final String originalText;
+    @SerializedName("text")
+    private final String text;
 
     @SerializedName("originalType")
     private final String originalType;
@@ -54,6 +54,9 @@ public class Card implements Parcelable {
     @SerializedName("toughness")
     private final String toughness;
 
+    @SerializedName("setName")
+    private final String setName;
+
     private Card(Parcel in) {
         this.id = in.readString();
         this.name = in.readString();
@@ -61,10 +64,11 @@ public class Card implements Parcelable {
         this.rarity = Rarity.valueOf(in.readString());
         this.image = in.readString();
         this.manaCost = in.readString();
-        this.originalText = in.readString();
+        this.text = in.readString();
         this.originalType = in.readString();
         this.power = in.readString();
         this.toughness = in.readString();
+        this.setName = in.readString();
     }
 
     @Override
@@ -80,10 +84,11 @@ public class Card implements Parcelable {
         parcel.writeString(rarity.name());
         parcel.writeString(image);
         parcel.writeString(manaCost);
-        parcel.writeString(originalText);
+        parcel.writeString(text);
         parcel.writeString(originalType);
         parcel.writeString(power);
         parcel.writeString(toughness);
+        parcel.writeString(setName);
     }
 
     public String getId() {
@@ -110,8 +115,8 @@ public class Card implements Parcelable {
         return manaCost;
     }
 
-    public String getOriginalText() {
-        return originalText;
+    public String getText() {
+        return text;
     }
 
     public String getOriginalType() {
@@ -120,6 +125,10 @@ public class Card implements Parcelable {
 
     public String getPower() {
         return power;
+    }
+
+    public String getSetName() {
+        return setName;
     }
 
     public String getToughness() {

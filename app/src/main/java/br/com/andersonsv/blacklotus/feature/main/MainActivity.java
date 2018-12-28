@@ -5,9 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import br.com.andersonsv.blacklotus.R;
 import br.com.andersonsv.blacklotus.feature.base.BaseActivity;
@@ -29,8 +27,8 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
         mNavigation.setOnNavigationItemSelectedListener(this);
 
         getSupportActionBar().setTitle("Decks");
-        Fragment albunsFragment = DeckFragment.newInstance();
-        openFragment(albunsFragment);
+        Fragment deckFragment = DeckFragment.newInstance();
+        openFragment(deckFragment);
     }
 
     private void openFragment(Fragment fragment) {
