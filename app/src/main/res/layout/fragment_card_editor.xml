@@ -192,7 +192,7 @@
     </ScrollView>
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/buttonSaveCard"
         style="@style/ActionButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/main_bottom_navigation_height"

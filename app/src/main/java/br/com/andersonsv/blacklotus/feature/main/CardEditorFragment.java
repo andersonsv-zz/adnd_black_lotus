@@ -35,6 +35,7 @@ import br.com.andersonsv.blacklotus.model.CardColor;
 import br.com.andersonsv.blacklotus.widget.TextDrawable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 import static br.com.andersonsv.blacklotus.util.Constants.CARD_PARCELABLE;
 import static br.com.andersonsv.blacklotus.util.Constants.DECK_ID;
@@ -123,7 +124,6 @@ public class CardEditorFragment extends BaseFragment implements Html.ImageGetter
         mPowerToughness.setText(powerToughness);
 
         String text = replaceTypetImgSrc(mCard.getText());
-
         Spanned spanned = Html.fromHtml(text, this, null);
         mDescription.setText(spanned);
     }
@@ -149,10 +149,8 @@ public class CardEditorFragment extends BaseFragment implements Html.ImageGetter
 
             textDrawable.setText(name);
             textDrawable.setTextColor(Color.BLACK);
-            textDrawable.setTextSize(12);
+            //textDrawable.setTextSize(12);
             textDrawable.setTextAlign(Layout.Alignment.ALIGN_CENTER);
-
-
 
             GradientDrawable gD = new GradientDrawable();
             gD.setColor(Color.GRAY);
