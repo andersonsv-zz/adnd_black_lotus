@@ -204,8 +204,6 @@ public class CardAdapter extends FirestoreRecyclerAdapter<CardModel, CardAdapter
 
             textDrawable.setText(name);
             textDrawable.setTextColor(Color.BLACK);
-            //textDrawable.setTextSize(12);
-            textDrawable.setTextAlign(Layout.Alignment.ALIGN_CENTER);
 
             GradientDrawable gD = new GradientDrawable();
             gD.setColor(Color.GRAY);

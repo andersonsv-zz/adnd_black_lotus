@@ -110,21 +110,6 @@ public class DeckAdapter extends FirestoreRecyclerAdapter<DeckModel, DeckAdapter
 
         gradientDrawable.setCornerRadii(new float[] { 50, 50, 50, 50, 50, 50, 50, 50 });
         holder.mColor.setImageDrawable(gradientDrawable);
-
-        /*holder.setOnClickListener(new DecksViewHolder.ClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                Fragment cardFragment = CardFragment.newInstance();
-
-                Bundle bundle = new Bundle();
-                bundle.putString(DECK_ID, docId);
-                bundle.putParcelable(DECK_PARCELABLE, model);
-                cardFragment.setArguments(bundle);
-                fragmentTransaction.replace(R.id.container, cardFragment);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
-            }
-        });*/
     }
 
     @Override

@@ -28,9 +28,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static br.com.andersonsv.blacklotus.util.Constants.CARD_PARCELABLE;
+import static br.com.andersonsv.blacklotus.util.Constants.CARD_DATA;
 import static br.com.andersonsv.blacklotus.util.Constants.DECK_ID;
-
 
 public class SearchCardFragment extends BaseFragment implements SearchView.OnQueryTextListener, CardSearchAdapter.CardSearchRecyclerOnClickHandler{
 
@@ -69,9 +68,7 @@ public class SearchCardFragment extends BaseFragment implements SearchView.OnQue
             mDeckId = bundle.getString(DECK_ID, "");
         }
 
-
         mAdapter = new CardSearchAdapter(null, mDeckId, this);
-
 
         setLinearLayoutVerticalWithDivider(mRecyclerCard);
         mRecyclerCard.setAdapter(mAdapter);
@@ -144,14 +141,14 @@ public class SearchCardFragment extends BaseFragment implements SearchView.OnQue
 
     @Override
     public void onClick(Card card) {
-        Fragment cardEditorFragment = CardEditorFragment.newInstance();
+        Fragment cardAddFragment = CardEditorFragment.newInstance();
 
         Bundle bundle = new Bundle();
-        bundle.putParcelable(CARD_PARCELABLE, card);
+        bundle.putParcelable(CARD_DATA, card);
         bundle.putString(DECK_ID, mDeckId);
-        cardEditorFragment.setArguments(bundle);
+        cardAddFragment.setArguments(bundle);
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.container, cardEditorFragment);
+        transaction.replace(R.id.container, cardAddFragment);
         transaction.addToBackStack(null);
         transaction.commit();
     }

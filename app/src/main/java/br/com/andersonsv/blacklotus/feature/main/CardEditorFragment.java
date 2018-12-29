@@ -1,43 +1,35 @@
 package br.com.andersonsv.blacklotus.feature.main;
 
 import android.graphics.Color;
-import android.graphics.Path;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.LevelListDrawable;
 import android.os.Bundle;
-import android.support.v4.content.res.ResourcesCompat;
-import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.Layout;
 import android.text.Spanned;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import org.w3c.dom.Text;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import br.com.andersonsv.blacklotus.R;
 import br.com.andersonsv.blacklotus.data.Card;
 import br.com.andersonsv.blacklotus.feature.base.BaseFragment;
+import br.com.andersonsv.blacklotus.firebase.CardModel;
 import br.com.andersonsv.blacklotus.model.CardColor;
+import br.com.andersonsv.blacklotus.model.Rarity;
 import br.com.andersonsv.blacklotus.widget.TextDrawable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
-import static br.com.andersonsv.blacklotus.util.Constants.CARD_PARCELABLE;
+import static br.com.andersonsv.blacklotus.util.Constants.CARD_DATA;
+import static br.com.andersonsv.blacklotus.util.Constants.CARD_MODEL;
 import static br.com.andersonsv.blacklotus.util.Constants.DECK_ID;
 
 public class CardEditorFragment extends BaseFragment implements Html.ImageGetter {
@@ -47,7 +39,7 @@ public class CardEditorFragment extends BaseFragment implements Html.ImageGetter
     }
 
     private String mDeckId;
-    private Card mCard;
+    private CardModel mCard;
 
     @BindView(R.id.imageViewCard)
     ImageView mCardImage;
@@ -86,12 +78,35 @@ public class CardEditorFragment extends BaseFragment implements Html.ImageGetter
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             mDeckId = bundle.getString(DECK_ID, "");
-            mCard = bundle.getParcelable(CARD_PARCELABLE);
 
+            if (bundle.containsKey(CARD_DATA)) {
+                Card card = bundle.getParcelable(CARD_DATA);
+                mCard = convertDataToModel(card);
+
+            }
+            if (bundle.containsKey(CARD_MODEL)) {
+                mCard = bundle.getParcelable(CARD_MODEL);
+            }
             setupView();
         }
-
         return rootView;
+    }
+
+    private CardModel convertDataToModel(Card card) {
+        CardModel cardModel = new CardModel();
+        cardModel.setId(card.getId());
+        cardModel.setName(card.getName());
+        cardModel.setCost(card.getManaCost());
+        cardModel.setImage(card.getImage());
+        cardModel.setQuantity(0);
+        cardModel.setRarity(card.getRarity().getTypeId());
+        cardModel.setType(card.getType());
+        cardModel.setText(card.getText());
+        cardModel.setPower(card.getPower());
+        cardModel.setToughness(card.getToughness());
+        cardModel.setSetName(card.getSetName());
+
+        return cardModel;
     }
 
     private void setupView() {
@@ -106,8 +121,10 @@ public class CardEditorFragment extends BaseFragment implements Html.ImageGetter
         mCardName.setText(mCard.getName());
         mCardType.setText(mCard.getType());
 
-        mCardRarity.setText(mCard.getRarity().getTypeId());
-        mCardRarity.setTextColor(mCard.getRarity().getColor());
+        Rarity rarity = Rarity.getByType(mCard.getRarity());
+
+        mCardRarity.setText(rarity.getTypeId());
+        mCardRarity.setTextColor(rarity.getColor());
 
         if (mCard.getSetName() != null) {
             mCardSet.setText(mCard.getSetName());
@@ -127,7 +144,7 @@ public class CardEditorFragment extends BaseFragment implements Html.ImageGetter
         Spanned spanned = Html.fromHtml(text, this, null);
         mDescription.setText(spanned);
 
-        String cost = replaceTypetImgSrc(mCard.getManaCost());
+        String cost = replaceTypetImgSrc(mCard.getCost());
         Spanned spannedCost = Html.fromHtml(cost, this, null);
         mCost.setText(spannedCost);
     }
@@ -137,7 +154,6 @@ public class CardEditorFragment extends BaseFragment implements Html.ImageGetter
 
         CardColor cardColor = CardColor.getById(name);
         int size = getResources().getInteger(R.integer.card_cost_list);
-
 
         if (cardColor != null) {
             LevelListDrawable d = new LevelListDrawable();
@@ -155,7 +171,8 @@ public class CardEditorFragment extends BaseFragment implements Html.ImageGetter
             textDrawable.setText(name);
             textDrawable.setTextColor(Color.BLACK);
             //textDrawable.setTextSize(12);
-            textDrawable.setTextAlign(Layout.Alignment.ALIGN_CENTER);
+            textDrawable.setTextAlign(Layout.Alignment.ALIGN_NORMAL);
+
 
             GradientDrawable gD = new GradientDrawable();
             gD.setColor(Color.GRAY);

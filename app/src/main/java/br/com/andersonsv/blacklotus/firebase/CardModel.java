@@ -24,6 +24,10 @@ public class CardModel implements Parcelable {
     private String rarity;
     private String type;
     private String image;
+    private String text;
+    private String power;
+    private String toughness;
+    private String setName;
 
     private CardModel(Parcel in) {
         this.id = in.readString();
@@ -33,6 +37,10 @@ public class CardModel implements Parcelable {
         this.rarity = in.readString();
         this.type = in.readString();
         this.image = in.readString();
+        this.text = in.readString();
+        this.power = in.readString();
+        this.toughness = in.readString();
+        this.setName = in.readString();
     }
 
     @Override
@@ -44,6 +52,10 @@ public class CardModel implements Parcelable {
         parcel.writeString(rarity);
         parcel.writeString(type);
         parcel.writeString(image);
+        parcel.writeString(text);
+        parcel.writeString(power);
+        parcel.writeString(toughness);
+        parcel.writeString(setName);
     }
 
     @Override
@@ -53,14 +65,26 @@ public class CardModel implements Parcelable {
 
     public CardModel() {}
 
-    public CardModel(String name, Integer numberOfCards,
-                String cost, String rarity, String type, String image) {
+    public CardModel(String name,
+                     Integer numberOfCards,
+                    String cost,
+                     String rarity,
+                     String type,
+                     String image,
+                     String text,
+                     String power,
+                     String toughness,
+                     String setName) {
         this.name = name;
         this.quantity = numberOfCards;
         this.cost = cost;
         this.rarity = rarity;
         this.type  = type;
         this.image = image;
+        this.text = text;
+        this.power = power;
+        this.toughness = toughness;
+        this.setName = setName;
     }
 
     public String getId() {
@@ -117,5 +141,37 @@ public class CardModel implements Parcelable {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public String getPower() {
+        return power;
+    }
+
+    public void setPower(String power) {
+        this.power = power;
+    }
+
+    public String getToughness() {
+        return toughness;
+    }
+
+    public void setToughness(String toughness) {
+        this.toughness = toughness;
+    }
+
+    public String getSetName() {
+        return setName;
+    }
+
+    public void setSetName(String setName) {
+        this.setName = setName;
     }
 }

@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -33,6 +32,7 @@ import butterknife.OnClick;
 
 import static br.com.andersonsv.blacklotus.util.Constants.CARD_LAND;
 import static br.com.andersonsv.blacklotus.util.Constants.CARD_LIST;
+import static br.com.andersonsv.blacklotus.util.Constants.CARD_MODEL;
 import static br.com.andersonsv.blacklotus.util.Constants.DECK_ID;
 import static br.com.andersonsv.blacklotus.util.Constants.DECK_PARCELABLE;
 
@@ -74,6 +74,8 @@ public class CardFragment extends BaseFragment implements CardAdapter.CardRecycl
             mDeck = bundle.getParcelable(DECK_PARCELABLE);
 
             mDeckName.setText(mDeck.getName());
+        } else  {
+
         }
 
         mDb = FirebaseFirestore.getInstance();
@@ -176,6 +178,15 @@ public class CardFragment extends BaseFragment implements CardAdapter.CardRecycl
 
     @Override
     public void onClick(CardModel cardModel) {
-        Toast.makeText(getContext(), "Card id" + cardModel.getId(), Toast.LENGTH_LONG).show();
+        Fragment cardEditorFragment = CardEditorFragment.newInstance();
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(CARD_MODEL, cardModel);
+        bundle.putString(DECK_ID, mDeck.getId());
+        cardEditorFragment.setArguments(bundle);
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, cardEditorFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 }

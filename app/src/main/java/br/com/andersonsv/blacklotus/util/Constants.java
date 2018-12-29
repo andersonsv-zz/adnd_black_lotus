@@ -6,6 +6,7 @@ public class Constants {
     public final static String USER_ID = "userId";
     public final static String DECK_ID = "deckId";
     public final static String DECK_PARCELABLE = "deck";
-    public final static String CARD_PARCELABLE = "card";
+    public final static String CARD_DATA = "card_data";
+    public final static String CARD_MODEL = "card_model";
     public final static String CARD_LAND = "land";
 }
