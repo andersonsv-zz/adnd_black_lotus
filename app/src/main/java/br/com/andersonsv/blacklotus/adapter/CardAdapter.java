@@ -2,9 +2,16 @@ package br.com.andersonsv.blacklotus.adapter;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.LayerDrawable;
+import android.graphics.drawable.LevelListDrawable;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
+import android.text.Layout;
+import android.text.Spanned;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,18 +26,17 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import br.com.andersonsv.blacklotus.R;
 import br.com.andersonsv.blacklotus.firebase.CardModel;
+import br.com.andersonsv.blacklotus.model.CardColor;
 import br.com.andersonsv.blacklotus.model.Rarity;
+import br.com.andersonsv.blacklotus.widget.TextDrawable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class CardAdapter extends FirestoreRecyclerAdapter<CardModel, CardAdapter.ViewHolder> {
+public class CardAdapter extends FirestoreRecyclerAdapter<CardModel, CardAdapter.ViewHolder> implements Html.ImageGetter {
     private ProgressBar mProgressBar;
     private LinearLayout mEmptyState;
     private LayoutInflater mInflater;
@@ -71,9 +77,6 @@ public class CardAdapter extends FirestoreRecyclerAdapter<CardModel, CardAdapter
         holder.mQuantity.setText(model.getQuantity().toString());
         holder.mType.setText(model.getType());
 
-        if (model.getCost() != null) {
-
-        }
         Rarity rarity = Rarity.getByType(model.getRarity());
 
         if(rarity != null){
@@ -108,33 +111,15 @@ public class CardAdapter extends FirestoreRecyclerAdapter<CardModel, CardAdapter
             }
         });
 
-
-       /* holder.setOnClickListener(new CardsViewHolder.ClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                Toast.makeText(view.getContext(), "Card id" + docId, Toast.LENGTH_LONG).show();
-            }
-        });*/
-
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
-        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-
-        List<String> costs = new ArrayList<>();
-
-        if (model.getCost() != null) {
-
-            Pattern p = Pattern.compile("\\{([^}]*)\\}");
-            Matcher m = p.matcher(model.getCost());
-
-            while (m.find()) {
-                costs.add(m.group(1));
-            }
+        if( model.getCost() != null) {
+            String text = replaceTypetImgSrc(model.getCost());
+            Spanned spanned = Html.fromHtml(text, this, null);
+            holder.mCost.setText(spanned);
         }
+        //holder.Cost.setLayoutManager(linearLayoutManager);
 
-        holder.mRecyclerCost.setLayoutManager(linearLayoutManager);
-
-        CostAdapter costAdapter = new CostAdapter(mContext, costs);
-        holder.mRecyclerCost.setAdapter(costAdapter);
+        //CostAdapter costAdapter = new CostAdapter(mContext, costs);
+       // holder.mRecyclerCost.setAdapter(costAdapter);
     }
 
     @Override
@@ -177,8 +162,8 @@ public class CardAdapter extends FirestoreRecyclerAdapter<CardModel, CardAdapter
         @BindView(R.id.textViewType)
         TextView mType;
 
-        @BindView(R.id.recyclerViewCost)
-        RecyclerView mRecyclerCost;
+        @BindView(R.id.textViewCost)
+        TextView mCost;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -191,6 +176,45 @@ public class CardAdapter extends FirestoreRecyclerAdapter<CardModel, CardAdapter
             int adapterPosition = getAdapterPosition();
             CardModel movie = mData.get(adapterPosition);
             mClickHandler.onClick(movie);
+        }
+    }
+
+    private String replaceTypetImgSrc(String textToReplace){
+        return textToReplace.replaceAll("\\{([^}]*)\\}", "<img src='$1'>");
+    }
+
+    @Override
+    public Drawable getDrawable(String name) {
+
+        CardColor cardColor = CardColor.getById(name);
+        int size = mContext.getResources().getInteger(R.integer.card_cost_list);
+
+        if (cardColor != null) {
+            LevelListDrawable d = new LevelListDrawable();
+
+            Drawable empty = mContext.getResources().getDrawable(cardColor.getImage());
+            d.addLevel(0, 0, empty);
+            d.setBounds(0, 0, size, size);
+
+            return d;
+
+        } else {
+            //Copied by - https://github.com/devunwired/textdrawable
+            TextDrawable textDrawable = new TextDrawable(mContext);
+
+            textDrawable.setText(name);
+            textDrawable.setTextColor(Color.BLACK);
+            //textDrawable.setTextSize(12);
+            textDrawable.setTextAlign(Layout.Alignment.ALIGN_CENTER);
+
+            GradientDrawable gD = new GradientDrawable();
+            gD.setColor(Color.GRAY);
+            gD.setShape(GradientDrawable.OVAL);
+            LayerDrawable layerDrawable = new LayerDrawable(new Drawable[]{gD, textDrawable});
+
+            layerDrawable.setBounds(0, 0, size, size);
+
+            return layerDrawable;
         }
     }
 }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="130dp">
 
@@ -17,11 +18,11 @@
 
     <TextView
         android:id="@+id/textViewCardName"
+        style="@style/Text.14sp.Bold"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="8dp"
-        style="@style/Text.14sp.Bold"
         android:textColor="@color/black"
         app:layout_constraintEnd_toStartOf="@+id/textViewQuantity"
         app:layout_constraintStart_toEndOf="@+id/imageViewCardImage"
@@ -42,32 +43,34 @@
         style="@style/Text.12sp"
         android:layout_width="80dp"
         android:layout_height="30dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/textViewCost"
         app:layout_constraintTop_toBottomOf="@+id/textViewCardName" />
 
     <TextView
         android:id="@+id/textViewType"
+        style="@style/Text.12sp"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintBottom_toBottomOf="@+id/imageViewCardImage"
         app:layout_constraintEnd_toEndOf="parent"
-        style="@style/Text.12sp"
         app:layout_constraintStart_toEndOf="@+id/imageViewCardImage" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerViewCost"
+    <TextView
+        android:id="@+id/textViewCost"
         android:layout_width="0dp"
         android:layout_height="30dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toStartOf="@+id/textViewRarity"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/imageViewCardImage"
-        app:layout_constraintTop_toBottomOf="@+id/textViewCardName"
-        android:overScrollMode="never"/>
+        app:layout_constraintTop_toBottomOf="@+id/textViewCardName" />
 
 </android.support.constraint.ConstraintLayout>

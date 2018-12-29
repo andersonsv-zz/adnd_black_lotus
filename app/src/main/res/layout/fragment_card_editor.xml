@@ -9,7 +9,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintBottom_toTopOf="@+id/buttonSaveCard"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -112,8 +112,8 @@
                 app:layout_constraintStart_toEndOf="@+id/imageViewCard"
                 app:layout_constraintTop_toBottomOf="@+id/textViewTitleSetName" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recyclerViewCost"
+            <TextView
+                android:id="@+id/textViewCost"
                 android:layout_width="0dp"
                 android:layout_height="30dp"
                 android:layout_marginStart="8dp"
@@ -130,9 +130,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:text="TextView"
-                app:layout_constraintBottom_toBottomOf="@+id/recyclerViewCost"
+                app:layout_constraintBottom_toBottomOf="@+id/textViewCost"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/recyclerViewCost" />
+                app:layout_constraintTop_toTopOf="@+id/textViewCost" />
 
             <TextView
                 android:id="@+id/textViewDeckQuantityTitle"

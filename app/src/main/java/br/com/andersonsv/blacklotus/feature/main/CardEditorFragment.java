@@ -64,8 +64,8 @@ public class CardEditorFragment extends BaseFragment implements Html.ImageGetter
     @BindView(R.id.textViewSetName)
     TextView mCardSet;
 
-    @BindView(R.id.recyclerViewCost)
-    RecyclerView mRecyclerCost;
+    @BindView(R.id.textViewCost)
+    TextView mCost;
 
     @BindView(R.id.textViewPowerToughness)
     TextView mPowerToughness;
@@ -126,12 +126,17 @@ public class CardEditorFragment extends BaseFragment implements Html.ImageGetter
         String text = replaceTypetImgSrc(mCard.getText());
         Spanned spanned = Html.fromHtml(text, this, null);
         mDescription.setText(spanned);
+
+        String cost = replaceTypetImgSrc(mCard.getManaCost());
+        Spanned spannedCost = Html.fromHtml(cost, this, null);
+        mCost.setText(spannedCost);
     }
 
     @Override
     public Drawable getDrawable(String name) {
 
         CardColor cardColor = CardColor.getById(name);
+        int size = getResources().getInteger(R.integer.card_cost_list);
 
 
         if (cardColor != null) {
@@ -139,7 +144,7 @@ public class CardEditorFragment extends BaseFragment implements Html.ImageGetter
 
             Drawable empty = getResources().getDrawable(cardColor.getImage());
             d.addLevel(0, 0, empty);
-            d.setBounds(0, 0, 32, 32);
+            d.setBounds(0, 0, size, size);
 
             return d;
 
@@ -157,7 +162,7 @@ public class CardEditorFragment extends BaseFragment implements Html.ImageGetter
             gD.setShape(GradientDrawable.OVAL);
             LayerDrawable layerDrawable = new LayerDrawable(new Drawable[]{gD, textDrawable});
 
-            layerDrawable.setBounds(0, 0, 32, 32);
+            layerDrawable.setBounds(0, 0, size, size);
 
             return layerDrawable;
         }

@@ -73,5 +73,4 @@
     <!-- Deck -->
     <dimen name="empty_state_height">200dp</dimen>
     <dimen name="empty_state_width">200dp</dimen>
-
 </resources>
