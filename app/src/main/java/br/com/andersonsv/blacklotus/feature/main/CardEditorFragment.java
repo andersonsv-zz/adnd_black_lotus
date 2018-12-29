@@ -7,6 +7,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.LevelListDrawable;
 import android.os.Bundle;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.Layout;
@@ -131,9 +132,11 @@ public class CardEditorFragment extends BaseFragment implements Html.ImageGetter
     public Drawable getDrawable(String name) {
 
         CardColor cardColor = CardColor.getById(name);
-        LevelListDrawable d = new LevelListDrawable();
+
 
         if (cardColor != null) {
+            LevelListDrawable d = new LevelListDrawable();
+
             Drawable empty = getResources().getDrawable(cardColor.getImage());
             d.addLevel(0, 0, empty);
             d.setBounds(0, 0, 32, 32);
@@ -141,24 +144,24 @@ public class CardEditorFragment extends BaseFragment implements Html.ImageGetter
             return d;
 
         } else {
-            TextDrawable d2 = new TextDrawable(getContext());
+            //Copied by - https://github.com/devunwired/textdrawable
+            TextDrawable textDrawable = new TextDrawable(getContext());
 
-            d2.setText(name);
-            d2.setTextColor(Color.BLACK);
-            d2.setTextSize(13);
+            textDrawable.setText(name);
+            textDrawable.setTextColor(Color.BLACK);
+            textDrawable.setTextSize(12);
+            textDrawable.setTextAlign(Layout.Alignment.ALIGN_CENTER);
 
-            GradientDrawable shape = new GradientDrawable();
-            shape.setShape(GradientDrawable.RECTANGLE);
-            shape.setCornerRadii(new float[] { 8, 8, 8, 8, 0, 0, 0, 0 });
-            shape.setColor(Color.GRAY);
-            d.addLevel(1,1, shape);
 
-           // d2.setTextPath(p);
 
-            d.addLevel(0, 0, d2);
-            d.setBounds(0, 0, 32, 32);
+            GradientDrawable gD = new GradientDrawable();
+            gD.setColor(Color.GRAY);
+            gD.setShape(GradientDrawable.OVAL);
+            LayerDrawable layerDrawable = new LayerDrawable(new Drawable[]{gD, textDrawable});
 
-            return d;
+            layerDrawable.setBounds(0, 0, 32, 32);
+
+            return layerDrawable;
         }
     }
 
