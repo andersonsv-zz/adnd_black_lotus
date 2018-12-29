@@ -28,9 +28,10 @@ import butterknife.OnClick;
 
 import static br.com.andersonsv.blacklotus.util.Constants.DECK_ID;
 import static br.com.andersonsv.blacklotus.util.Constants.DECK_LIST;
+import static br.com.andersonsv.blacklotus.util.Constants.DECK_PARCELABLE;
 import static br.com.andersonsv.blacklotus.util.Constants.USER_ID;
 
-public class DeckFragment extends BaseFragment {
+public class DeckFragment extends BaseFragment implements DeckAdapter.DeckRecyclerOnClickHandler{
 
     private FirestoreRecyclerAdapter mAdapter;
 
@@ -75,7 +76,7 @@ public class DeckFragment extends BaseFragment {
                 .setQuery(query, DeckModel.class)
                 .build();
 
-        mAdapter = new DeckAdapter(response, mProgressBar, mEmptyState, this.getFragmentManager().beginTransaction());
+        mAdapter = new DeckAdapter(response, mProgressBar, mEmptyState, this);
         mAdapter.notifyDataSetChanged();
         mDeckRecycler.setAdapter(mAdapter);
     }
@@ -101,5 +102,18 @@ public class DeckFragment extends BaseFragment {
     public void onStop() {
         super.onStop();
         mAdapter.stopListening();
+    }
+
+    @Override
+    public void onClick(DeckModel deck) {
+        Fragment cardFragment = CardFragment.newInstance();
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(DECK_PARCELABLE, deck);
+        cardFragment.setArguments(bundle);
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, cardFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 }

@@ -158,6 +158,10 @@ public class DeckModel implements Parcelable {
         this.color5 = color5;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
     // Mapper to insert / update
     public Map<String, Object> objectMap (String userId){
         Map<String, Object> deck = new HashMap<>();

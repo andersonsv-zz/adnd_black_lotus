@@ -37,8 +37,7 @@ import static br.com.andersonsv.blacklotus.util.Constants.DECK_PARCELABLE;
 
 public class CardFragment extends BaseFragment {
 
-    private String mDeckId;
-    private DeckModel deck;
+    private DeckModel mDeck;
     private FirebaseFirestore mDb;
     private FirestoreRecyclerAdapter mLandAdapter;
     private FirestoreRecyclerAdapter mCardAdapter;
@@ -71,10 +70,9 @@ public class CardFragment extends BaseFragment {
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {
-            mDeckId = bundle.getString(DECK_ID, "");
-            deck = bundle.getParcelable(DECK_PARCELABLE);
+            mDeck = bundle.getParcelable(DECK_PARCELABLE);
 
-             mDeckName.setText(deck.getName());
+            mDeckName.setText(mDeck.getName());
         }
 
         mDb = FirebaseFirestore.getInstance();
@@ -92,7 +90,7 @@ public class CardFragment extends BaseFragment {
         Query query = mDb.collection(BuildConfig.FIREBASE_COLLECTION)
                 .document(BuildConfig.FIREBASE_DOCUMENT)
                 .collection(CARD_LIST)
-                .whereEqualTo(DECK_ID, mDeckId)
+                .whereEqualTo(DECK_ID, mDeck.getId())
                 .whereEqualTo(CARD_LAND, false);
 
         FirestoreRecyclerOptions<CardModel> response = new FirestoreRecyclerOptions.Builder<CardModel>()
@@ -110,7 +108,7 @@ public class CardFragment extends BaseFragment {
         Query query = mDb.collection(BuildConfig.FIREBASE_COLLECTION)
                 .document(BuildConfig.FIREBASE_DOCUMENT)
                 .collection(CARD_LIST)
-                .whereEqualTo(DECK_ID, mDeckId)
+                .whereEqualTo(DECK_ID, mDeck.getId())
                 .whereEqualTo(CARD_LAND, true);
 
         FirestoreRecyclerOptions<CardModel> response = new FirestoreRecyclerOptions.Builder<CardModel>()
@@ -147,7 +145,7 @@ public class CardFragment extends BaseFragment {
         Fragment searchCardFragment = SearchCardFragment.newInstance();
 
         Bundle bundle = new Bundle();
-        bundle.putString(DECK_ID, mDeckId);
+        bundle.putString(DECK_ID, mDeck.getId());
         searchCardFragment.setArguments(bundle);
 
 
@@ -162,7 +160,6 @@ public class CardFragment extends BaseFragment {
         int id = item.getItemId();
         switch (id) {
             case R.id.deck_share:
-
 
                 Intent sendIntent = new Intent();
                 sendIntent.setAction(Intent.ACTION_SEND);
