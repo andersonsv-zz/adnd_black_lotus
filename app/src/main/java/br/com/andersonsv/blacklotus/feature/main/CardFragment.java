@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -35,7 +36,7 @@ import static br.com.andersonsv.blacklotus.util.Constants.CARD_LIST;
 import static br.com.andersonsv.blacklotus.util.Constants.DECK_ID;
 import static br.com.andersonsv.blacklotus.util.Constants.DECK_PARCELABLE;
 
-public class CardFragment extends BaseFragment {
+public class CardFragment extends BaseFragment implements CardAdapter.CardRecyclerOnClickHandler {
 
     private DeckModel mDeck;
     private FirebaseFirestore mDb;
@@ -97,7 +98,7 @@ public class CardFragment extends BaseFragment {
                 .setQuery(query, CardModel.class)
                 .build();
 
-        mCardAdapter = new CardAdapter(getContext(), response, mProgressBar, mEmptyState, this.getFragmentManager().beginTransaction());
+        mCardAdapter = new CardAdapter(response, mProgressBar, mEmptyState, this);
         mCardAdapter.notifyDataSetChanged();
         mCardRecycler.setAdapter(mCardAdapter);
     }
@@ -115,7 +116,7 @@ public class CardFragment extends BaseFragment {
                 .setQuery(query, CardModel.class)
                 .build();
 
-        mLandAdapter = new CardAdapter(getContext(), response, mProgressBar, mEmptyState, this.getFragmentManager().beginTransaction());
+        mLandAdapter = new CardAdapter(response, mProgressBar, mEmptyState, this);
         mLandAdapter.notifyDataSetChanged();
         mCardLandRecycler.setAdapter(mLandAdapter);
     }
@@ -171,5 +172,10 @@ public class CardFragment extends BaseFragment {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(CardModel cardModel) {
+        Toast.makeText(getContext(), "Card id" + cardModel.getId(), Toast.LENGTH_LONG).show();
     }
 }

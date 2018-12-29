@@ -3,8 +3,8 @@ package br.com.andersonsv.blacklotus.adapter;
 import android.app.Dialog;
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -26,34 +26,50 @@ import java.util.regex.Pattern;
 
 import br.com.andersonsv.blacklotus.R;
 import br.com.andersonsv.blacklotus.firebase.CardModel;
-import br.com.andersonsv.blacklotus.holder.CardsViewHolder;
 import br.com.andersonsv.blacklotus.model.Rarity;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
-public class CardAdapter extends FirestoreRecyclerAdapter<CardModel, CardsViewHolder> {
-    private Context mContext;
+public class CardAdapter extends FirestoreRecyclerAdapter<CardModel, CardAdapter.ViewHolder> {
     private ProgressBar mProgressBar;
     private LinearLayout mEmptyState;
-    private FragmentTransaction fragmentTransaction;
-    private final LayoutInflater mInflater;
+    private LayoutInflater mInflater;
+    private Context mContext;
+    private List<CardModel> mData;
 
-    public CardAdapter(Context context, FirestoreRecyclerOptions recyclerOptions, @NonNull ProgressBar progressBar, LinearLayout emptyState, FragmentTransaction fragmentTransaction) {
+    private final CardAdapter.CardRecyclerOnClickHandler mClickHandler;
+
+    public CardAdapter(FirestoreRecyclerOptions recyclerOptions, @NonNull ProgressBar progressBar, LinearLayout emptyState, CardRecyclerOnClickHandler clickHandler) {
         super(recyclerOptions);
-        this.mContext = context;
         this.mProgressBar = progressBar;
         this.mEmptyState = emptyState;
-        this.fragmentTransaction = fragmentTransaction;
-        this.mInflater = LayoutInflater.from(mContext);
+        mClickHandler = clickHandler;
+    }
+
+    public interface CardRecyclerOnClickHandler {
+        void onClick(CardModel cardModel);
     }
 
     @Override
-    protected void onBindViewHolder(CardsViewHolder holder, int position, final CardModel model) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        this.mContext = parent.getContext();
+        this.mInflater = LayoutInflater.from(mContext);
+        View view = mInflater.inflate(R.layout.item_card, parent, false);
+
+        return new ViewHolder(view);
+    }
+
+
+    @Override
+    protected void onBindViewHolder(ViewHolder holder, int position, final CardModel model) {
         mProgressBar.setVisibility(View.GONE);
 
         final String docId = getSnapshots().getSnapshot(position).getId();
+        model.setId(docId);
 
-        holder.getmCardName().setText(model.getName());
-        holder.getmQuantity().setText(model.getQuantity().toString());
-        holder.getmType().setText(model.getType());
+        holder.mCardName.setText(model.getName());
+        holder.mQuantity.setText(model.getQuantity().toString());
+        holder.mType.setText(model.getType());
 
         if (model.getCost() != null) {
 
@@ -61,17 +77,17 @@ public class CardAdapter extends FirestoreRecyclerAdapter<CardModel, CardsViewHo
         Rarity rarity = Rarity.getByType(model.getRarity());
 
         if(rarity != null){
-            holder.getmRarity().setText(rarity.getTypeId());
+            holder.mRarity.setText(rarity.getTypeId());
 
             int color = mInflater.getContext().getResources().getColor(rarity.getColor());
-            holder.getmRarity().setTextColor(color);
+            holder.mRarity.setTextColor(color);
         }
 
         Picasso.with(mInflater.getContext())
                 .load(model.getImage())
-                .into(holder.getmCardImage());
+                .into(holder.mCardImage);
 
-        holder.getmCardImage().setOnClickListener(new View.OnClickListener() {
+        holder.mCardImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -93,12 +109,12 @@ public class CardAdapter extends FirestoreRecyclerAdapter<CardModel, CardsViewHo
         });
 
 
-        holder.setOnClickListener(new CardsViewHolder.ClickListener() {
+       /* holder.setOnClickListener(new CardsViewHolder.ClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 Toast.makeText(view.getContext(), "Card id" + docId, Toast.LENGTH_LONG).show();
             }
-        });
+        });*/
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -115,10 +131,10 @@ public class CardAdapter extends FirestoreRecyclerAdapter<CardModel, CardsViewHo
             }
         }
 
-        holder.getmRecyclerCost().setLayoutManager(linearLayoutManager);
+        holder.mRecyclerCost.setLayoutManager(linearLayoutManager);
 
         CostAdapter costAdapter = new CostAdapter(mContext, costs);
-        holder.getmRecyclerCost().setAdapter(costAdapter);
+        holder.mRecyclerCost.setAdapter(costAdapter);
     }
 
     @Override
@@ -127,17 +143,10 @@ public class CardAdapter extends FirestoreRecyclerAdapter<CardModel, CardsViewHo
     }
 
     @Override
-    public CardsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext)
-                .inflate(R.layout.item_card, parent, false);
-
-        return new CardsViewHolder(view);
-    }
-
-    @Override
     public void onDataChanged() {
         mProgressBar.setVisibility(View.VISIBLE);
         notifyDataSetChanged();
+        mData = getSnapshots();
         if (getItemCount() == 0) {
             mEmptyState.setVisibility(View.VISIBLE);
         } else {
@@ -149,6 +158,39 @@ public class CardAdapter extends FirestoreRecyclerAdapter<CardModel, CardsViewHo
         getSnapshots().getSnapshot(position).getReference().delete();
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, getItemCount());
+    }
 
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+        @BindView(R.id.textViewCardName)
+        TextView mCardName;
+
+        @BindView(R.id.imageViewCardImage)
+        ImageView mCardImage;
+
+        @BindView(R.id.textViewQuantity)
+        TextView mQuantity;
+
+        @BindView(R.id.textViewRarity)
+        TextView mRarity;
+
+        @BindView(R.id.textViewType)
+        TextView mType;
+
+        @BindView(R.id.recyclerViewCost)
+        RecyclerView mRecyclerCost;
+
+        ViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            int adapterPosition = getAdapterPosition();
+            CardModel movie = mData.get(adapterPosition);
+            mClickHandler.onClick(movie);
+        }
     }
 }

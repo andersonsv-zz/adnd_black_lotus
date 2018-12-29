@@ -31,7 +31,6 @@ public class CardSearchAdapter extends RecyclerView.Adapter<CardSearchAdapter.Vi
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
         this.mInflater = LayoutInflater.from(parent.getContext());
         View view = mInflater.inflate(R.layout.item_search_card, parent, false);
 
@@ -94,8 +93,8 @@ public class CardSearchAdapter extends RecyclerView.Adapter<CardSearchAdapter.Vi
         @Override
         public void onClick(View view) {
             int adapterPosition = getAdapterPosition();
-            Card movie = mData.get(adapterPosition);
-            mClickHandler.onClick(movie);
+            Card card = mData.get(adapterPosition);
+            mClickHandler.onClick(card);
         }
     }
 }

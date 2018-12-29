@@ -31,14 +31,29 @@ import butterknife.ButterKnife;
 
 public class DeckAdapter extends FirestoreRecyclerAdapter<DeckModel, DeckAdapter.ViewHolder> {
 
-    private Context context;
+    private Context mContext;
     private ProgressBar mProgressBar;
     private LinearLayout mEmptyState;
     private List<DeckModel> mData;
+
+    private LayoutInflater mInflater;
     private final DeckAdapter.DeckRecyclerOnClickHandler mClickHandler;
 
     public interface DeckRecyclerOnClickHandler {
         void onClick(DeckModel deck);
+    }
+
+    @Override
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        this.mContext = parent.getContext();
+        this.mInflater = LayoutInflater.from(mContext);
+
+        View view = mInflater
+                .inflate(R.layout.item_deck, parent, false);
+
+        mContext = view.getContext();
+
+        return new ViewHolder(view);
     }
 
     public DeckAdapter(FirestoreRecyclerOptions recyclerOptions, @NonNull ProgressBar progressBar, LinearLayout emptyState, DeckRecyclerOnClickHandler clickHandler) {
@@ -59,7 +74,7 @@ public class DeckAdapter extends FirestoreRecyclerAdapter<DeckModel, DeckAdapter
         holder.mDeckDescription.setText(model.getDescription());
 
         String numberOfCards = model.getNumberOfCards() != null ? model.getNumberOfCards().toString() : "0";
-        holder.mNumberOfCards.setText(String.format(context.getString(R.string.decks_number_cards), numberOfCards));
+        holder.mNumberOfCards.setText(String.format(mContext.getString(R.string.decks_number_cards), numberOfCards));
 
         List<Integer> colors = new ArrayList<>();
 
@@ -115,16 +130,6 @@ public class DeckAdapter extends FirestoreRecyclerAdapter<DeckModel, DeckAdapter
     @Override
     public void onError(FirebaseFirestoreException e) {
         Log.e("error", e.getMessage());
-    }
-
-    @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_deck, parent, false);
-
-        context = view.getContext();
-
-        return new ViewHolder(view);
     }
 
     @Override

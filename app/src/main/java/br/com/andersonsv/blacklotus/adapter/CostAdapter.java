@@ -72,8 +72,6 @@ public class CostAdapter extends RecyclerView.Adapter<CostImageViewHolder> {
 
     }
 
-
-
     @Override
     public int getItemCount() {
         if (mData == null) {
