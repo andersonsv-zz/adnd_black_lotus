@@ -52,21 +52,6 @@ public class CardSearchAdapter extends RecyclerView.Adapter<CardSearchAdapter.Vi
         }
         holder.mRarity.setText(card.getRarity().getTypeId());
         holder.mRarity.setTextColor(card.getRarity().getColor());
-
-        /*holder.setOnClickListener(new CardsSearchViewHolder.ClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                Fragment cardEditorFragment = CardEditorFragment.newInstance();
-
-                Bundle bundle = new Bundle();
-                bundle.putParcelable(CARD_PARCELABLE, card);
-                bundle.putString(DECK_ID, mDeckId);
-                cardEditorFragment.setArguments(bundle);
-                mFragmentTransaction.replace(R.id.container, cardEditorFragment);
-                mFragmentTransaction.addToBackStack(null);
-                mFragmentTransaction.commit();
-            }
-        });*/
     }
 
     public void setCards(List<Card> data) {
