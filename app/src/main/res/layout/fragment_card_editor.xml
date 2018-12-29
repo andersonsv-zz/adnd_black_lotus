@@ -58,7 +58,7 @@
 
             <TextView
                 android:id="@+id/textViewTitleRarity"
-                style="@style/Text.12sp"
+                style="@style/Text.12sp.SemiBold"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -84,7 +84,7 @@
 
             <TextView
                 android:id="@+id/textViewTitleSetName"
-                style="@style/Text.12sp"
+                style="@style/Text.12sp.SemiBold"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -142,6 +142,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:text="@string/card_editor_quantity"
+                style="@style/Text.12sp.SemiBold"
                 android:textAllCaps="true"
                 android:textColor="@color/colorPrimary"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -171,6 +172,7 @@
                 android:layout_marginEnd="16dp"
                 android:text="@string/default_error_save"
                 android:textAllCaps="true"
+                style="@style/Text.12sp.SemiBold"
                 android:textColor="@color/colorPrimary"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

@@ -1,11 +1,17 @@
 package br.com.andersonsv.blacklotus.feature.main;
 
+import android.graphics.Color;
+import android.graphics.Path;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.LevelListDrawable;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.text.Layout;
 import android.text.Spanned;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +22,8 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import org.w3c.dom.Text;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -23,6 +31,7 @@ import br.com.andersonsv.blacklotus.R;
 import br.com.andersonsv.blacklotus.data.Card;
 import br.com.andersonsv.blacklotus.feature.base.BaseFragment;
 import br.com.andersonsv.blacklotus.model.CardColor;
+import br.com.andersonsv.blacklotus.widget.TextDrawable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -123,26 +132,34 @@ public class CardEditorFragment extends BaseFragment implements Html.ImageGetter
 
         CardColor cardColor = CardColor.getById(name);
         LevelListDrawable d = new LevelListDrawable();
-        Drawable empty;
 
         if (cardColor != null) {
-            empty = getResources().getDrawable(cardColor.getImage());
+            Drawable empty = getResources().getDrawable(cardColor.getImage());
+            d.addLevel(0, 0, empty);
+            d.setBounds(0, 0, 32, 32);
+
+            return d;
 
         } else {
-            empty = getResources().getDrawable(R.drawable.ic_add_circle_24dp);
-            /*loaded show the actual image
-            LevelListDrawable levelListDrawable = new LevelListDrawable ();
-            levelListDrawable.addLevel (0, 0, ContextCompat.getDrawable(context, R.drawable.embed_img));
-            ssb.setSpan (new ImageSpan (levelListDrawable, ImageSpan.ALIGN_BOTTOM), 0, 6, flag);
-//load image in async task and then set to levelListDrawable
-            levelListDrawable.addLevel (1, 1, no);
-            levelListDrawable.setLevel(1);
-            textView.setText(textView.getText ());*/
-        }
-        d.addLevel(0, 0, empty);
-        d.setBounds(0, 0, 32, 32);
+            TextDrawable d2 = new TextDrawable(getContext());
 
-        return d;
+            d2.setText(name);
+            d2.setTextColor(Color.BLACK);
+            d2.setTextSize(13);
+
+            GradientDrawable shape = new GradientDrawable();
+            shape.setShape(GradientDrawable.RECTANGLE);
+            shape.setCornerRadii(new float[] { 8, 8, 8, 8, 0, 0, 0, 0 });
+            shape.setColor(Color.GRAY);
+            d.addLevel(1,1, shape);
+
+           // d2.setTextPath(p);
+
+            d.addLevel(0, 0, d2);
+            d.setBounds(0, 0, 32, 32);
+
+            return d;
+        }
     }
 
     private String replaceTypetImgSrc(String textToReplace){
