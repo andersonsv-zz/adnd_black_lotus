@@ -7,6 +7,7 @@
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/scrollView2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/buttonSaveCard"
@@ -136,13 +137,13 @@
 
             <TextView
                 android:id="@+id/textViewDeckQuantityTitle"
+                style="@style/Text.12sp.SemiBold"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:text="@string/card_editor_quantity"
-                style="@style/Text.12sp.SemiBold"
                 android:textAllCaps="true"
                 android:textColor="@color/colorPrimary"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -165,6 +166,7 @@
 
             <TextView
                 android:id="@+id/textViewDescriptionTitle"
+                style="@style/Text.12sp.SemiBold"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -172,7 +174,6 @@
                 android:layout_marginEnd="16dp"
                 android:text="@string/default_error_save"
                 android:textAllCaps="true"
-                style="@style/Text.12sp.SemiBold"
                 android:textColor="@color/colorPrimary"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -197,9 +198,20 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/main_bottom_navigation_height"
         android:layout_gravity="bottom"
-        android:text="@string/card_editor_add"
+        android:text="@string/card_editor_save"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/buttonSaveCard"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/scrollView2" />
 
 </android.support.constraint.ConstraintLayout>

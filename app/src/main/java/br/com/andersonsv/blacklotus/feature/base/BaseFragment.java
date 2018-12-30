@@ -1,5 +1,7 @@
 package br.com.andersonsv.blacklotus.feature.base;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -15,6 +17,7 @@ import android.text.Html;
 import android.text.Spanned;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -55,5 +58,19 @@ public class BaseFragment extends Fragment {
         if (view.requestFocus()) {
             getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         }
+    }
+
+    public void showSaveDialog(String title, String message){
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+        builder.setTitle(title);
+        builder.setMessage(message);
+
+        builder.setNeutralButton(getContext().getResources().getString(R.string.default_close), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface arg0, int arg1) {
+                arg0.dismiss();
+            }
+        }).show();
+
     }
 }

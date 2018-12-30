@@ -116,10 +116,6 @@ public class CardAdapter extends FirestoreRecyclerAdapter<CardModel, CardAdapter
             Spanned spanned = Html.fromHtml(text, this, null);
             holder.mCost.setText(spanned);
         }
-        //holder.Cost.setLayoutManager(linearLayoutManager);
-
-        //CostAdapter costAdapter = new CostAdapter(mContext, costs);
-       // holder.mRecyclerCost.setAdapter(costAdapter);
     }
 
     @Override

@@ -6,18 +6,25 @@ import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.LevelListDrawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.text.Html;
 import android.text.Layout;
 import android.text.Spanned;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
+import br.com.andersonsv.blacklotus.BuildConfig;
 import br.com.andersonsv.blacklotus.R;
 import br.com.andersonsv.blacklotus.data.Card;
 import br.com.andersonsv.blacklotus.feature.base.BaseFragment;
@@ -27,10 +34,13 @@ import br.com.andersonsv.blacklotus.model.Rarity;
 import br.com.andersonsv.blacklotus.widget.TextDrawable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 import static br.com.andersonsv.blacklotus.util.Constants.CARD_DATA;
+import static br.com.andersonsv.blacklotus.util.Constants.CARD_LIST;
 import static br.com.andersonsv.blacklotus.util.Constants.CARD_MODEL;
 import static br.com.andersonsv.blacklotus.util.Constants.DECK_ID;
+import static br.com.andersonsv.blacklotus.util.Constants.DECK_LIST;
 
 public class CardEditorFragment extends BaseFragment implements Html.ImageGetter {
 
@@ -68,6 +78,9 @@ public class CardEditorFragment extends BaseFragment implements Html.ImageGetter
     @BindView(R.id.textViewDescription)
     TextView mDescription;
 
+    @BindView(R.id.progressBar)
+    ProgressBar mProgressBar;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -94,6 +107,7 @@ public class CardEditorFragment extends BaseFragment implements Html.ImageGetter
 
     private CardModel convertDataToModel(Card card) {
         CardModel cardModel = new CardModel();
+
         cardModel.setId(card.getId());
         cardModel.setName(card.getName());
         cardModel.setCost(card.getManaCost());
@@ -187,6 +201,34 @@ public class CardEditorFragment extends BaseFragment implements Html.ImageGetter
 
     private String replaceTypetImgSrc(String textToReplace){
         return textToReplace.replaceAll("\\{([^}]*)\\}", "<img src='$1'>");
+    }
+
+    @OnClick(R.id.buttonSaveCard)
+    public void saveCard(View view){
+
+        mProgressBar.setVisibility(View.VISIBLE);
+
+        FirebaseFirestore mDb = FirebaseFirestore.getInstance();
+
+        mDb.collection(BuildConfig.FIREBASE_COLLECTION)
+                .document(BuildConfig.FIREBASE_DOCUMENT)
+                .collection(CARD_LIST)
+                .document(mCard.getId())
+                .set(mCard.objectMap(mDeckId))
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        showSaveDialog(getString(R.string.card_save_title),getString(R.string.card_save_message));
+                        mProgressBar.setVisibility(View.GONE);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        showSaveDialog(getString(R.string.card_error_title),getString(R.string.card_error_message));
+                        mProgressBar.setVisibility(View.GONE);
+                    }
+                });
     }
 }
 

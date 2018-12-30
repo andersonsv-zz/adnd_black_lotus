@@ -3,6 +3,9 @@ package br.com.andersonsv.blacklotus.firebase;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class CardModel implements Parcelable {
 
     public static final Creator<CardModel> CREATOR = new Creator<CardModel>() {
@@ -173,5 +176,24 @@ public class CardModel implements Parcelable {
 
     public void setSetName(String setName) {
         this.setName = setName;
+    }
+
+    // Mapper to insert / update
+    public Map<String, Object> objectMap (String deckId){
+        Map<String, Object> card = new HashMap<>();
+
+        card.put("name", name);
+        card.put("quantity", quantity);
+        card.put("cost", cost);
+        card.put("rarity", rarity);
+        card.put("type", type);
+        card.put("image", image);
+        card.put("text", text);
+        card.put("power", power);
+        card.put("toughness", toughness);
+        card.put("setName", setName);
+        card.put("deckId", deckId);
+
+        return card;
     }
 }

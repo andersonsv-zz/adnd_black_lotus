@@ -10,6 +10,7 @@
     <string name="default_search">Search</string>
     <string name="default_rarity">Rarity</string>
     <string name="default_set">Set</string>
+    <string name="default_close">Close</string>
 
     <string name="offline_no_internet">Without internet?</string>
     <string name="offline_no_internet_retry">Retry again</string>
@@ -60,8 +61,13 @@
     <string name="card_land_title">Land(s)</string>
     <string name="card_title">Card(s)</string>
 
+
     <!--Card Editor-->
     <string name="card_editor_quantity">Quantity</string>
     <string name="card_editor_format_power_toughness">%d/%d</string>
-    <string name="card_editor_add">add card</string>
+    <string name="card_editor_save">save</string>
+    <string name="card_save_title">Success</string>
+    <string name="card_save_message">Card save</string>
+    <string name="card_error_title">Error</string>
+    <string name="card_error_message">Card dont\'t save</string>
 </resources>
