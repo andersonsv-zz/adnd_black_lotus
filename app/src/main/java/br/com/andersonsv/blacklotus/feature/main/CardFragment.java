@@ -72,10 +72,7 @@ public class CardFragment extends BaseFragment implements CardAdapter.CardRecycl
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             mDeck = bundle.getParcelable(DECK_PARCELABLE);
-
             mDeckName.setText(mDeck.getName());
-        } else  {
-
         }
 
         mDb = FirebaseFirestore.getInstance();

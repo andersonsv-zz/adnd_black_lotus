@@ -40,6 +40,7 @@ import butterknife.OnClick;
 
 import static br.com.andersonsv.blacklotus.util.Constants.DECK_ID;
 import static br.com.andersonsv.blacklotus.util.Constants.DECK_LIST;
+import static br.com.andersonsv.blacklotus.util.Constants.DECK_PARCELABLE;
 
 public class AddDeckFragment extends BaseFragment {
 
@@ -127,7 +128,6 @@ public class AddDeckFragment extends BaseFragment {
             deck.setChangeDeck(mDeckChange.isChecked());
             deck.setNumberOfCards(0);
 
-
             mDb.collection(BuildConfig.FIREBASE_COLLECTION)
                 .document(BuildConfig.FIREBASE_DOCUMENT)
                 .collection(DECK_LIST)
@@ -137,8 +137,10 @@ public class AddDeckFragment extends BaseFragment {
                     public void onSuccess(DocumentReference documentReference) {
                         Fragment cardFragment = CardFragment.newInstance();
 
+                        deck.setId(documentReference.getId());
+
                         Bundle bundle = new Bundle();
-                        bundle.putString(DECK_ID, documentReference.getId());
+                        bundle.putParcelable(DECK_PARCELABLE, deck);
                         cardFragment.setArguments(bundle);
 
                         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
