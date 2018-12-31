@@ -2,6 +2,7 @@ package br.com.andersonsv.blacklotus.feature.main;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,10 +12,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import br.com.andersonsv.blacklotus.R;
+import br.com.andersonsv.blacklotus.feature.base.BaseFragment;
+import br.com.andersonsv.blacklotus.feature.login.LoginActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
-public class SettingFragment extends Fragment {
+public class SettingFragment extends BaseFragment {
 
     private FirebaseUser mUser;
 
@@ -42,6 +46,20 @@ public class SettingFragment extends Fragment {
             mEmail.setText(mUser.getEmail());
         }
 
+        if (savedInstanceState == null) {
+            Fragment preferenceFragment = new SettingPreferencesFragment();
+            FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+            ft.add(R.id.sharedPreferences, preferenceFragment);
+            ft.commit();
+        }
+
         return rootView;
+    }
+
+    @OnClick(R.id.buttonSignOut)
+    public void signOut(View v){
+       FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
+       mFirebaseAuth.signOut();
+       openActivity(LoginActivity.class);
     }
 }

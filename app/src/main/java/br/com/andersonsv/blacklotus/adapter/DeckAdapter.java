@@ -108,7 +108,7 @@ public class DeckAdapter extends FirestoreRecyclerAdapter<DeckModel, DeckAdapter
                 GradientDrawable.Orientation.TOP_BOTTOM,
                 colorArray);
 
-        gradientDrawable.setCornerRadii(new float[] { 50, 50, 50, 50, 50, 50, 50, 50 });
+        gradientDrawable.setShape(GradientDrawable.OVAL);
         holder.mColor.setImageDrawable(gradientDrawable);
     }
 

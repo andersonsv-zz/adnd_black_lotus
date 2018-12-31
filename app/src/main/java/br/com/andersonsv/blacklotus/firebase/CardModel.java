@@ -31,6 +31,7 @@ public class CardModel implements Parcelable {
     private String power;
     private String toughness;
     private String setName;
+    private Boolean land;
 
     private CardModel(Parcel in) {
         this.id = in.readString();
@@ -44,6 +45,7 @@ public class CardModel implements Parcelable {
         this.power = in.readString();
         this.toughness = in.readString();
         this.setName = in.readString();
+        this.land = in.readByte() != 0;
     }
 
     @Override
@@ -59,6 +61,8 @@ public class CardModel implements Parcelable {
         parcel.writeString(power);
         parcel.writeString(toughness);
         parcel.writeString(setName);
+        parcel.writeByte((byte) (land ? 1: 0));
+
     }
 
     @Override
@@ -77,7 +81,8 @@ public class CardModel implements Parcelable {
                      String text,
                      String power,
                      String toughness,
-                     String setName) {
+                     String setName,
+                     Boolean land) {
         this.name = name;
         this.quantity = numberOfCards;
         this.cost = cost;
@@ -88,6 +93,7 @@ public class CardModel implements Parcelable {
         this.power = power;
         this.toughness = toughness;
         this.setName = setName;
+        this.land = land;
     }
 
     public String getId() {
@@ -178,6 +184,14 @@ public class CardModel implements Parcelable {
         this.setName = setName;
     }
 
+    public Boolean getLand() {
+        return land;
+    }
+
+    public void setLand(Boolean land) {
+        this.land = land;
+    }
+
     // Mapper to insert / update
     public Map<String, Object> objectMap (String deckId){
         Map<String, Object> card = new HashMap<>();
@@ -193,6 +207,7 @@ public class CardModel implements Parcelable {
         card.put("toughness", toughness);
         card.put("setName", setName);
         card.put("deckId", deckId);
+        card.put("land", land);
 
         return card;
     }

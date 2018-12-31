@@ -24,6 +24,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
+import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
+
 import br.com.andersonsv.blacklotus.BuildConfig;
 import br.com.andersonsv.blacklotus.R;
 import br.com.andersonsv.blacklotus.data.Card;
@@ -73,7 +75,7 @@ public class CardEditorFragment extends BaseFragment implements Html.ImageGetter
     TextView mPowerToughness;
 
     @BindView(R.id.seekBarQuantity)
-    SeekBar mQuantity;
+    DiscreteSeekBar mQuantity;
 
     @BindView(R.id.textViewDescription)
     TextView mDescription;
@@ -112,13 +114,14 @@ public class CardEditorFragment extends BaseFragment implements Html.ImageGetter
         cardModel.setName(card.getName());
         cardModel.setCost(card.getManaCost());
         cardModel.setImage(card.getImage());
-        cardModel.setQuantity(0);
+        cardModel.setQuantity(1);
         cardModel.setRarity(card.getRarity().getTypeId());
         cardModel.setType(card.getType());
         cardModel.setText(card.getText());
         cardModel.setPower(card.getPower());
         cardModel.setToughness(card.getToughness());
         cardModel.setSetName(card.getSetName());
+        cardModel.setLand(card.getLand());
 
         return cardModel;
     }
@@ -154,13 +157,18 @@ public class CardEditorFragment extends BaseFragment implements Html.ImageGetter
 
         mPowerToughness.setText(powerToughness);
 
-        String text = replaceTypetImgSrc(mCard.getText());
-        Spanned spanned = Html.fromHtml(text, this, null);
-        mDescription.setText(spanned);
+        if (mCard.getText() != null) {
+            String text = replaceTypetImgSrc(mCard.getText());
+            Spanned spanned = Html.fromHtml(text, this, null);
+            mDescription.setText(spanned);
+        }
 
-        String cost = replaceTypetImgSrc(mCard.getCost());
-        Spanned spannedCost = Html.fromHtml(cost, this, null);
-        mCost.setText(spannedCost);
+        if (mCard.getCost() != null) {
+            String cost = replaceTypetImgSrc(mCard.getCost());
+            Spanned spannedCost = Html.fromHtml(cost, this, null);
+            mCost.setText(spannedCost);
+        }
+
     }
 
     @Override
@@ -207,6 +215,7 @@ public class CardEditorFragment extends BaseFragment implements Html.ImageGetter
     public void saveCard(View view){
 
         mProgressBar.setVisibility(View.VISIBLE);
+        mCard.setQuantity(mQuantity.getProgress());
 
         FirebaseFirestore mDb = FirebaseFirestore.getInstance();
 

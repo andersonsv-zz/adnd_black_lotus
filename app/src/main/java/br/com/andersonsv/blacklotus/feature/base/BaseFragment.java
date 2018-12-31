@@ -2,6 +2,7 @@ package br.com.andersonsv.blacklotus.feature.base;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -72,5 +73,11 @@ public class BaseFragment extends Fragment {
             }
         }).show();
 
+    }
+
+    public void openActivity(Class destination){
+        Intent intent = new Intent(getActivity(), destination);
+        startActivity(intent);
+        getActivity().finish();
     }
 }

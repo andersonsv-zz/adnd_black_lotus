@@ -1,6 +1,7 @@
 package br.com.andersonsv.blacklotus.feature.user;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
@@ -24,6 +25,7 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 
 import br.com.andersonsv.blacklotus.R;
 import br.com.andersonsv.blacklotus.feature.base.BaseActivity;
+import br.com.andersonsv.blacklotus.feature.main.MainActivity;
 import br.com.andersonsv.blacklotus.util.NetworkUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -134,8 +136,11 @@ public class UserActivity extends BaseActivity {
                                 if (task.isSuccessful()){
                                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-                                    UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(name).build();
+                                    UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                            .setDisplayName(name).build();
                                     user.updateProfile(profileUpdates);
+
+                                    openActivity(MainActivity.class);
                                 }
                             }
                         }

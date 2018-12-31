@@ -70,4 +70,20 @@
     <string name="card_save_message">Card save</string>
     <string name="card_error_title">Error</string>
     <string name="card_error_message">Card dont\'t save</string>
+
+    <!-- Preferences -->
+    <string name="pref_language">Language</string>
+    <string name="pref_language_summary">Second language for search</string>
+    <array name="second_language_api">
+        <item>Chinese Simplified</item>
+        <item>Chinese Traditional</item>
+        <item>French</item>
+        <item>German</item>
+        <item>Italian</item>
+        <item>Japanese</item>
+        <item>Korean</item>
+        <item>Portuguese (Brazil)</item>
+        <item>Russian</item>
+        <item>Spanish</item>
+    </array>
 </resources>

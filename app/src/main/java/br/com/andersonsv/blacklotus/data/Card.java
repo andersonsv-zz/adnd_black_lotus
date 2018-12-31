@@ -6,6 +6,10 @@ import android.os.Parcelable;
 import com.google.firebase.firestore.IgnoreExtraProperties;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.annotation.Nullable;
 
 import br.com.andersonsv.blacklotus.model.Rarity;
@@ -57,6 +61,9 @@ public class Card implements Parcelable {
     @SerializedName("setName")
     private final String setName;
 
+    @SerializedName("types")
+    private final List<String> types;
+
     private Card(Parcel in) {
         this.id = in.readString();
         this.name = in.readString();
@@ -69,6 +76,8 @@ public class Card implements Parcelable {
         this.power = in.readString();
         this.toughness = in.readString();
         this.setName = in.readString();
+        this.types = in.readArrayList(List.class.getClassLoader());
+
     }
 
     @Override
@@ -89,6 +98,7 @@ public class Card implements Parcelable {
         parcel.writeString(power);
         parcel.writeString(toughness);
         parcel.writeString(setName);
+        parcel.writeStringList(types);
     }
 
     public String getId() {
@@ -133,5 +143,17 @@ public class Card implements Parcelable {
 
     public String getToughness() {
         return toughness;
+    }
+
+    public boolean getLand(){
+        if (types != null){
+            for (String type : types) {
+                if (type.contains("Land")) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }
