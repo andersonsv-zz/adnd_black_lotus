@@ -26,16 +26,6 @@
         <activity
             android:name=".feature.main.MainActivity"
             android:label="@string/title_activity_main"></activity>
-
-        <receiver android:name=".CardAppWidget">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/card_app_widget_info" />
-        </receiver>
     </application>
 
 </manifest>

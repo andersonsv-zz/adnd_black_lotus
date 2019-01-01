@@ -16,7 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -42,7 +41,6 @@ import static br.com.andersonsv.blacklotus.util.Constants.CARD_DATA;
 import static br.com.andersonsv.blacklotus.util.Constants.CARD_LIST;
 import static br.com.andersonsv.blacklotus.util.Constants.CARD_MODEL;
 import static br.com.andersonsv.blacklotus.util.Constants.DECK_ID;
-import static br.com.andersonsv.blacklotus.util.Constants.DECK_LIST;
 
 public class CardEditorFragment extends BaseFragment implements Html.ImageGetter {
 
@@ -168,6 +166,23 @@ public class CardEditorFragment extends BaseFragment implements Html.ImageGetter
             Spanned spannedCost = Html.fromHtml(cost, this, null);
             mCost.setText(spannedCost);
         }
+
+        mQuantity.setOnProgressChangeListener(new DiscreteSeekBar.OnProgressChangeListener() {
+            @Override
+            public void onProgressChanged(DiscreteSeekBar seekBar, int value, boolean fromUser) {
+                Log.d("TAG", "" + value);
+            }
+
+            @Override
+            public void onStartTrackingTouch(DiscreteSeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(DiscreteSeekBar seekBar) {
+
+            }
+        });
 
     }
 

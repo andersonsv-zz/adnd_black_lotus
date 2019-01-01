@@ -60,6 +60,7 @@ dependencies {
     annotationProcessor "com.jakewharton:butterknife-compiler:$butterKnifeVersion"
     implementation 'com.opencsv:opencsv:4.4'
     implementation 'org.adw.library:discrete-seekbar:1.0.1'
+    implementation 'com.chauthai.swipereveallayout:swipe-reveal-layout:1.4.1'
 
     testImplementation "junit:junit:$junitVersion"
     androidTestImplementation "com.android.support.test:runner:$runnerVersion"
