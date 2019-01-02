@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.preference.PreferenceScreen
-xmlns:android="http://schemas.android.com/apk/res/android">
+<android.support.v7.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
 <android.support.v7.preference.PreferenceCategory
     android:title="@string/pref_language">
 
 
     <ListPreference
-        android:key="second_language_api"
+        android:key="key_second_language_api"
         android:title="@string/pref_language"
         android:summary="@string/pref_language_summary"
         android:entries="@array/second_language_api"
-        android:entryValues="@array/second_language_api"
-        />
+        android:entryValues="@array/second_language_api" />
 
 
 </android.support.v7.preference.PreferenceCategory>
@@ -20,19 +19,6 @@ xmlns:android="http://schemas.android.com/apk/res/android">
     <android.support.v7.preference.PreferenceCategory
         android:title="2">
 
-
-        <android.support.v7.preference.SwitchPreferenceCompat
-            android:key="key1"
-            android:title="Switch Preference"
-            android:summary="Switch Summary"
-            android:defaultValue="true" />
-
-        <android.support.v7.preference.EditTextPreference
-            android:key="key2"
-            android:title="Max. quantity of cards"
-            android:summary="Maximum amount of one type of card"
-            android:dialogMessage="Dialog Message"
-            android:defaultValue="Default value" />
         <android.support.v7.preference.CheckBoxPreference
             android:key="key3"
             android:title="CheckBox Preference"

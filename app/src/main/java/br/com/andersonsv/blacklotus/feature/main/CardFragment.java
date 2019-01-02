@@ -84,6 +84,11 @@ public class CardFragment extends BaseFragment implements CardAdapter.CardRecycl
         return rootView;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
     private void getCardList() {
         setLinearLayoutVerticalWithDivider(mCardRecycler);
 

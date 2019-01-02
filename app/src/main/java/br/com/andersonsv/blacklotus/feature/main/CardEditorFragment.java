@@ -10,7 +10,6 @@ import android.support.annotation.NonNull;
 import android.text.Html;
 import android.text.Layout;
 import android.text.Spanned;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,6 +79,9 @@ public class CardEditorFragment extends BaseFragment implements Html.ImageGetter
 
     @BindView(R.id.progressBar)
     ProgressBar mProgressBar;
+
+    @BindView(R.id.textViewQuantityInfo)
+    TextView mQuantityInfo;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -167,21 +169,20 @@ public class CardEditorFragment extends BaseFragment implements Html.ImageGetter
             mCost.setText(spannedCost);
         }
 
+        mQuantityInfo.setText(mCard.getQuantity().toString());
+        mQuantity.setProgress(mCard.getQuantity());
+
         mQuantity.setOnProgressChangeListener(new DiscreteSeekBar.OnProgressChangeListener() {
             @Override
             public void onProgressChanged(DiscreteSeekBar seekBar, int value, boolean fromUser) {
-                Log.d("TAG", "" + value);
+                mQuantityInfo.setText(String.valueOf(value));
             }
 
             @Override
-            public void onStartTrackingTouch(DiscreteSeekBar seekBar) {
-
-            }
+            public void onStartTrackingTouch(DiscreteSeekBar seekBar) { }
 
             @Override
-            public void onStopTrackingTouch(DiscreteSeekBar seekBar) {
-
-            }
+            public void onStopTrackingTouch(DiscreteSeekBar seekBar) { }
         });
 
     }

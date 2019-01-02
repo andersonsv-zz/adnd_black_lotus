@@ -17,7 +17,7 @@ public class SettingPreferencesFragment extends PreferenceFragmentCompat {
     public void onCreatePreferences(Bundle bundle, String s) {
         setPreferencesFromResource(R.xml.app_preferences, s);
 
-        secondLanguage = (ListPreference) findPreference("second_language_api");
+        secondLanguage = (ListPreference) findPreference("key_second_language_api");
 
         if(secondLanguage.getValue() != null){
             secondLanguage.setTitle(secondLanguage.getValue());
