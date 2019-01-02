@@ -60,6 +60,8 @@
     <!--Card-->
     <string name="card_land_title">Land(s)</string>
     <string name="card_title">Card(s)</string>
+    <string name="card_empty_state">There are no cards. \nRegister a new card</string>
+    <string name="land_empty_state">There are no lands. \nRegister a new card land</string>
 
 
     <!--Card Editor-->

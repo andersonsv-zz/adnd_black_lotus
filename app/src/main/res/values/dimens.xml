@@ -75,8 +75,8 @@
     <dimen name="empty_state_width">200dp</dimen>
 
     <!-- Card -->
-    <dimen name="card_empty_state_height">80dp</dimen>
-    <dimen name="card_empty_state_width">80dp</dimen>
+    <dimen name="card_empty_state_height">120dp</dimen>
+    <dimen name="card_empty_state_width">120dp</dimen>
 
     <!--
 Refer to App Widget Documentation for margin information

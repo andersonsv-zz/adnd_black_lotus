@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:text="@string/card_land_title"
         android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
@@ -30,28 +30,31 @@
 
     <LinearLayout
         android:id="@+id/linearLayoutEmptyStateLand"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:orientation="vertical"
+        android:visibility="gone"
+        android:gravity="center_horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewLand"
-        android:visibility="gone">
+        app:layout_constraintTop_toBottomOf="@+id/textViewLand">
 
         <ImageView
             android:layout_width="@dimen/card_empty_state_width"
             android:layout_height="@dimen/card_empty_state_height"
-            app:srcCompat="@drawable/deck_empty_state" />
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/land_empty_state" />
 
         <TextView
+            style="@style/Text.14sp.SemiBold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:lines="2"
-            android:text="@string/deck_empty_state"
+            android:text="@string/land_empty_state"
             android:textAlignment="center"
-            style="@style/Text.14sp.SemiBold"
-            android:textColor="@color/lightGray"/>
+            android:textColor="@color/lightGray" />
 
     </LinearLayout>
 

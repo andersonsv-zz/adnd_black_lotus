@@ -28,14 +28,15 @@
 
     <LinearLayout
         android:id="@+id/linearLayoutEmptyStateCard"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:orientation="vertical"
+        android:visibility="gone"
+        android:gravity="center_horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewCard"
-        android:visibility="gone">
+        app:layout_constraintTop_toBottomOf="@+id/textViewCard">
 
 
         <ImageView
@@ -48,7 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:lines="2"
-            android:text="@string/deck_empty_state"
+            android:text="@string/card_empty_state"
             android:textAlignment="center"
             android:textColor="@color/lightGray" />
 
