@@ -125,8 +125,9 @@ public class CardAdapter extends FirestoreRecyclerAdapter<CardModel, CardAdapter
 
     @Override
     public void onDataChanged() {
-        mProgressBar.setVisibility(View.VISIBLE);
         notifyDataSetChanged();
+
+        mProgressBar.setVisibility(View.GONE);
         mData = getSnapshots();
         if (getItemCount() == 0) {
             mEmptyState.setVisibility(View.VISIBLE);

@@ -74,6 +74,10 @@
     <dimen name="empty_state_height">200dp</dimen>
     <dimen name="empty_state_width">200dp</dimen>
 
+    <!-- Card -->
+    <dimen name="card_empty_state_height">80dp</dimen>
+    <dimen name="card_empty_state_width">80dp</dimen>
+
     <!--
 Refer to App Widget Documentation for margin information
 http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout

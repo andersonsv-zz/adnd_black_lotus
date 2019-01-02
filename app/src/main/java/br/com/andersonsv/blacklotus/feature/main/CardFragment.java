@@ -1,9 +1,15 @@
 package br.com.andersonsv.blacklotus.feature.main;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -20,12 +26,20 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import br.com.andersonsv.blacklotus.BuildConfig;
 import br.com.andersonsv.blacklotus.R;
 import br.com.andersonsv.blacklotus.adapter.CardAdapter;
 import br.com.andersonsv.blacklotus.feature.base.BaseFragment;
 import br.com.andersonsv.blacklotus.firebase.CardModel;
 import br.com.andersonsv.blacklotus.firebase.DeckModel;
+import br.com.andersonsv.blacklotus.util.CsvWriter;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -49,14 +63,19 @@ public class CardFragment extends BaseFragment implements CardAdapter.CardRecycl
     @BindView(R.id.progressBar)
     ProgressBar mProgressBar;
 
-    @BindView(R.id.linearLayoutEmptyState)
-    LinearLayout mEmptyState;
+    @BindView(R.id.linearLayoutEmptyStateLand)
+    LinearLayout mLandEmptyStateLand;
+
+    @BindView(R.id.linearLayoutEmptyStateCard)
+    LinearLayout mLandEmptyStateCard;
 
     @BindView(R.id.recyclerViewCardLand)
     RecyclerView mCardLandRecycler;
 
     @BindView(R.id.recyclerViewCard)
     RecyclerView mCardRecycler;
+
+    private static final int REQUEST_CODE_WRITE_EXTERNAL_STORAGE_PERMISSION = 1;
 
     public static CardFragment newInstance() {
         return new CardFragment();
@@ -68,6 +87,8 @@ public class CardFragment extends BaseFragment implements CardAdapter.CardRecycl
         View rootView = inflater.inflate(R.layout.fragment_card, container, false);
 
         ButterKnife.bind(this, rootView);
+
+        mProgressBar.setVisibility(View.VISIBLE);
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {
@@ -102,7 +123,7 @@ public class CardFragment extends BaseFragment implements CardAdapter.CardRecycl
                 .setQuery(query, CardModel.class)
                 .build();
 
-        mCardAdapter = new CardAdapter(response, mProgressBar, mEmptyState, this);
+        mCardAdapter = new CardAdapter(response, mProgressBar, mLandEmptyStateCard, this);
         mCardAdapter.notifyDataSetChanged();
         mCardRecycler.setAdapter(mCardAdapter);
     }
@@ -120,7 +141,7 @@ public class CardFragment extends BaseFragment implements CardAdapter.CardRecycl
                 .setQuery(query, CardModel.class)
                 .build();
 
-        mLandAdapter = new CardAdapter(response, mProgressBar, mEmptyState, this);
+        mLandAdapter = new CardAdapter(response, mProgressBar, mLandEmptyStateLand, this);
         mLandAdapter.notifyDataSetChanged();
         mCardLandRecycler.setAdapter(mLandAdapter);
     }
@@ -130,6 +151,7 @@ public class CardFragment extends BaseFragment implements CardAdapter.CardRecycl
         super.onStart();
         mLandAdapter.startListening();
         mCardAdapter.startListening();
+        mProgressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -166,13 +188,38 @@ public class CardFragment extends BaseFragment implements CardAdapter.CardRecycl
         switch (id) {
             case R.id.deck_share:
 
-                Intent sendIntent = new Intent();
-                sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.");
-                sendIntent.setType("text/plain");
-                startActivity(sendIntent);
+                int writeExternalStoragePermission = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
-                return true;
+                if (writeExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_WRITE_EXTERNAL_STORAGE_PERMISSION);
+                } else {
+
+            File target = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+            List<CardModel> cardModelList = new ArrayList<>();
+
+            cardModelList.addAll(mLandAdapter.getSnapshots());
+            cardModelList.addAll(mCardAdapter.getSnapshots());
+
+            String outString = new SimpleDateFormat("dd-MM-yyyy hh-mm-ss").format(new Date());
+
+            File mFile = new File(target, "csv_deck_" + outString + ".csv");
+            try {
+                mFile.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            CsvWriter.generateCsvFile(cardModelList, mFile);
+
+            Intent sendIntent = new Intent();
+            sendIntent.setAction(Intent.ACTION_SEND);
+            sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(mFile));
+            sendIntent.setType("text/csv");
+            startActivity(sendIntent);
+
+        }
+
+
+                    return true;
         }
 
         return super.onOptionsItemSelected(item);
