@@ -1,8 +1,10 @@
 package br.com.andersonsv.blacklotus.feature.main;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -35,7 +38,6 @@ public class SearchCardFragment extends BaseFragment implements SearchView.OnQue
 
     private CardSearchAdapter mAdapter;
     private String mDeckId;
-    private Card mCard;
 
     @BindView(R.id.recyclerViewSearchCard)
     RecyclerView mRecyclerCard;
@@ -45,6 +47,8 @@ public class SearchCardFragment extends BaseFragment implements SearchView.OnQue
 
     @BindView(R.id.progressBar)
     ProgressBar mProgressBar;
+
+    private SearchView searchView;
 
     public static SearchCardFragment newInstance() {
         return new SearchCardFragment();
@@ -81,7 +85,7 @@ public class SearchCardFragment extends BaseFragment implements SearchView.OnQue
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.search_menu, menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView = (SearchView) searchItem.getActionView();
         searchView.setOnQueryTextListener(this);
 
         searchView.setQueryHint(getString(R.string.default_search));
@@ -96,23 +100,21 @@ public class SearchCardFragment extends BaseFragment implements SearchView.OnQue
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-        return true;
-    }
 
-    @Override
-    public boolean onQueryTextChange(String newText) {
-
-        if (newText == null || newText.trim().isEmpty()) {
+        if (query == null || query.trim().isEmpty()) {
             return false;
         }
 
-        if(newText.length() > 3){
+        if(query.length() > 3){
+
+            //close keyboard
+            searchView.clearFocus();
 
             mProgressBar.setVisibility(View.VISIBLE);
 
             CardService service = RetrofitClientInstance.getRetrofitInstance().create(CardService.class);
 
-            Call<Cards> call = service.getCards(newText.toLowerCase(), 10);
+            Call<Cards> call = service.getCards(query.toLowerCase(), 10);
             call.enqueue(new Callback<Cards>() {
                 @Override
                 public void onResponse(Call<Cards> call, Response<Cards> response) {
@@ -136,6 +138,13 @@ public class SearchCardFragment extends BaseFragment implements SearchView.OnQue
             });
             return true;
         }
+        return true;
+    }
+
+
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
         return false;
     }
 

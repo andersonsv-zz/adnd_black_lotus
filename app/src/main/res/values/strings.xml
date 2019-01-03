@@ -12,6 +12,9 @@
     <string name="default_set">Set</string>
     <string name="default_close">Close</string>
 
+    <string name="default_content_description_card">Card image</string>
+
+
     <string name="offline_no_internet">Without internet?</string>
     <string name="offline_no_internet_retry">Retry again</string>
 

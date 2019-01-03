@@ -47,6 +47,7 @@ public class CardSearchAdapter extends RecyclerView.Adapter<CardSearchAdapter.Vi
         if (card.getImage() != null) {
             Picasso.with(mInflater.getContext())
                     .load(card.getImage())
+                    .placeholder(R.drawable.ic_image_not_found)
                     .into(holder.mCardImage);
         }
         holder.mRarity.setText(card.getRarity().getTypeId());
