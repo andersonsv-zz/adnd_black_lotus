@@ -1,0 +1,79 @@
+package br.com.andersonsv.blacklotus.service;
+
+import android.content.Context;
+import android.content.Intent;
+import android.widget.RemoteViews;
+import android.widget.RemoteViewsService;
+
+import java.util.List;
+
+import br.com.andersonsv.blacklotus.R;
+import br.com.andersonsv.blacklotus.firebase.CardModel;
+import br.com.andersonsv.blacklotus.provider.DeckWidgetProvider;
+
+public class DeckWidgetService extends RemoteViewsService {
+    private List<CardModel> cards;
+
+    @Override
+    public RemoteViewsFactory onGetViewFactory(Intent intent) {
+        return new RemoteListViewsFactory(getApplicationContext());
+    }
+
+    class RemoteListViewsFactory implements DeckWidgetService.RemoteViewsFactory {
+
+        final Context mContext;
+
+        RemoteListViewsFactory(Context mContext) {
+            this.mContext = mContext;
+        }
+
+        @Override
+        public void onCreate() {
+
+        }
+
+        @Override
+        public void onDataSetChanged() {
+            cards = DeckWidgetProvider.cards;
+        }
+
+        @Override
+        public void onDestroy() {
+
+        }
+
+        @Override
+        public int getCount() {
+            if (cards == null) return 0;
+            return cards.size();
+        }
+
+        @Override
+        public RemoteViews getViewAt(int index) {
+            RemoteViews views = new RemoteViews(mContext.getPackageName(), R.layout.widget_card_item);
+            CardModel card = cards.get(index);
+            views.setTextViewText(R.id.tvIngredientItem, card.getName());
+            return views;
+        }
+
+        @Override
+        public RemoteViews getLoadingView() {
+            return null;
+        }
+
+        @Override
+        public int getViewTypeCount() {
+            return 1;
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return 0;
+        }
+
+        @Override
+        public boolean hasStableIds() {
+            return false;
+        }
+    }
+}

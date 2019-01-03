@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Parcelable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -39,6 +40,7 @@ import br.com.andersonsv.blacklotus.adapter.CardAdapter;
 import br.com.andersonsv.blacklotus.feature.base.BaseFragment;
 import br.com.andersonsv.blacklotus.firebase.CardModel;
 import br.com.andersonsv.blacklotus.firebase.DeckModel;
+import br.com.andersonsv.blacklotus.provider.DeckWidgetProvider;
 import br.com.andersonsv.blacklotus.util.CsvWriter;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -217,9 +219,7 @@ public class CardFragment extends BaseFragment implements CardAdapter.CardRecycl
             startActivity(sendIntent);
 
         }
-
-
-                    return true;
+        return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -227,6 +227,8 @@ public class CardFragment extends BaseFragment implements CardAdapter.CardRecycl
 
     @Override
     public void onClick(CardModel cardModel) {
+
+        sendCardsToWidget();
         Fragment cardEditorFragment = CardEditorFragment.newInstance();
 
         Bundle bundle = new Bundle();
@@ -237,5 +239,23 @@ public class CardFragment extends BaseFragment implements CardAdapter.CardRecycl
         transaction.replace(R.id.container, cardEditorFragment);
         transaction.addToBackStack(null);
         transaction.commit();
+
     }
+
+
+    private void sendCardsToWidget() {
+
+        List<CardModel> cardModelList = new ArrayList<>();
+
+        cardModelList.addAll(mLandAdapter.getSnapshots());
+        cardModelList.addAll(mCardAdapter.getSnapshots());
+
+        Intent intent = new Intent(getActivity(), DeckWidgetProvider.class);
+
+        intent.putExtra(DECK_PARCELABLE, mDeck);
+        intent.putParcelableArrayListExtra(CARD_LIST,  (ArrayList<? extends Parcelable>) cardModelList);
+        getActivity().sendBroadcast(intent);
+    }
+
+
 }
