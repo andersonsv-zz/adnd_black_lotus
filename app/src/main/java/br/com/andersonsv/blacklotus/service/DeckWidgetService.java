@@ -2,8 +2,13 @@ package br.com.andersonsv.blacklotus.service;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
+
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.util.List;
 
@@ -50,9 +55,29 @@ public class DeckWidgetService extends RemoteViewsService {
 
         @Override
         public RemoteViews getViewAt(int index) {
-            RemoteViews views = new RemoteViews(mContext.getPackageName(), R.layout.widget_card_item);
+            final RemoteViews views = new RemoteViews(mContext.getPackageName(), R.layout.widget_card_item);
             CardModel card = cards.get(index);
-            views.setTextViewText(R.id.tvIngredientItem, card.getName());
+            views.setTextViewText(R.id.textViewCardName, card.getName());
+
+           /* Picasso.with(mContext)
+                    .load(card.getImage())
+                    .into(new Target() {
+                        @Override
+                        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                            views.setImageViewBitmap(R.id.imageViewCard, bitmap);
+                        }
+
+                        @Override
+                        public void onBitmapFailed(Drawable errorDrawable) {
+
+                        }
+
+                        @Override
+                        public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                        }
+                    });*/
+
             return views;
         }
 

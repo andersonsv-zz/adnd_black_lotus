@@ -4,8 +4,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <ImageView
+        android:id="@+id/imageViewCard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
     <TextView
-        android:id="@+id/tvIngredientItem"
+        android:id="@+id/textViewCardName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@style/Text.12sp"/>
