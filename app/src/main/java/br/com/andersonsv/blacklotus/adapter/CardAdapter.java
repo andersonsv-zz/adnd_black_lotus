@@ -36,6 +36,8 @@ import br.com.andersonsv.blacklotus.widget.TextDrawable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static br.com.andersonsv.blacklotus.util.StringUtils.replaceTypetImgSrc;
+
 public class CardAdapter extends FirestoreRecyclerAdapter<CardModel, CardAdapter.ViewHolder> implements Html.ImageGetter {
     private ProgressBar mProgressBar;
     private LinearLayout mEmptyState;
@@ -86,9 +88,11 @@ public class CardAdapter extends FirestoreRecyclerAdapter<CardModel, CardAdapter
             holder.mRarity.setTextColor(color);
         }
 
-        Picasso.with(mInflater.getContext())
-                .load(model.getImage())
-                .into(holder.mCardImage);
+        if (model.getImage() != null) {
+            Picasso.with(mInflater.getContext())
+                    .load(model.getImage())
+                    .into(holder.mCardImage);
+        }
 
         holder.mCardImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,7 +100,12 @@ public class CardAdapter extends FirestoreRecyclerAdapter<CardModel, CardAdapter
 
                 View layoutDialog = View.inflate(mContext, R.layout.dialog_card_image, null);
                 ImageView imgRefInflated = layoutDialog.findViewById(R.id.imageViewDialog);
-                Picasso.with(mInflater.getContext()).load(model.getImage()).into(imgRefInflated);
+
+                if (model.getImage() != null){
+                    Picasso.with(mInflater.getContext()).load(model.getImage()).into(imgRefInflated);
+                } else {
+                    imgRefInflated.setImageDrawable(mContext.getDrawable(R.drawable.ic_image_not_found));
+                }
 
                 final Dialog dialog = new Dialog(mContext,android.R.style.Theme_Light_NoTitleBar_Fullscreen); //default fullscreen titlebar
 
@@ -174,10 +183,6 @@ public class CardAdapter extends FirestoreRecyclerAdapter<CardModel, CardAdapter
             CardModel movie = mData.get(adapterPosition);
             mClickHandler.onClick(movie);
         }
-    }
-
-    private String replaceTypetImgSrc(String textToReplace){
-        return textToReplace.replaceAll("\\{([^}]*)\\}", "<img src='$1'>");
     }
 
     @Override

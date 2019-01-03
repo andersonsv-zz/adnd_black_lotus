@@ -9,4 +9,7 @@ public class Constants {
     public final static String CARD_DATA = "card_data";
     public final static String CARD_MODEL = "card_model";
     public final static String CARD_LAND = "land";
+    public final static String EMPTY_STRING = "";
+    public final static String IMAGE_REPLACE = "<img src='$1'>";
+    public final static String REG_EXP_COST = "\\{([^}]*)\\}";
 }

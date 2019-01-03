@@ -10,10 +10,9 @@
         android:layout_height="100dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:scaleType="fitStart"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/deck_empty_state"/>
+        app:srcCompat="@drawable/ic_image_not_found" />
 
     <TextView
         android:id="@+id/textViewCardName"
