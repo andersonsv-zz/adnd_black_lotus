@@ -31,6 +31,7 @@ import br.com.andersonsv.blacklotus.feature.base.BaseFragment;
 import br.com.andersonsv.blacklotus.firebase.CardModel;
 import br.com.andersonsv.blacklotus.model.CardColor;
 import br.com.andersonsv.blacklotus.model.Rarity;
+import br.com.andersonsv.blacklotus.util.StringUtils;
 import br.com.andersonsv.blacklotus.widget.TextDrawable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,6 +41,7 @@ import static br.com.andersonsv.blacklotus.util.Constants.CARD_DATA;
 import static br.com.andersonsv.blacklotus.util.Constants.CARD_LIST;
 import static br.com.andersonsv.blacklotus.util.Constants.CARD_MODEL;
 import static br.com.andersonsv.blacklotus.util.Constants.DECK_ID;
+import static br.com.andersonsv.blacklotus.util.StringUtils.replaceTypetImgSrc;
 
 public class CardEditorFragment extends BaseFragment implements Html.ImageGetter {
 
@@ -221,10 +223,6 @@ public class CardEditorFragment extends BaseFragment implements Html.ImageGetter
 
             return layerDrawable;
         }
-    }
-
-    private String replaceTypetImgSrc(String textToReplace){
-        return textToReplace.replaceAll("\\{([^}]*)\\}", "<img src='$1'>");
     }
 
     @OnClick(R.id.buttonSaveCard)

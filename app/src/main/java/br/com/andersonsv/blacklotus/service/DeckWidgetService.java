@@ -2,13 +2,10 @@ package br.com.andersonsv.blacklotus.service;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.text.Html;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
-
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import java.util.List;
 
@@ -16,7 +13,7 @@ import br.com.andersonsv.blacklotus.R;
 import br.com.andersonsv.blacklotus.firebase.CardModel;
 import br.com.andersonsv.blacklotus.provider.DeckWidgetProvider;
 
-public class DeckWidgetService extends RemoteViewsService {
+public class DeckWidgetService extends RemoteViewsService  implements Html.ImageGetter {
     private List<CardModel> cards;
 
     @Override
@@ -59,25 +56,6 @@ public class DeckWidgetService extends RemoteViewsService {
             CardModel card = cards.get(index);
             views.setTextViewText(R.id.textViewCardName, card.getName());
 
-           /* Picasso.with(mContext)
-                    .load(card.getImage())
-                    .into(new Target() {
-                        @Override
-                        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                            views.setImageViewBitmap(R.id.imageViewCard, bitmap);
-                        }
-
-                        @Override
-                        public void onBitmapFailed(Drawable errorDrawable) {
-
-                        }
-
-                        @Override
-                        public void onPrepareLoad(Drawable placeHolderDrawable) {
-
-                        }
-                    });*/
-
             return views;
         }
 
@@ -100,5 +78,10 @@ public class DeckWidgetService extends RemoteViewsService {
         public boolean hasStableIds() {
             return false;
         }
+    }
+
+    @Override
+    public Drawable getDrawable(String source) {
+        return null;
     }
 }
