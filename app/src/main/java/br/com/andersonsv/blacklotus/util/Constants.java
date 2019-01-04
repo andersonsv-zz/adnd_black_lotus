@@ -12,4 +12,6 @@ public class Constants {
     public final static String EMPTY_STRING = "";
     public final static String IMAGE_REPLACE = "<img src='$1'>";
     public final static String REG_EXP_COST = "\\{([^}]*)\\}";
+
+    public final static String DATE_FORMAT_BR = "dd-MM-yyyy hh:mm:ss";
 }

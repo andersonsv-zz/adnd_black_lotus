@@ -213,7 +213,6 @@ public class CardEditorFragment extends BaseFragment implements Html.ImageGetter
             //textDrawable.setTextSize(12);
             textDrawable.setTextAlign(Layout.Alignment.ALIGN_NORMAL);
 
-
             GradientDrawable gD = new GradientDrawable();
             gD.setColor(Color.GRAY);
             gD.setShape(GradientDrawable.OVAL);

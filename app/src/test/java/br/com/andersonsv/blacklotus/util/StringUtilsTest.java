@@ -27,4 +27,17 @@ public class StringUtilsTest {
         String expected = Constants.IMAGE_REPLACE.replace("$1", "W").concat(Constants.IMAGE_REPLACE.replace("$1", "1"));
         assertEquals(typeConverted, expected);
     }
+
+
+    @Test
+    public void testFormatWithParams() {
+        String format = "%d/%d";
+        String expected = "1/10";
+
+        int [] values = {1, 10};
+
+        String result = StringUtils.formatWithParams(format, values );
+
+        assertEquals(result, expected);
+    }
 }

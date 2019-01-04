@@ -30,7 +30,7 @@ public class TextDrawable extends Drawable {
     /* Layout is used to measure and draw the text */
     private StaticLayout mTextLayout;
     /* Alignment of the text inside its bounds */
-    private Layout.Alignment mTextAlignment = Layout.Alignment.ALIGN_NORMAL;
+    private Layout.Alignment mTextAlignment = Layout.Alignment.ALIGN_CENTER;
     /* Optional path on which to draw the text */
     private Path mTextPath;
     /* Stateful text color list */
