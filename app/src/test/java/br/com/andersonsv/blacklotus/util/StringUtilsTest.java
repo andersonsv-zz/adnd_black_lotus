@@ -20,4 +20,11 @@ public class StringUtilsTest {
         assertEquals(typeConverted, Constants.IMAGE_REPLACE.replace("$1", "W"));
     }
 
+    @Test
+    public void testReplaceTwoItemsString() {
+        String replaceType = "{W}{1}";
+        String typeConverted = StringUtils.replaceTypetImgSrc(replaceType);
+        String expected = Constants.IMAGE_REPLACE.replace("$1", "W").concat(Constants.IMAGE_REPLACE.replace("$1", "1"));
+        assertEquals(typeConverted, expected);
+    }
 }
