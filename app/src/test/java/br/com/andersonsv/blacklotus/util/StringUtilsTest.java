@@ -1,6 +1,11 @@
 package br.com.andersonsv.blacklotus.util;
 
 import org.junit.Test;
+
+import java.util.Arrays;
+
+import br.com.andersonsv.blacklotus.R;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -28,16 +33,16 @@ public class StringUtilsTest {
         assertEquals(typeConverted, expected);
     }
 
-
     @Test
-    public void testFormatWithParams() {
-        String format = "%d/%d";
+    public void testFormatInt() {
+        String template = "%d/%d";
+        String typeConverted = StringUtils.formatStringInt(template, Arrays.asList(1, 10));
         String expected = "1/10";
-
-        int [] values = {1, 10};
-
-        String result = StringUtils.formatWithParams(format, values );
-
-        assertEquals(result, expected);
+        assertEquals(typeConverted, expected);
     }
+
+
+
+
+
 }

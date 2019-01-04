@@ -24,6 +24,8 @@ import com.squareup.picasso.Picasso;
 
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 
+import java.util.Arrays;
+
 import br.com.andersonsv.blacklotus.BuildConfig;
 import br.com.andersonsv.blacklotus.R;
 import br.com.andersonsv.blacklotus.data.Card;
@@ -154,7 +156,8 @@ public class CardEditorFragment extends BaseFragment implements Html.ImageGetter
 
         String powerToughness = "-";
         if (power != 0 && toughness != 0){
-            powerToughness = String.format(getContext().getString(R.string.card_editor_format_power_toughness), power, toughness);
+            powerToughness = StringUtils.formatStringInt(getContext().getString(R.string.card_editor_format_power_toughness), Arrays.asList( power, toughness));
+            //powerToughness = String.format(getContext().getString(R.string.card_editor_format_power_toughness), power, toughness);
         }
 
         mPowerToughness.setText(powerToughness);

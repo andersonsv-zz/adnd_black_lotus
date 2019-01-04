@@ -1,5 +1,7 @@
 package br.com.andersonsv.blacklotus.util;
 
+import java.util.List;
+
 import static br.com.andersonsv.blacklotus.util.Constants.EMPTY_STRING;
 import static br.com.andersonsv.blacklotus.util.Constants.IMAGE_REPLACE;
 import static br.com.andersonsv.blacklotus.util.Constants.REG_EXP_COST;
@@ -13,5 +15,7 @@ public class StringUtils {
         return EMPTY_STRING;
     }
 
-
+    public static String formatStringInt(String template, List<Integer> values){
+        return String.format(template, values.toArray());
+    }
 }
