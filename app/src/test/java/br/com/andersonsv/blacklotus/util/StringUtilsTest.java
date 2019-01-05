@@ -34,6 +34,14 @@ public class StringUtilsTest {
     }
 
     @Test
+    public void testNoReplaceTwoItemsString() {
+        String replaceType = "W1";
+        String typeConverted = StringUtils.replaceTypetImgSrc(replaceType);
+        String expected = "W1";
+        assertEquals(typeConverted, expected);
+    }
+
+    @Test
     public void testFormatInt() {
         String template = "%d/%d";
         String typeConverted = StringUtils.formatStringInt(template, Arrays.asList(1, 10));
