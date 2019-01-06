@@ -40,7 +40,7 @@
     <string name="login_forgot_password"><u>Forgot password?</u></string>
     <string name="title_activity_main">MainActivity</string>
     <string name="login_signin">Sign in</string>
-    <string name="login_auth_error">Authentication error occurred. s%</string>
+    <string name="login_auth_error">Authentication error occurred.</string>
     <string name="login_auth_password_error">Password with a minimum of 6 digits</string>
 
     <!-- Navigation bottom -->

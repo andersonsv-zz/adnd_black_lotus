@@ -43,8 +43,8 @@
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 
-    <style name="AppTheme.Button" parent="Widget.AppCompat.Button">
-        <item name="android:colorBackground">@color/colorAccent</item>
+    <style name="AppTheme.Button" parent="Widget.AppCompat.Button.Colored">
         <item name="android:textAllCaps">true</item>
+        <item name="android:colorActivatedHighlight">@color/white</item>
     </style>
 </resources>

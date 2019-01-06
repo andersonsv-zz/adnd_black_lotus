@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <integer name="password_length">10</integer>
+    <integer name="password_length">30</integer>
     <integer name="email_length">100</integer>
 
     <integer name="card_cost_list">40</integer>
