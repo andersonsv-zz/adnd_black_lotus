@@ -1,15 +1,9 @@
 package br.com.andersonsv.blacklotus.feature.login;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.TextInputEditText;
-import android.support.design.widget.TextInputLayout;
-import android.support.v4.app.NotificationCompat;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -48,7 +42,7 @@ public class LoginActivity extends BaseActivity implements Validator.ValidationL
 
     @Order(2)
     @NotEmpty
-    @Password
+    @Password(messageResId = R.string.login_auth_password_error)
     @BindView(R.id.textInputEditTextPassword)
     TextInputEditText mPassword;
 
