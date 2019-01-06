@@ -79,26 +79,10 @@ public class LoginActivity extends BaseActivity implements Validator.ValidationL
         mValidator.setViewValidatedAction(new Validator.ViewValidatedAction() {
             @Override
             public void onAllRulesPassed(View view) {
-                mEmail.setError(null);
-                mPassword.setError(null);
+                removeErrorTextInputLayout(mEmail);
+                removeErrorTextInputLayout(mPassword);
             }
         });
-
-        TextWatcher validationTextWatcher = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                mValidator.validate();
-            }
-        };
-
-       // mEmail.addTextChangedListener(validationTextWatcher);
-        //mPassword.addTextChangedListener(validationTextWatcher);
     }
 
     @OnClick(R.id.textViewSignUp)

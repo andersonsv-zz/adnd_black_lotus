@@ -86,8 +86,6 @@ dependencies {
         exclude module: 'recyclerview-v7'
         exclude group: 'com.android.support', module: 'support-annotations'
     }
-
-
 }
 
 apply plugin: 'com.google.gms.google-services'

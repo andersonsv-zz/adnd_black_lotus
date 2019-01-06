@@ -85,4 +85,10 @@ public class BaseActivity extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
+    public static void removeErrorTextInputLayout(TextInputEditText textInputEditText){
+        TextInputLayout textInputLayout = (TextInputLayout) textInputEditText.getParent().getParent();
+        textInputLayout.setErrorEnabled(true);
+        textInputLayout.setError("");
+    }
 }
