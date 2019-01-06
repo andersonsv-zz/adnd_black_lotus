@@ -1,20 +1,16 @@
 package br.com.andersonsv.blacklotus.feature.user;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
+import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.ProgressBar;
 
-import com.firebase.ui.auth.data.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -22,6 +18,14 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.mobsandgeeks.saripaar.ValidationError;
+import com.mobsandgeeks.saripaar.Validator;
+import com.mobsandgeeks.saripaar.annotation.ConfirmPassword;
+import com.mobsandgeeks.saripaar.annotation.Email;
+import com.mobsandgeeks.saripaar.annotation.NotEmpty;
+import com.mobsandgeeks.saripaar.annotation.Password;
+
+import java.util.List;
 
 import br.com.andersonsv.blacklotus.R;
 import br.com.andersonsv.blacklotus.feature.base.BaseActivity;
@@ -31,33 +35,27 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class UserActivity extends BaseActivity {
+import static br.com.andersonsv.blacklotus.util.Constants.VALIDATION_APP_COMPAT_EDIT_TEXT;
+import static br.com.andersonsv.blacklotus.util.Constants.VALIDATION_TEXT_INPUT_EDIT_TEXT;
 
-    private User mUser;
-    private FirebaseAuth mFirebaseAuth;
-
-    @BindView(R.id.textInputLayoutName)
-    TextInputLayout mLayoutName;
+public class UserActivity extends BaseActivity implements Validator.ValidationListener {
 
     @BindView(R.id.textInputEditTextName)
+    @NotEmpty
     TextInputEditText mName;
 
-    @BindView(R.id.textInputLayoutEmail)
-    TextInputLayout mLayoutEmail;
-
     @BindView(R.id.textInputEditTextEmail)
+    @NotEmpty(sequence = 0)
+    @Email(messageResId = R.string.default_email_error, sequence = 1)
     TextInputEditText mEmail;
 
-    @BindView(R.id.textInputLayoutPassword)
-    TextInputLayout mLayoutPassword;
-
     @BindView(R.id.textInputEditTextPassword)
+    @Password
     TextInputEditText mPassword;
 
-    @BindView(R.id.textInputLayoutPasswordConfirmation)
-    TextInputLayout mLayoutPasswordConfirmation;
-
     @BindView(R.id.textInputEditTextPasswordConfirmation)
+    @ConfirmPassword
+    @NotEmpty
     TextInputEditText mPasswordConfirmation;
 
     @BindView(R.id.toolbar)
@@ -69,7 +67,7 @@ public class UserActivity extends BaseActivity {
     @BindView(R.id.layoutCreateUser)
     CoordinatorLayout layout;
 
-    private Context context;
+    private Validator mValidator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,23 +75,52 @@ public class UserActivity extends BaseActivity {
         setContentView(R.layout.activity_user);
         ButterKnife.bind(this);
 
-        this.context = this;
-
+        initValidator();
         setSupportActionBar(mToolbar);
+    }
 
-        mFirebaseAuth = FirebaseAuth.getInstance();
-
-        mName.addTextChangedListener(new MyTextWatcher(mName));
-        mEmail.addTextChangedListener(new MyTextWatcher(mEmail));
-        mPassword.addTextChangedListener(new MyTextWatcher(mPassword));
-        mPasswordConfirmation.addTextChangedListener(new MyTextWatcher(mPasswordConfirmation));
+    private void initValidator(){
+        mValidator = new Validator(this);
+        mValidator.setValidationListener(this);
     }
 
     @OnClick(R.id.buttonSignUp)
-    public void signUp(View view) {
+    public void signUp(View view){
+        mValidator.validate();
+    }
 
-        NetworkUtils.isNetworkConnected(view.getContext());
+    private void createUser(final String email, final String password, final String name){
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
+        firebaseAuth.createUserWithEmailAndPassword(email, password)
+                .addOnFailureListener(this, new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        mProgressBar.setVisibility(View.GONE);
+                        snack(layout, e.getLocalizedMessage());
+                    }
+                })
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            mProgressBar.setVisibility(View.GONE);
+
+                            if (task.isSuccessful()){
+                                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+                                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                        .setDisplayName(name).build();
+                                user.updateProfile(profileUpdates);
+
+                                openActivity(MainActivity.class);
+                            }
+                        }
+                    }
+                );
+    }
+
+    @Override
+    public void onValidationSucceeded() {
         if (!NetworkUtils.isNetworkConnected(this)) {
             Snackbar snackbar = Snackbar.make(layout, R.string.offline_no_internet, Snackbar.LENGTH_INDEFINITE)
                     .setAction(R.string.offline_no_internet_retry, new View.OnClickListener() {
@@ -103,91 +130,31 @@ public class UserActivity extends BaseActivity {
                         }
                     });
             snackbar.show();
-        }else{
+        }else {
 
             mProgressBar.setVisibility(View.VISIBLE);
 
-            String email = mEmail.getText().toString();
-            String password = mPassword.getText().toString();
+            final String email = mEmail.getText().toString();
+            final String password = mPassword.getText().toString();
             final String name = mName.getText().toString();
 
-            if(validateForm()){
-               createUser(email, password, name);
-            }else{
-                mProgressBar.setVisibility(View.INVISIBLE);
-            }
+            createUser(email, password, name);
         }
+
     }
 
-    private void createUser(final String email, final String password, final String name){
-        mFirebaseAuth.createUserWithEmailAndPassword(email, password)
-                .addOnFailureListener(this, new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        mProgressBar.setVisibility(View.GONE);
-                        snack(layout, e.getLocalizedMessage());
-                    }
-                })
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                mProgressBar.setVisibility(View.GONE);
+    @Override
+    public void onValidationFailed(List<ValidationError> errors) {
+        for (ValidationError error : errors) {
+            View view = error.getView();
+            String message = error.getCollatedErrorMessage(this);
 
-                                if (task.isSuccessful()){
-                                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-                                    UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                                            .setDisplayName(name).build();
-                                    user.updateProfile(profileUpdates);
-
-                                    openActivity(MainActivity.class);
-                                }
-                            }
-                        }
-                );
-    }
-
-    private boolean validateForm(){
-        boolean valid = true;
-
-        valid = validate(mLayoutName, mName);
-        valid = validateEmail(mLayoutEmail, mEmail);
-        valid = validate(mLayoutPassword, mPassword);
-        valid = validate(mLayoutPasswordConfirmation, mPasswordConfirmation);
-
-        if (mPassword.getText().toString().trim().equals(mPasswordConfirmation.getText().toString().trim())) {
-
-        }
-
-        return valid;
-    }
-
-
-    private class MyTextWatcher implements TextWatcher {
-
-        private View view;
-
-        private MyTextWatcher(View view) {
-            this.view = view;
-        }
-
-        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        }
-
-        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        }
-
-        public void afterTextChanged(Editable editable) {
-            switch (view.getId()) {
-                case R.id.name:
-                    validate(mLayoutName, mEmail);
-                    break;
-                case R.id.email:
-                    validateEmail(mLayoutEmail, mEmail);
-                    break;
-                /*case R.id.input_password:
-                    validatePassword();
-                    break;*/
+            if (view.getClass().getSimpleName().equalsIgnoreCase(VALIDATION_APP_COMPAT_EDIT_TEXT)) {
+                ((AppCompatEditText) view).setError(message);
+            } else if (view.getClass().getSimpleName().equalsIgnoreCase(VALIDATION_TEXT_INPUT_EDIT_TEXT)) {
+                TextInputLayout textInputLayout = (TextInputLayout) view.getParent().getParent();
+                textInputLayout.setErrorEnabled(true);
+                textInputLayout.setError(message);
             }
         }
     }

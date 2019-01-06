@@ -14,7 +14,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".feature.login.LoginActivity">
+        <activity android:name=".feature.login.LoginActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,6 +29,10 @@
         <activity
             android:name=".feature.main.MainActivity"
             android:label="@string/title_activity_main" />
+
+        <activity
+            android:name=".feature.login.ForgotPasswordActivity"
+            android:label="@string/title_activity_user" />
 
         <receiver android:name=".provider.DeckWidgetProvider">
             <intent-filter>

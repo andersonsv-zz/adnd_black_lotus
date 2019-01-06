@@ -4,14 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".feature.main.MainActivity">
+    tools:context=".feature.main.MainActivity"
+    android:background="@color/white"
+    android:id="@+id/layout_login">
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="0dp"
         android:layout_height="@dimen/login_logo_height"
         android:layout_marginStart="@dimen/margin_large"
-        android:layout_marginTop="@dimen/margin_normal"
+        android:layout_marginTop="@dimen/margin_large"
         android:layout_marginEnd="@dimen/margin_large"
         android:src="@drawable/black_lotus_logo"
         app:layout_constraintEnd_toEndOf="parent"
@@ -25,10 +27,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_large"
-        android:layout_marginTop="@dimen/margin_larger"
+        android:layout_marginTop="@dimen/margin_40dp"
         android:layout_marginEnd="@dimen/margin_large"
-        app:counterEnabled="true"
-        app:counterMaxLength="@integer/email_length"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView">
@@ -40,7 +40,7 @@
             android:hint="@string/register_user_email_hint"
             android:imeOptions="actionDone"
             android:inputType="textEmailAddress"
-            android:maxLength="30"
+            android:maxLength="@integer/email_length"
             android:maxLines="1"
             app:errorEnabled="true" />
     </android.support.design.widget.TextInputLayout>
@@ -51,10 +51,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_large"
-        android:layout_marginTop="@dimen/margin_large"
+        android:layout_marginTop="40dp"
         android:layout_marginEnd="@dimen/margin_large"
-        app:counterEnabled="true"
-        app:counterMaxLength="@integer/password_length"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayoutEmail"
@@ -66,7 +64,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/register_user_password_hint"
             android:inputType="textPassword"
-            android:maxLength="15"
+            android:maxLength="30"
             android:maxLines="1"
             app:errorEnabled="true"
             app:passwordToggleEnabled="true" />
@@ -74,23 +72,25 @@
 
     <Button
         android:id="@+id/buttonLogin"
-        style="@style/ActionButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_normal"
         android:layout_marginTop="@dimen/margin_large"
         android:layout_marginEnd="@dimen/margin_normal"
         android:text="@string/login_signin"
+        android:clickable="true"
+        style="@style/AppTheme.Button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewForgotPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewForgotPassword"
+        />
 
     <TextView
         android:id="@+id/textViewAccount"
         style="@style/Text.14sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_normal"
+        android:layout_marginBottom="@dimen/margin_larger"
         android:text="@string/login_sign_message"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/textViewSignUp"
@@ -102,7 +102,7 @@
         android:id="@+id/textViewSignUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_normal"
+        android:layout_marginBottom="@dimen/margin_larger"
         android:text="@string/login_signup"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -130,4 +130,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 </android.support.constraint.ConstraintLayout>

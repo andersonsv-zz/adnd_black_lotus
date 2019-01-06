@@ -11,6 +11,7 @@
     <string name="default_rarity">Rarity</string>
     <string name="default_set">Set</string>
     <string name="default_close">Close</string>
+    <string name="default_error_title">Error</string>
 
     <string name="default_content_description_card">Card image</string>
 
@@ -36,9 +37,10 @@
     <!-- Login -->
     <string name="login_sign_message">Don\'t have an account?</string>
     <string name="login_signup"><u>Sign up</u></string>
-    <string name="login_forgot_password">Forgot password?</string>
+    <string name="login_forgot_password"><u>Forgot password?</u></string>
     <string name="title_activity_main">MainActivity</string>
     <string name="login_signin">Sign in</string>
+    <string name="login_auth_error">Authentication error occurred. s%</string>
 
     <!-- Navigation bottom -->
     <string name="navigation_decks">Decks</string>

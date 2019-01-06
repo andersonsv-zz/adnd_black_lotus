@@ -14,4 +14,7 @@ public class Constants {
     public final static String REG_EXP_COST = "\\{([^}]*)\\}";
 
     public final static String DATE_FORMAT_BR = "dd-MM-yyyy hh:mm:ss";
+
+    public final static String VALIDATION_APP_COMPAT_EDIT_TEXT = "AppCompatEditText";
+    public final static String VALIDATION_TEXT_INPUT_EDIT_TEXT = "TextInputEditText";
 }

@@ -71,7 +71,7 @@
                 android:hint="@string/register_user_email_hint"
                 android:imeOptions="actionDone"
                 android:inputType="textEmailAddress"
-                android:maxLength="30"
+                android:maxLength="@integer/email_length"
                 android:maxLines="1"
                 app:errorEnabled="true" />
         </android.support.design.widget.TextInputLayout>

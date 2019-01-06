@@ -42,4 +42,8 @@
         <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
+
+    <style name="AppTheme.Button">
+        <item name="colorButtonNormal">@color/colorAccent</item>
+    </style>
 </resources>
