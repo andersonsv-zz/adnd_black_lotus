@@ -5,8 +5,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
-import android.support.design.widget.TextInputLayout;
-import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -23,10 +21,12 @@ import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.ConfirmPassword;
 import com.mobsandgeeks.saripaar.annotation.Email;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
+import com.mobsandgeeks.saripaar.annotation.Order;
 import com.mobsandgeeks.saripaar.annotation.Password;
 
 import java.util.List;
 
+import br.com.andersonsv.blacklotus.EspressoIdlingResource;
 import br.com.andersonsv.blacklotus.R;
 import br.com.andersonsv.blacklotus.feature.base.BaseActivity;
 import br.com.andersonsv.blacklotus.feature.main.MainActivity;
@@ -35,27 +35,29 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static br.com.andersonsv.blacklotus.util.Constants.VALIDATION_APP_COMPAT_EDIT_TEXT;
-import static br.com.andersonsv.blacklotus.util.Constants.VALIDATION_TEXT_INPUT_EDIT_TEXT;
-
 public class UserActivity extends BaseActivity implements Validator.ValidationListener {
 
     @BindView(R.id.textInputEditTextName)
     @NotEmpty
+    @Order(1)
     TextInputEditText mName;
 
     @BindView(R.id.textInputEditTextEmail)
-    @NotEmpty(sequence = 0)
-    @Email(messageResId = R.string.default_email_error, sequence = 1)
+    @NotEmpty(sequence = 1)
+    @Email(sequence = 2)
+    @Order(2)
     TextInputEditText mEmail;
 
     @BindView(R.id.textInputEditTextPassword)
-    @Password
+    @NotEmpty(sequence = 1)
+    @Password(sequence = 2, messageResId = R.string.login_auth_password_error)
+    @Order(3)
     TextInputEditText mPassword;
 
     @BindView(R.id.textInputEditTextPasswordConfirmation)
-    @ConfirmPassword
-    @NotEmpty
+    @NotEmpty(sequence = 1)
+    @ConfirmPassword(sequence = 2)
+    @Order(4)
     TextInputEditText mPasswordConfirmation;
 
     @BindView(R.id.toolbar)
@@ -65,7 +67,7 @@ public class UserActivity extends BaseActivity implements Validator.ValidationLi
     ProgressBar mProgressBar;
 
     @BindView(R.id.layoutCreateUser)
-    CoordinatorLayout layout;
+    CoordinatorLayout mLayout;
 
     private Validator mValidator;
 
@@ -82,22 +84,35 @@ public class UserActivity extends BaseActivity implements Validator.ValidationLi
     private void initValidator(){
         mValidator = new Validator(this);
         mValidator.setValidationListener(this);
+
+        mValidator.setViewValidatedAction(new Validator.ViewValidatedAction() {
+            @Override
+            public void onAllRulesPassed(View view) {
+            removeErrorTextInputLayout(mName);
+            removeErrorTextInputLayout(mEmail);
+            removeErrorTextInputLayout(mPassword);
+            removeErrorTextInputLayout(mPasswordConfirmation);
+            }
+        });
     }
 
     @OnClick(R.id.buttonSignUp)
     public void signUp(View view){
+        hideKeyboardFrom(this, mLayout);
         mValidator.validate();
     }
 
     private void createUser(final String email, final String password, final String name){
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
+        EspressoIdlingResource.increment();
+
         firebaseAuth.createUserWithEmailAndPassword(email, password)
                 .addOnFailureListener(this, new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         mProgressBar.setVisibility(View.GONE);
-                        snack(layout, e.getLocalizedMessage());
+                        snack(mLayout, e.getLocalizedMessage());
                     }
                 })
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -107,7 +122,7 @@ public class UserActivity extends BaseActivity implements Validator.ValidationLi
 
                             if (task.isSuccessful()){
                                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
+                                EspressoIdlingResource.decrement();
                                 UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                                         .setDisplayName(name).build();
                                 user.updateProfile(profileUpdates);
@@ -122,7 +137,7 @@ public class UserActivity extends BaseActivity implements Validator.ValidationLi
     @Override
     public void onValidationSucceeded() {
         if (!NetworkUtils.isNetworkConnected(this)) {
-            Snackbar snackbar = Snackbar.make(layout, R.string.offline_no_internet, Snackbar.LENGTH_INDEFINITE)
+            Snackbar snackbar = Snackbar.make(mLayout, R.string.offline_no_internet, Snackbar.LENGTH_INDEFINITE)
                     .setAction(R.string.offline_no_internet_retry, new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -145,17 +160,6 @@ public class UserActivity extends BaseActivity implements Validator.ValidationLi
 
     @Override
     public void onValidationFailed(List<ValidationError> errors) {
-        for (ValidationError error : errors) {
-            View view = error.getView();
-            String message = error.getCollatedErrorMessage(this);
-
-            if (view.getClass().getSimpleName().equalsIgnoreCase(VALIDATION_APP_COMPAT_EDIT_TEXT)) {
-                ((AppCompatEditText) view).setError(message);
-            } else if (view.getClass().getSimpleName().equalsIgnoreCase(VALIDATION_TEXT_INPUT_EDIT_TEXT)) {
-                TextInputLayout textInputLayout = (TextInputLayout) view.getParent().getParent();
-                textInputLayout.setErrorEnabled(true);
-                textInputLayout.setError(message);
-            }
-        }
+        checkFormValidation(errors);
     }
 }

@@ -27,15 +27,15 @@
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/textInputLayoutName"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/input_layout_2columns_height"
             android:layout_marginStart="@dimen/margin_large"
             android:layout_marginTop="@dimen/margin_large"
             android:layout_marginEnd="@dimen/margin_large"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            app:layout_constraintTop_toTopOf="parent">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/textInputEditTextName"
@@ -54,15 +54,13 @@
             android:id="@+id/textInputLayoutEmail"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/input_layout_2columns_height"
             android:layout_marginStart="@dimen/margin_large"
-            android:layout_marginTop="@dimen/margin_large"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="@dimen/margin_large"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewHelpName"
-            app:counterEnabled="true"
-            app:counterMaxLength="@integer/email_length">
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayoutName">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/textInputEditTextEmail"
@@ -78,17 +76,15 @@
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/textInputLayoutPassword"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/input_layout_2columns_height"
             android:layout_marginStart="@dimen/margin_large"
-            android:layout_marginTop="@dimen/margin_large"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="@dimen/margin_large"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewHelpEmail"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:counterMaxLength="@integer/password_length"
-            app:counterEnabled="true"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayoutEmail"
             app:passwordToggleEnabled="true">
 
             <android.support.design.widget.TextInputEditText
@@ -99,23 +95,21 @@
                 android:inputType="textPassword"
                 android:maxLength="15"
                 android:maxLines="1"
-                app:passwordToggleEnabled="true"
-                app:errorEnabled="true" />
+                app:errorEnabled="true"
+                app:passwordToggleEnabled="true" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/textInputLayoutPasswordConfirmation"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/input_layout_2columns_height"
             android:layout_marginStart="@dimen/margin_large"
-            android:layout_marginTop="@dimen/margin_large"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="@dimen/margin_large"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewHelpPassword"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:counterMaxLength="@integer/password_length"
-            app:counterEnabled="true"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayoutPassword"
             app:passwordToggleEnabled="true">
 
             <android.support.design.widget.TextInputEditText
@@ -126,8 +120,8 @@
                 android:inputType="textPassword"
                 android:maxLength="15"
                 android:maxLines="1"
-                app:passwordToggleEnabled="true"
-                app:errorEnabled="true"/>
+                app:errorEnabled="true"
+                app:passwordToggleEnabled="true" />
         </android.support.design.widget.TextInputLayout>
 
         <Button
@@ -140,46 +134,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
-
-        <TextView
-            android:id="@+id/textViewHelpName"
-            style="@style/Text.12sp.Light"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginStart="@dimen/margin_large"
-            android:text="@string/register_user_name_help"
-            app:layout_constraintStart_toStartOf="@+id/textInputLayoutName"
-            app:layout_constraintTop_toBottomOf="@+id/textInputLayoutName" />
-
-        <TextView
-            android:id="@+id/textViewHelpEmail"
-            style="@style/Text.12sp.Light"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_large"
-            android:text="@string/register_user_email_help"
-            app:layout_constraintStart_toStartOf="@+id/textInputLayoutEmail"
-            app:layout_constraintTop_toBottomOf="@+id/textInputLayoutEmail" />
-
-        <TextView
-            android:id="@+id/textViewHelpPassword"
-            style="@style/Text.12sp.Light"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_large"
-            android:text="@string/register_user_password_help"
-            app:layout_constraintStart_toStartOf="@+id/textInputLayoutPassword"
-            app:layout_constraintTop_toBottomOf="@+id/textInputLayoutPassword" />
-
-        <TextView
-            android:id="@+id/textViewHelpPasswordConfirmation"
-            style="@style/Text.12sp.Light"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_normal"
-            android:text="@string/register_user_password_confirmation_help"
-            app:layout_constraintStart_toStartOf="@+id/textInputLayoutPasswordConfirmation"
-            app:layout_constraintTop_toBottomOf="@+id/textInputLayoutPasswordConfirmation" />
 
         <ProgressBar
             android:id="@+id/progressBar"

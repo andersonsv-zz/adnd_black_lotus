@@ -2,7 +2,6 @@ package br.com.andersonsv.blacklotus.feature.login;
 
 import android.support.test.espresso.IdlingRegistry;
 import android.support.test.filters.LargeTest;
-import android.support.test.filters.SmallTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
@@ -14,17 +13,13 @@ import org.junit.runner.RunWith;
 import br.com.andersonsv.blacklotus.EspressoIdlingResource;
 import br.com.andersonsv.blacklotus.R;
 import br.com.andersonsv.blacklotus.feature.BaseActivityTest;
-import br.com.andersonsv.blacklotus.util.ConstantsTest;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.RootMatchers.isDialog;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static br.com.andersonsv.blacklotus.util.ConstantsTest.TEXT_MSG_EMAIL;
 import static br.com.andersonsv.blacklotus.util.ConstantsTest.TEXT_MSG_REQUIRED;
 
@@ -74,5 +69,12 @@ public class LoginActivityTest extends BaseActivityTest {
         onView(withId(R.id.buttonLogin)).perform(click());
 
         onView(withId(R.id.textInputLayoutPassword)).check(matches(hasTextInputLayoutHintText(msgPassword)));
+    }
+
+    @Test
+    public void login() {
+        onView(withId(R.id.textInputEditTextEmail)).perform(typeText("teste@test.com"),closeSoftKeyboard());
+        onView(withId(R.id.textInputEditTextPassword)).perform(typeText("123456"),closeSoftKeyboard());
+        onView(withId(R.id.buttonLogin)).perform(click());
     }
 }

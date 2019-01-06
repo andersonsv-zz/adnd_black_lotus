@@ -74,8 +74,8 @@ public class LoginActivity extends BaseActivity implements Validator.ValidationL
         mValidator.setViewValidatedAction(new Validator.ViewValidatedAction() {
             @Override
             public void onAllRulesPassed(View view) {
-                removeErrorTextInputLayout(mEmail);
-                removeErrorTextInputLayout(mPassword);
+            removeErrorTextInputLayout(mEmail);
+            removeErrorTextInputLayout(mPassword);
             }
         });
     }
@@ -135,6 +135,4 @@ public class LoginActivity extends BaseActivity implements Validator.ValidationL
     public void onValidationFailed(List<ValidationError> errors) {
         checkFormValidation(errors);
     }
-
-
 }
