@@ -3,6 +3,7 @@ package br.com.andersonsv.blacklotus.model;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class CardColorTest {
 
@@ -23,12 +24,12 @@ public class CardColorTest {
     @Test
     public void get_null_color_code_by_id(){
         CardColor cardColor = CardColor.getById("Y");
-        assertEquals(cardColor, null);
+        assertNull(cardColor);
     }
 
     @Test
     public void get_null_color_code_by_code(){
         CardColor cardColor = CardColor.getByCode("{Y}");
-        assertEquals(cardColor, null);
+        assertNull(cardColor);
     }
 }

@@ -42,7 +42,8 @@
             android:id="@+id/imageViewEmptyState"
             android:layout_width="@dimen/empty_state_width"
             android:layout_height="@dimen/empty_state_height"
-            app:srcCompat="@drawable/deck_empty_state" />
+            app:srcCompat="@drawable/deck_empty_state"
+            android:contentDescription="@string/default_empty_state_deck_content_description"/>
 
         <TextView
             android:id="@+id/textViewEmptyState"

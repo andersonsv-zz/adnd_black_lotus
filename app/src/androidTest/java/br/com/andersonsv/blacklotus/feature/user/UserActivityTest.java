@@ -12,7 +12,7 @@ import org.junit.runner.RunWith;
 
 import java.util.Random;
 
-import br.com.andersonsv.blacklotus.EspressoIdlingResource;
+import br.com.andersonsv.blacklotus.util.EspressoIdlingResource;
 import br.com.andersonsv.blacklotus.R;
 import br.com.andersonsv.blacklotus.feature.BaseActivityTest;
 

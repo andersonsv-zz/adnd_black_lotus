@@ -12,7 +12,8 @@
         android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_image_not_found" />
+        app:srcCompat="@drawable/ic_image_not_found"
+        android:contentDescription="@string/default_card_content_description"/>
 
     <TextView
         android:id="@+id/textViewCardName"

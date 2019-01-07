@@ -13,7 +13,12 @@
     <string name="default_close">Close</string>
     <string name="default_error_title">Error</string>
 
-    <string name="default_content_description_card">Card image</string>
+    <!-- Content description -->
+    <string name="default_card_content_description">Card image</string>
+    <string name="default_deck_content_description">Deck image</string>
+    <string name="default_empty_state_deck_content_description">Empty state deck image</string>
+    <string name="default_empty_state_card_content_description">Empty state card image</string>
+    <string name="default_logo_content_description">Card image</string>
 
 
     <string name="offline_no_internet">Without internet?</string>
