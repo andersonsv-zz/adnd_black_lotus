@@ -42,6 +42,7 @@ public class DeckAdapter extends FirestoreRecyclerAdapter<DeckModel, DeckAdapter
         void onClick(DeckModel deck);
     }
 
+    @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         this.mContext = parent.getContext();

@@ -115,6 +115,7 @@ public class Card implements Parcelable {
         return rarity;
     }
 
+    @Nullable
     public String getImage() {
         return image;
     }

@@ -74,7 +74,7 @@ public class AddDeckFragment extends BaseFragment {
     private String mUserUid;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_add_deck, container, false);
 
@@ -82,7 +82,10 @@ public class AddDeckFragment extends BaseFragment {
         deck = new DeckModel();
 
         mDb = FirebaseFirestore.getInstance();
-        mUserUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        if(FirebaseAuth.getInstance().getCurrentUser() != null) {
+            mUserUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        }
+
 
         updateColor();
 
@@ -122,8 +125,13 @@ public class AddDeckFragment extends BaseFragment {
         mProgressBar.setVisibility(View.VISIBLE);
 
         if (validateForm()){
-            deck.setName(mName.getText().toString());
-            deck.setDescription(mDescription.getText().toString());
+
+            if(mName.getText() != null)
+                deck.setName(mName.getText().toString());
+
+            if(mDescription.getText() != null)
+                deck.setDescription(mDescription.getText().toString());
+
             deck.setChangeDeck(mDeckChange.isChecked());
             deck.setNumberOfCards(0);
 

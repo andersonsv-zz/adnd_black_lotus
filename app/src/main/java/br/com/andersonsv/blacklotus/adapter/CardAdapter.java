@@ -57,6 +57,7 @@ public class CardAdapter extends FirestoreRecyclerAdapter<CardModel, CardAdapter
         void onClick(CardModel cardModel);
     }
 
+    @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         this.mContext = parent.getContext();
