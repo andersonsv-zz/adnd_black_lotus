@@ -135,8 +135,6 @@ public class CardEditorFragment extends BaseFragment implements Html.ImageGetter
             Picasso.with(getContext())
                     .load(mCard.getImage())
                     .into(mCardImage);
-        } else {
-            //TODO - setar imagem de vazio
         }
 
         mCardName.setText(mCard.getName());

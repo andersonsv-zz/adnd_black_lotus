@@ -35,6 +35,8 @@
             android:name=".feature.login.ForgotPasswordActivity"
             android:label="@string/forgot_title" />
 
+        <activity android:name=".feature.base.BaseActivity" />
+
         <receiver android:name=".provider.DeckWidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>

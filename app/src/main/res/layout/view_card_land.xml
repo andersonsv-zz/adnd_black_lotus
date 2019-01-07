@@ -45,7 +45,8 @@
             android:layout_height="@dimen/card_empty_state_height"
             android:adjustViewBounds="true"
             android:scaleType="centerInside"
-            app:srcCompat="@drawable/land_empty_state" />
+            app:srcCompat="@drawable/land_empty_state"
+            android:contentDescription="@string/default_empty_state_card_content_description"/>
 
         <TextView
             style="@style/Text.14sp.SemiBold"

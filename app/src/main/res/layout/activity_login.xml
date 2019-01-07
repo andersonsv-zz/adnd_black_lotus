@@ -80,7 +80,7 @@
         android:layout_marginTop="@dimen/margin_large"
         android:layout_marginEnd="@dimen/margin_normal"
         android:text="@string/login_signin"
-        android:clickable="true"
+        android:focusable="true"
         style="@style/AppTheme.Button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
