@@ -144,6 +144,11 @@ public class CardAdapter extends FirestoreRecyclerAdapter<CardModel, CardAdapter
         }
     }
 
+    public void addItems(List<CardModel> moreItems) {
+        mData.addAll(moreItems);
+        notifyDataSetChanged();
+    }
+
     public void deleteItem(int position) {
         getSnapshots().getSnapshot(position).getReference().delete();
         notifyItemRemoved(position);

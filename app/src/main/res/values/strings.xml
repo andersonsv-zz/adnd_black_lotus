@@ -48,9 +48,8 @@
     <string name="login_auth_error">Authentication error occurred.</string>
     <string name="login_auth_password_error">Password with a minimum of 6 digits</string>
 
-    <!-- Navigation bottom -->
+    <!-- Navigation -->
     <string name="navigation_decks">Decks</string>
-    <string name="navigation_cards">Cards</string>
     <string name="navigation_settings">Settings</string>
 
     <!-- Decks -->

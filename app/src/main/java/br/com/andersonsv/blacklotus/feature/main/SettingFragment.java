@@ -37,7 +37,9 @@ public class SettingFragment extends BaseFragment {
         View rootView = inflater.inflate(R.layout.fragment_setting, container, false);
         ButterKnife.bind(this, rootView);
 
-       FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        ((MainActivity) getActivity()).getSupportActionBar().setTitle(R.string.navigation_settings);
+
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         if (firebaseUser != null) {
             mName.setText(firebaseUser.getDisplayName());

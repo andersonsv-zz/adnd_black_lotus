@@ -1,12 +1,22 @@
 package br.com.andersonsv.blacklotus.feature.main;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Canvas;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -19,11 +29,20 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import br.com.andersonsv.blacklotus.BuildConfig;
 import br.com.andersonsv.blacklotus.R;
 import br.com.andersonsv.blacklotus.adapter.DeckAdapter;
 import br.com.andersonsv.blacklotus.feature.base.BaseFragment;
+import br.com.andersonsv.blacklotus.firebase.CardModel;
 import br.com.andersonsv.blacklotus.firebase.DeckModel;
+import br.com.andersonsv.blacklotus.util.CsvWriter;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -55,10 +74,20 @@ public class DeckFragment extends BaseFragment implements DeckAdapter.DeckRecycl
         View rootView = inflater.inflate(R.layout.fragment_deck, container, false);
         ButterKnife.bind(this, rootView);
 
+        ((MainActivity) getActivity()).getSupportActionBar().setTitle(R.string.navigation_decks);
+
         setupView();
         getDeckList();
 
+        setHasOptionsMenu(true);
+
         return rootView;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.main_menu, menu);
+        super.onCreateOptionsMenu(menu,inflater);
     }
 
     private void setupView() {
@@ -142,5 +171,20 @@ public class DeckFragment extends BaseFragment implements DeckAdapter.DeckRecycl
         transaction.replace(R.id.container, cardFragment);
         transaction.addToBackStack(null);
         transaction.commit();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.settings:
+                Fragment settingFragment = SettingFragment.newInstance();
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.container, settingFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
