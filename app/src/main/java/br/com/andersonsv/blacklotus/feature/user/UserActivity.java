@@ -26,7 +26,7 @@ import com.mobsandgeeks.saripaar.annotation.Password;
 
 import java.util.List;
 
-import br.com.andersonsv.blacklotus.EspressoIdlingResource;
+import br.com.andersonsv.blacklotus.util.EspressoIdlingResource;
 import br.com.andersonsv.blacklotus.R;
 import br.com.andersonsv.blacklotus.feature.base.BaseActivity;
 import br.com.andersonsv.blacklotus.feature.main.MainActivity;

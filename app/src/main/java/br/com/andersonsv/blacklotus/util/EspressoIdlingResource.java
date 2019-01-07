@@ -1,6 +1,8 @@
-package br.com.andersonsv.blacklotus;
+package br.com.andersonsv.blacklotus.util;
 
 import android.support.test.espresso.IdlingResource;
+
+import br.com.andersonsv.blacklotus.util.SimpleCountingIdlingResource;
 
 public class EspressoIdlingResource {
     private static final String RESOURCE = "GLOBAL";

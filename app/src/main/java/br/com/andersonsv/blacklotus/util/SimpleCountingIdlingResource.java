@@ -1,4 +1,4 @@
-package br.com.andersonsv.blacklotus;
+package br.com.andersonsv.blacklotus.util;
 
 import android.support.test.espresso.IdlingResource;
 

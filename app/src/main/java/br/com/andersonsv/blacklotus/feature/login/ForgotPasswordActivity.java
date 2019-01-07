@@ -18,7 +18,7 @@ import com.mobsandgeeks.saripaar.annotation.Order;
 
 import java.util.List;
 
-import br.com.andersonsv.blacklotus.EspressoIdlingResource;
+import br.com.andersonsv.blacklotus.util.EspressoIdlingResource;
 import br.com.andersonsv.blacklotus.R;
 import br.com.andersonsv.blacklotus.feature.base.BaseActivity;
 import butterknife.BindView;

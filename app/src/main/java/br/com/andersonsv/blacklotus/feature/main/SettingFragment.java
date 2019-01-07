@@ -20,8 +20,6 @@ import butterknife.OnClick;
 
 public class SettingFragment extends BaseFragment {
 
-    private FirebaseUser mUser;
-
     @BindView(R.id.textViewName)
     TextView mName;
 
@@ -39,11 +37,11 @@ public class SettingFragment extends BaseFragment {
         View rootView = inflater.inflate(R.layout.fragment_setting, container, false);
         ButterKnife.bind(this, rootView);
 
-        mUser = FirebaseAuth.getInstance().getCurrentUser();
+       FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
-        if (mUser != null) {
-            mName.setText(mUser.getDisplayName());
-            mEmail.setText(mUser.getEmail());
+        if (firebaseUser != null) {
+            mName.setText(firebaseUser.getDisplayName());
+            mEmail.setText(firebaseUser.getEmail());
         }
 
         if (savedInstanceState == null) {

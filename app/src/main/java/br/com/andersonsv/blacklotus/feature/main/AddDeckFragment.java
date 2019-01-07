@@ -205,10 +205,7 @@ public class AddDeckFragment extends BaseFragment {
             return true;
         } else if (deck.getColor4() != null && deck.getColor4().equals(color)) {
             return true;
-        } else if (deck.getColor5() != null && deck.getColor5().equals(color)) {
-            return true;
-        }
-        return false;
+        } else return deck.getColor5() != null && deck.getColor5().equals(color);
     }
 
     private void updateColor(){
