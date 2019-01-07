@@ -50,7 +50,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="80dp"
-            android:gravity="top|left"
+            android:gravity="top|start"
             android:hint="@string/default_description"
             android:imeOptions="actionDone"
             android:inputType="textMultiLine"

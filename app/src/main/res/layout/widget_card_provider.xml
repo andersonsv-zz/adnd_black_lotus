@@ -14,7 +14,7 @@
 
         <TextView
             android:text="No deck selected"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:textSize="20sp"
             android:paddingLeft="5dp"
@@ -27,7 +27,7 @@
 
         <ImageView
             android:id="@+id/imageViewOpenApp"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_width="24dp"
             android:src="@drawable/ic_open_in_new_white_24dp"
