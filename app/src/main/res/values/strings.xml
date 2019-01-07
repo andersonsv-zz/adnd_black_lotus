@@ -97,4 +97,12 @@
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
 
+    <!-- Forgot -->
+    <string name="forgot_title">Recover password</string>
+    <string name="forgot_password_recover">recover</string>
+    <string name="forgot_password_help">Help</string>
+    <string name="forgot_email">E-mail</string>
+
+    <string name="forgot_dialog_title">E-mail send</string>
+    <string name="forgot_dialog_message">You will receive an email to reset your password</string>
 </resources>

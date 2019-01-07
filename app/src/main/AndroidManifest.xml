@@ -32,7 +32,7 @@
 
         <activity
             android:name=".feature.login.ForgotPasswordActivity"
-            android:label="@string/title_activity_user" />
+            android:label="@string/forgot_title" />
 
         <receiver android:name=".provider.DeckWidgetProvider">
             <intent-filter>
