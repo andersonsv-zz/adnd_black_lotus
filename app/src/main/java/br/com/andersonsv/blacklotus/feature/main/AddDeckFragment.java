@@ -24,6 +24,8 @@ import com.google.common.primitives.Ints;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.mobsandgeeks.saripaar.ValidationError;
+import com.mobsandgeeks.saripaar.Validator;
 import com.thebluealliance.spectrum.SpectrumDialog;
 
 import java.util.ArrayList;
@@ -41,7 +43,7 @@ import butterknife.OnClick;
 import static br.com.andersonsv.blacklotus.util.Constants.DECK_LIST;
 import static br.com.andersonsv.blacklotus.util.Constants.DECK_PARCELABLE;
 
-public class AddDeckFragment extends BaseFragment {
+public class AddDeckFragment extends BaseFragment implements Validator.ValidationListener {
 
     public static AddDeckFragment newInstance() {
         return new AddDeckFragment();
@@ -50,8 +52,8 @@ public class AddDeckFragment extends BaseFragment {
     @BindView(R.id.imageViewColor)
     ImageView mColor;
 
-    @BindView(R.id.containerAddDeck)
-    ConstraintLayout containerAddDeck;
+    @BindView(R.id.layout_add_deck)
+    ConstraintLayout layout;
 
     @BindView(R.id.textInputLayoutName)
     TextInputLayout mLayoutName;
@@ -73,6 +75,8 @@ public class AddDeckFragment extends BaseFragment {
     private FirebaseFirestore mDb;
     private String mUserUid;
 
+    private Validator mValidator;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -86,11 +90,25 @@ public class AddDeckFragment extends BaseFragment {
             mUserUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         }
 
-
         updateColor();
+        initValidator();
 
         return rootView;
     }
+
+    private void initValidator(){
+        mValidator = new Validator(this);
+        mValidator.setValidationListener(this);
+
+        mValidator.setViewValidatedAction(new Validator.ViewValidatedAction() {
+            @Override
+            public void onAllRulesPassed(View view) {
+            //    removeErrorTextInputLayout(mEmail);
+             //   removeErrorTextInputLayout(mPassword);
+            }
+        });
+    }
+
 
     @OnClick(R.id.buttonAddColor)
     public void addColor(View view){
@@ -248,5 +266,15 @@ public class AddDeckFragment extends BaseFragment {
         } else {
             ColorDeckUtil.setOneColor(Color.GRAY, mColor);
         }
+    }
+
+    @Override
+    public void onValidationSucceeded() {
+
+    }
+
+    @Override
+    public void onValidationFailed(List<ValidationError> errors) {
+        checkFormValidation(errors);
     }
 }

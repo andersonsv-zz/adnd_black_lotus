@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/containerAddDeck">
+    android:id="@+id/layout_add_deck">
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/textInputLayoutName"
