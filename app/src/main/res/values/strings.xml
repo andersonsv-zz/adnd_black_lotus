@@ -100,7 +100,7 @@
     <!-- Forgot -->
     <string name="forgot_title">Recover password</string>
     <string name="forgot_password_recover">recover</string>
-    <string name="forgot_password_help">Help</string>
+    <string name="forgot_password_help">Fill in your email address. You will receive an email with the steps</string>
     <string name="forgot_email">E-mail</string>
 
     <string name="forgot_dialog_title">E-mail send</string>
