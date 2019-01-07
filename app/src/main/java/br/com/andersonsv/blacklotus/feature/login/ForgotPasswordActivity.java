@@ -9,7 +9,6 @@ import android.widget.ProgressBar;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
@@ -22,7 +21,6 @@ import java.util.List;
 import br.com.andersonsv.blacklotus.EspressoIdlingResource;
 import br.com.andersonsv.blacklotus.R;
 import br.com.andersonsv.blacklotus.feature.base.BaseActivity;
-import br.com.andersonsv.blacklotus.feature.main.MainActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;

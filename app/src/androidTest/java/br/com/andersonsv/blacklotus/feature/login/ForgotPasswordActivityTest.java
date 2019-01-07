@@ -1,7 +1,6 @@
 package br.com.andersonsv.blacklotus.feature.login;
 
 import android.support.test.espresso.IdlingRegistry;
-import android.support.test.filters.LargeTest;
 import android.support.test.filters.MediumTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;

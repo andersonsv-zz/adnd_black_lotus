@@ -10,7 +10,6 @@ import android.graphics.drawable.LevelListDrawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
-import android.text.Layout;
 import android.text.Spanned;
 import android.util.Log;
 import android.view.LayoutInflater;

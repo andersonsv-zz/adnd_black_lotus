@@ -9,7 +9,6 @@ import android.view.MenuItem;
 
 import br.com.andersonsv.blacklotus.R;
 import br.com.andersonsv.blacklotus.feature.base.BaseActivity;
-import br.com.andersonsv.blacklotus.provider.DeckWidgetProvider;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
