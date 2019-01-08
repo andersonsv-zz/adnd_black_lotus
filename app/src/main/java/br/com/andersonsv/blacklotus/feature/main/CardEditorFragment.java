@@ -241,7 +241,12 @@ public class CardEditorFragment extends BaseFragment implements Html.ImageGetter
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        showSaveDialog(getString(R.string.card_save_title),getString(R.string.card_save_message));
+                        if(getFragmentManager().getBackStackEntryCount() > 0){
+                            getFragmentManager().popBackStackImmediate();
+                        }
+                        else{
+                            getActivity().onBackPressed();
+                        }
                         mProgressBar.setVisibility(View.GONE);
                     }
                 })
