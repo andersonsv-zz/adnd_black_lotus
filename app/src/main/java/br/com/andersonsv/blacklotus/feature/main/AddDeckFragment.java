@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -26,6 +27,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
+import com.mobsandgeeks.saripaar.annotation.NotEmpty;
+import com.mobsandgeeks.saripaar.annotation.Order;
 import com.thebluealliance.spectrum.SpectrumDialog;
 
 import java.util.ArrayList;
@@ -55,9 +58,8 @@ public class AddDeckFragment extends BaseFragment implements Validator.Validatio
     @BindView(R.id.layout_add_deck)
     ConstraintLayout layout;
 
-    @BindView(R.id.textInputLayoutName)
-    TextInputLayout mLayoutName;
-
+    @Order(1)
+    @NotEmpty
     @BindView(R.id.textInputEditTextName)
     TextInputEditText mName;
 
@@ -69,6 +71,9 @@ public class AddDeckFragment extends BaseFragment implements Validator.Validatio
 
     @BindView(R.id.progressBar)
     ProgressBar mProgressBar;
+
+    @BindView(R.id.textViewErrorColor)
+    TextView mColorError;
 
     private DeckModel deck;
 
@@ -139,66 +144,21 @@ public class AddDeckFragment extends BaseFragment implements Validator.Validatio
 
     @OnClick(R.id.buttonSaveDeck)
     public void saveDeck() {
-
-        mProgressBar.setVisibility(View.VISIBLE);
-
-        if (validateForm()){
-
-            if(mName.getText() != null)
-                deck.setName(mName.getText().toString());
-
-            if(mDescription.getText() != null)
-                deck.setDescription(mDescription.getText().toString());
-
-            deck.setChangeDeck(mDeckChange.isChecked());
-            deck.setNumberOfCards(0);
-
-            mDb.collection(BuildConfig.FIREBASE_COLLECTION)
-                .document(BuildConfig.FIREBASE_DOCUMENT)
-                .collection(DECK_LIST)
-                .add(deck.objectMap(mUserUid))
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Fragment cardFragment = CardFragment.newInstance();
-
-                        deck.setId(documentReference.getId());
-
-                        Bundle bundle = new Bundle();
-                        bundle.putParcelable(DECK_PARCELABLE, deck);
-                        cardFragment.setArguments(bundle);
-
-                        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                        transaction.replace(R.id.container, cardFragment);
-                        transaction.addToBackStack(null);
-                        transaction.commit();
-
-                        mProgressBar.setVisibility(View.GONE);
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getContext(), R.string.default_error_save, Toast.LENGTH_LONG).show();
-                        mProgressBar.setVisibility(View.GONE);
-                    }
-                });
-        }
+        mValidator.validate();
     }
 
-    private boolean validateForm(){
-        boolean valid;
-        valid = validate(mLayoutName, mName);
+    private boolean validateColor(){
+        boolean valid = true;
 
         if (deck.getColor1() == null) {
-
+            valid = false;
         }
-
         return valid;
     }
 
     private void checkNextColor(int color){
 
+        //TODO - transformar em método
         String colorHex = "#".concat(Integer.toHexString(color).toUpperCase());
 
         boolean existsColor = checkColorExists(colorHex);
@@ -270,7 +230,54 @@ public class AddDeckFragment extends BaseFragment implements Validator.Validatio
 
     @Override
     public void onValidationSucceeded() {
+        if (!validateColor()) {
+            mColorError.setVisibility(View.VISIBLE);
+            return;
+        } else {
+            mColorError.setVisibility(View.INVISIBLE);
+        }
 
+        mProgressBar.setVisibility(View.VISIBLE);
+
+        if(mName.getText() != null)
+            deck.setName(mName.getText().toString());
+
+        if(mDescription.getText() != null)
+            deck.setDescription(mDescription.getText().toString());
+
+        deck.setChangeDeck(mDeckChange.isChecked());
+        deck.setNumberOfCards(0);
+
+        mDb.collection(BuildConfig.FIREBASE_COLLECTION)
+                .document(BuildConfig.FIREBASE_DOCUMENT)
+                .collection(DECK_LIST)
+                .add(deck.objectMap(mUserUid))
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Fragment cardFragment = CardFragment.newInstance();
+
+                        deck.setId(documentReference.getId());
+
+                        Bundle bundle = new Bundle();
+                        bundle.putParcelable(DECK_PARCELABLE, deck);
+                        cardFragment.setArguments(bundle);
+
+                        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.container, cardFragment);
+                        transaction.addToBackStack(null);
+                        transaction.commit();
+
+                        mProgressBar.setVisibility(View.GONE);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getContext(), R.string.default_error_save, Toast.LENGTH_LONG).show();
+                        mProgressBar.setVisibility(View.GONE);
+                    }
+                });
     }
 
     @Override
