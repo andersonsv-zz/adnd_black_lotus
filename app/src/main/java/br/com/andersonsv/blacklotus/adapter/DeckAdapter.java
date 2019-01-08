@@ -7,10 +7,12 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -40,6 +42,7 @@ public class DeckAdapter extends FirestoreRecyclerAdapter<DeckModel, DeckAdapter
 
     public interface DeckRecyclerOnClickHandler {
         void onClick(DeckModel deck);
+        void onLongClick(DeckModel deck);
     }
 
     @NonNull
@@ -94,7 +97,7 @@ public class DeckAdapter extends FirestoreRecyclerAdapter<DeckModel, DeckAdapter
 
         int[] colorArray = Ints.toArray(colors);
 
-        if (colorArray.length > 1){
+        if (colorArray.length > 1) {
             GradientDrawable gradientDrawable = new GradientDrawable(
                     GradientDrawable.Orientation.TOP_BOTTOM,
                     colorArray);
@@ -136,7 +139,7 @@ public class DeckAdapter extends FirestoreRecyclerAdapter<DeckModel, DeckAdapter
 
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
         @BindView(R.id.textViewDeckName)
         TextView mDeckName;
@@ -154,6 +157,7 @@ public class DeckAdapter extends FirestoreRecyclerAdapter<DeckModel, DeckAdapter
             super(itemView);
             ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
         }
 
         @Override
@@ -161,6 +165,14 @@ public class DeckAdapter extends FirestoreRecyclerAdapter<DeckModel, DeckAdapter
             int adapterPosition = getAdapterPosition();
             DeckModel deck = mData.get(adapterPosition);
             mClickHandler.onClick(deck);
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            int adapterPosition = getAdapterPosition();
+            DeckModel deck = mData.get(adapterPosition);
+            mClickHandler.onLongClick(deck);
+            return true;
         }
     }
 }

@@ -1,6 +1,11 @@
 package br.com.andersonsv.blacklotus.feature.main;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -14,7 +19,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -49,6 +56,8 @@ public class DeckFragment extends BaseFragment implements DeckAdapter.DeckRecycl
     @BindView(R.id.linearLayoutEmptyState)
     LinearLayout mEmptyState;
 
+    private Menu mMenu;
+
     public static DeckFragment newInstance() {
         return new DeckFragment();
     }
@@ -71,33 +80,12 @@ public class DeckFragment extends BaseFragment implements DeckAdapter.DeckRecycl
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        mMenu = menu;
         inflater.inflate(R.menu.main_menu, menu);
         super.onCreateOptionsMenu(menu,inflater);
     }
 
     private void setupView() {
-
-
-        ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
-            @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                return false;
-            }
-
-            @Override
-            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                // Row is swiped from recycler view
-                // remove it from adapter
-            }
-
-            @Override
-            public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-                // view the background view
-            }
-        };
-
-// attaching the touch helper to recycler view
-        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(mDeckRecycler);
     }
 
     private void getDeckList() {
@@ -156,6 +144,31 @@ public class DeckFragment extends BaseFragment implements DeckAdapter.DeckRecycl
         transaction.replace(R.id.container, cardFragment);
         transaction.addToBackStack(null);
         transaction.commit();
+    }
+
+    @Override
+    public void onLongClick(DeckModel deck) {
+        showMenu(mDeckRecycler);
+
+    }
+
+    private void showMenu(View view){
+
+
+        mMenu.removeGroup(R.menu.deck_menu);
+       /* PopupMenu popup = new PopupMenu(getContext(),view);
+
+        popup.getMenuInflater()
+                .inflate(R.menu.deck_edit_menu, popup.getMenu());
+
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            public boolean onMenuItemClick(MenuItem item) {
+                return true;
+            }
+        });
+
+        popup.show();*/
+
     }
 
     @Override
