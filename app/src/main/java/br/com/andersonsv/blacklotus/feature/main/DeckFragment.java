@@ -1,17 +1,14 @@
 package br.com.andersonsv.blacklotus.feature.main;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.RectF;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,16 +16,22 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import br.com.andersonsv.blacklotus.BuildConfig;
 import br.com.andersonsv.blacklotus.R;
@@ -39,6 +42,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static br.com.andersonsv.blacklotus.util.Constants.CARD_LAND;
+import static br.com.andersonsv.blacklotus.util.Constants.CARD_LIST;
+import static br.com.andersonsv.blacklotus.util.Constants.DECK_ID;
 import static br.com.andersonsv.blacklotus.util.Constants.DECK_LIST;
 import static br.com.andersonsv.blacklotus.util.Constants.DECK_PARCELABLE;
 import static br.com.andersonsv.blacklotus.util.Constants.USER_ID;
@@ -57,6 +63,8 @@ public class DeckFragment extends BaseFragment implements DeckAdapter.DeckRecycl
     LinearLayout mEmptyState;
 
     private Menu mMenu;
+
+    private DeckModel mDeck;
 
     public static DeckFragment newInstance() {
         return new DeckFragment();
@@ -83,6 +91,7 @@ public class DeckFragment extends BaseFragment implements DeckAdapter.DeckRecycl
         super.onPrepareOptionsMenu(menu);
         menu.findItem(R.id.edit_deck).setVisible(false);
         menu.findItem(R.id.delete_deck).setVisible(false);
+        menu.findItem(R.id.cancel_edit).setVisible(false);
     }
 
     @Override
@@ -122,10 +131,10 @@ public class DeckFragment extends BaseFragment implements DeckAdapter.DeckRecycl
 
     @OnClick(R.id.fabAddDeck)
     public void addDeck(View view){
-        Fragment addDeckFragment = AddDeckFragment.newInstance();
+        Fragment deckEditorFragment = DeckEditorFragment.newInstance();
 
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.container, addDeckFragment);
+        transaction.replace(R.id.container, deckEditorFragment);
         transaction.addToBackStack(null);
         transaction.commit();
     }
@@ -157,12 +166,12 @@ public class DeckFragment extends BaseFragment implements DeckAdapter.DeckRecycl
 
     @Override
     public void onLongClick(DeckModel deck) {
-        //TODO - update menu
         mMenu.findItem(R.id.edit_deck).setVisible(true);
         mMenu.findItem(R.id.delete_deck).setVisible(true);
-
+        mMenu.findItem(R.id.cancel_edit).setVisible(true);
         mMenu.findItem(R.id.settings).setVisible(false);
 
+        mDeck = deck;
     }
 
 
@@ -172,12 +181,87 @@ public class DeckFragment extends BaseFragment implements DeckAdapter.DeckRecycl
         switch (id) {
             case R.id.settings:
                 Fragment settingFragment = SettingFragment.newInstance();
-                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.container, settingFragment);
-                transaction.addToBackStack(null);
-                transaction.commit();
-                return true;
+                openFragment(settingFragment);
+                break;
+            case R.id.cancel_edit:
+                mMenu.findItem(R.id.edit_deck).setVisible(false);
+                mMenu.findItem(R.id.delete_deck).setVisible(false);
+                mMenu.findItem(R.id.cancel_edit).setVisible(false);
+                mMenu.findItem(R.id.settings).setVisible(true);
+                break;
+            case R.id.edit_deck:
+                Fragment deckEditorFragment = DeckEditorFragment.newInstance();
+                Bundle bundle = new Bundle();
+
+                bundle.putParcelable(DECK_PARCELABLE, mDeck);
+                deckEditorFragment.setArguments(bundle);
+
+                openFragment(deckEditorFragment);
+                break;
+            case R.id.delete_deck:
+                deleteDeckAndCards();
+            return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void deleteDeckAndCards() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setCancelable(false);
+        builder.setTitle(getString(R.string.deck_delete_title));
+        builder.setMessage(String.format(getString(R.string.deck_delete_title_confirm), mDeck.getName()));
+        builder.setPositiveButton(getString(R.string.deck_delete_button), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                FirebaseFirestore mDb = FirebaseFirestore.getInstance();
+
+                mDb.collection(BuildConfig.FIREBASE_COLLECTION)
+                        .document(BuildConfig.FIREBASE_DOCUMENT)
+                        .collection(CARD_LIST)
+                        .whereEqualTo(DECK_ID, mDeck.getId())
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        document.getReference().delete();
+                                    }
+
+                                }
+                            }
+                        });
+
+                mDb.collection(BuildConfig.FIREBASE_COLLECTION)
+                        .document(BuildConfig.FIREBASE_DOCUMENT)
+                        .collection(DECK_LIST).document(mDeck.getId())
+                        .delete()
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        showSaveDialog(getString(R.string.default_deleted), getString(R.string.deck_delete_confim_msg));
+                    }
+                });
+
+                dialogInterface.dismiss();
+            }
+        });
+        builder.setNegativeButton(getString(R.string.default_cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        builder.show();
+
+
+    }
+
+    private void openFragment(Fragment fragment){
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 }

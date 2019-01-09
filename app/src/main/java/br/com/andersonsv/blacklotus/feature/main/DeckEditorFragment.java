@@ -7,7 +7,6 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.TextInputEditText;
-import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -46,10 +45,10 @@ import butterknife.OnClick;
 import static br.com.andersonsv.blacklotus.util.Constants.DECK_LIST;
 import static br.com.andersonsv.blacklotus.util.Constants.DECK_PARCELABLE;
 
-public class AddDeckFragment extends BaseFragment implements Validator.ValidationListener {
+public class DeckEditorFragment extends BaseFragment implements Validator.ValidationListener {
 
-    public static AddDeckFragment newInstance() {
-        return new AddDeckFragment();
+    public static DeckEditorFragment newInstance() {
+        return new DeckEditorFragment();
     }
 
     @BindView(R.id.imageViewColor)
@@ -75,7 +74,7 @@ public class AddDeckFragment extends BaseFragment implements Validator.Validatio
     @BindView(R.id.textViewErrorColor)
     TextView mColorError;
 
-    private DeckModel deck;
+    private DeckModel mDeck;
 
     private FirebaseFirestore mDb;
     private String mUserUid;
@@ -88,9 +87,18 @@ public class AddDeckFragment extends BaseFragment implements Validator.Validatio
         View rootView = inflater.inflate(R.layout.fragment_add_deck, container, false);
 
         ButterKnife.bind(this, rootView);
-        deck = new DeckModel();
+        mDeck = new DeckModel();
+
+        Bundle args = getArguments();
+        if (args != null) {
+            mDeck = args.getParcelable(DECK_PARCELABLE);
+            mName.setText(mDeck.getName());
+            mDescription.setText(mDeck.getDescription());
+            mDeckChange.setChecked(mDeck.getChangeDeck());
+        }
 
         mDb = FirebaseFirestore.getInstance();
+
         if(FirebaseAuth.getInstance().getCurrentUser() != null) {
             mUserUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         }
@@ -108,8 +116,7 @@ public class AddDeckFragment extends BaseFragment implements Validator.Validatio
         mValidator.setViewValidatedAction(new Validator.ViewValidatedAction() {
             @Override
             public void onAllRulesPassed(View view) {
-            //    removeErrorTextInputLayout(mEmail);
-             //   removeErrorTextInputLayout(mPassword);
+                removeErrorTextInputLayout(mName);
             }
         });
     }
@@ -133,11 +140,11 @@ public class AddDeckFragment extends BaseFragment implements Validator.Validatio
 
     @OnClick(R.id.textViewClear)
     public void clearColors(View view){
-        deck.setColor1(null);
-        deck.setColor2(null);
-        deck.setColor3(null);
-        deck.setColor4(null);
-        deck.setColor5(null);
+        mDeck.setColor1(null);
+        mDeck.setColor2(null);
+        mDeck.setColor3(null);
+        mDeck.setColor4(null);
+        mDeck.setColor5(null);
 
         updateColor();
     }
@@ -150,7 +157,7 @@ public class AddDeckFragment extends BaseFragment implements Validator.Validatio
     private boolean validateColor(){
         boolean valid = true;
 
-        if (deck.getColor1() == null) {
+        if (mDeck.getColor1() == null) {
             valid = false;
         }
         return valid;
@@ -168,51 +175,51 @@ public class AddDeckFragment extends BaseFragment implements Validator.Validatio
             return;
         }
 
-        if (deck.getColor1() == null) {
-            deck.setColor1(colorHex);
-        } else if (deck.getColor2() == null) {
-            deck.setColor2(colorHex);
-        } else if (deck.getColor3() == null) {
-            deck.setColor3(colorHex);
-        } else if (deck.getColor4() == null) {
-            deck.setColor4(colorHex);
+        if (mDeck.getColor1() == null) {
+            mDeck.setColor1(colorHex);
+        } else if (mDeck.getColor2() == null) {
+            mDeck.setColor2(colorHex);
+        } else if (mDeck.getColor3() == null) {
+            mDeck.setColor3(colorHex);
+        } else if (mDeck.getColor4() == null) {
+            mDeck.setColor4(colorHex);
         } else {
-            deck.setColor5(colorHex);
+            mDeck.setColor5(colorHex);
         }
         updateColor();
     }
 
     private boolean checkColorExists(String color) {
-        if (deck.getColor1() != null && deck.getColor1().equals(color)) {
+        if (mDeck.getColor1() != null && mDeck.getColor1().equals(color)) {
             return true;
-        } else if (deck.getColor2() != null && deck.getColor2().equals(color)) {
+        } else if (mDeck.getColor2() != null && mDeck.getColor2().equals(color)) {
             return true;
-        } else if (deck.getColor3() != null && deck.getColor3().equals(color)) {
+        } else if (mDeck.getColor3() != null && mDeck.getColor3().equals(color)) {
             return true;
-        } else if (deck.getColor4() != null && deck.getColor4().equals(color)) {
+        } else if (mDeck.getColor4() != null && mDeck.getColor4().equals(color)) {
             return true;
-        } else return deck.getColor5() != null && deck.getColor5().equals(color);
+        } else return mDeck.getColor5() != null && mDeck.getColor5().equals(color);
     }
 
     private void updateColor(){
 
         List<Integer> colors = new ArrayList<>();
 
-        if (deck.getColor1() == null) {
+        if (mDeck.getColor1() == null) {
             ColorDeckUtil.setOneColor(Color.GRAY, mColor);
             return;
-        } else if (deck.getColor1() != null && deck.getColor2() == null) {
+        } else if (mDeck.getColor1() != null && mDeck.getColor2() == null) {
 
-            int colorValue = Color.parseColor(deck.getColor1());
+            int colorValue = Color.parseColor(mDeck.getColor1());
             ColorDeckUtil.setOneColor(colorValue, mColor);
             return;
 
         } else {
-            ColorDeckUtil.addColorIfNonNull(deck.getColor1(), colors);
-            ColorDeckUtil.addColorIfNonNull(deck.getColor2(), colors);
-            ColorDeckUtil.addColorIfNonNull(deck.getColor3(), colors);
-            ColorDeckUtil.addColorIfNonNull(deck.getColor4(), colors);
-            ColorDeckUtil.addColorIfNonNull(deck.getColor5(), colors);
+            ColorDeckUtil.addColorIfNonNull(mDeck.getColor1(), colors);
+            ColorDeckUtil.addColorIfNonNull(mDeck.getColor2(), colors);
+            ColorDeckUtil.addColorIfNonNull(mDeck.getColor3(), colors);
+            ColorDeckUtil.addColorIfNonNull(mDeck.getColor4(), colors);
+            ColorDeckUtil.addColorIfNonNull(mDeck.getColor5(), colors);
         }
 
         int[] colorArray = Ints.toArray(colors);
@@ -240,27 +247,69 @@ public class AddDeckFragment extends BaseFragment implements Validator.Validatio
         mProgressBar.setVisibility(View.VISIBLE);
 
         if(mName.getText() != null)
-            deck.setName(mName.getText().toString());
+            mDeck.setName(mName.getText().toString());
 
         if(mDescription.getText() != null)
-            deck.setDescription(mDescription.getText().toString());
+            mDeck.setDescription(mDescription.getText().toString());
 
-        deck.setChangeDeck(mDeckChange.isChecked());
-        deck.setNumberOfCards(0);
+        mDeck.setChangeDeck(mDeckChange.isChecked());
+        mDeck.setNumberOfCards(0);
 
+        if (mDeck.getId() == null) {
+            insertDocument();
+        } else {
+            updateDocument();
+        }
+    }
+
+    public void insertDocument() {
         mDb.collection(BuildConfig.FIREBASE_COLLECTION)
                 .document(BuildConfig.FIREBASE_DOCUMENT)
                 .collection(DECK_LIST)
-                .add(deck.objectMap(mUserUid))
+                .add(mDeck.objectMap(mUserUid))
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         Fragment cardFragment = CardFragment.newInstance();
 
-                        deck.setId(documentReference.getId());
+                        mDeck.setId(documentReference.getId());
 
                         Bundle bundle = new Bundle();
-                        bundle.putParcelable(DECK_PARCELABLE, deck);
+                        bundle.putParcelable(DECK_PARCELABLE, mDeck);
+                        cardFragment.setArguments(bundle);
+
+                        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.container, cardFragment);
+                        transaction.addToBackStack(null);
+                        transaction.commit();
+
+                        mProgressBar.setVisibility(View.GONE);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getContext(), R.string.default_error_save, Toast.LENGTH_LONG).show();
+                        mProgressBar.setVisibility(View.GONE);
+                    }
+                });
+    }
+
+    public void updateDocument() {
+        mDb.collection(BuildConfig.FIREBASE_COLLECTION)
+                .document(BuildConfig.FIREBASE_DOCUMENT)
+                .collection(DECK_LIST)
+                .document(mDeck.getId())
+                .set(mDeck.objectMap(mUserUid))
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Fragment cardFragment = CardFragment.newInstance();
+
+                        mDeck.setId(mDeck.getId());
+
+                        Bundle bundle = new Bundle();
+                        bundle.putParcelable(DECK_PARCELABLE, mDeck);
                         cardFragment.setArguments(bundle);
 
                         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
