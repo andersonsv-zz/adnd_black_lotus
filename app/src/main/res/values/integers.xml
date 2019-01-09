@@ -6,4 +6,7 @@
 
     <integer name="card_cost_list">40</integer>
     <integer name="card_cost_editor">32</integer>
+
+    <integer name="deck_name_length">30</integer>
+    <integer name="deck_description_length">200</integer>
 </resources>

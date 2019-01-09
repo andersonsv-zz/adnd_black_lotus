@@ -84,7 +84,7 @@ public class DeckEditorFragment extends BaseFragment implements Validator.Valida
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_add_deck, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_deck_editor, container, false);
 
         ButterKnife.bind(this, rootView);
         mDeck = new DeckModel();

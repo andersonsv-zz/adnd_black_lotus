@@ -10,7 +10,15 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import br.com.andersonsv.blacklotus.R;
+import br.com.andersonsv.blacklotus.firebase.DeckModel;
 import br.com.andersonsv.blacklotus.util.EspressoIdlingResource;
+
+import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
@@ -22,10 +30,13 @@ public class DeckFragmentTest {
     @Before
     public void setUp() {
         IdlingRegistry.getInstance().register(EspressoIdlingResource.getIdlingResource());
+
+        DeckFragment fragment = new DeckFragment();
+        mActivityTestRule.getActivity().getSupportFragmentManager().beginTransaction().add(R.id.container, fragment).commit();
     }
 
     @Test
     public void whenDeckListIsEmpty_onLoadFragment_shouldDisplayEmptyStates(){
-
+        onView(withId(R.id.linearLayoutEmptyState)).check(matches(isDisplayed()));
     }
 }
