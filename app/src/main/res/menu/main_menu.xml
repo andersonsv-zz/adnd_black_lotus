@@ -4,4 +4,19 @@
     <item android:icon="@drawable/ic_settings_24dp" app:showAsAction="ifRoom"
         android:id="@+id/settings"
         android:title="@string/navigation_settings"/>
+
+    <item android:icon="@drawable/ic_cancel_24dp" app:showAsAction="ifRoom"
+        android:id="@+id/cancel_edit"
+        android:title="@string/navigation_settings"/>
+
+    <item android:icon="@drawable/ic_edit_24dp" app:showAsAction="ifRoom"
+        android:id="@+id/edit_deck"
+        android:title="@string/navigation_settings"/>
+
+    <item android:icon="@drawable/ic_delete_24dp" app:showAsAction="ifRoom"
+        android:id="@+id/delete_deck"
+        android:title="@string/navigation_settings"/>
+
+
+
 </menu>

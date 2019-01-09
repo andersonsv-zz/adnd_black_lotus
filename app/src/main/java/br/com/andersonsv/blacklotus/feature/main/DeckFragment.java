@@ -79,13 +79,22 @@ public class DeckFragment extends BaseFragment implements DeckAdapter.DeckRecycl
     }
 
     @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        menu.findItem(R.id.edit_deck).setVisible(false);
+        menu.findItem(R.id.delete_deck).setVisible(false);
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         mMenu = menu;
         inflater.inflate(R.menu.main_menu, menu);
         super.onCreateOptionsMenu(menu,inflater);
     }
 
+
     private void setupView() {
+
     }
 
     private void getDeckList() {
@@ -148,28 +157,14 @@ public class DeckFragment extends BaseFragment implements DeckAdapter.DeckRecycl
 
     @Override
     public void onLongClick(DeckModel deck) {
-        showMenu(mDeckRecycler);
+        //TODO - update menu
+        mMenu.findItem(R.id.edit_deck).setVisible(true);
+        mMenu.findItem(R.id.delete_deck).setVisible(true);
+
+        mMenu.findItem(R.id.settings).setVisible(false);
 
     }
 
-    private void showMenu(View view){
-
-
-        mMenu.removeGroup(R.menu.deck_menu);
-       /* PopupMenu popup = new PopupMenu(getContext(),view);
-
-        popup.getMenuInflater()
-                .inflate(R.menu.deck_edit_menu, popup.getMenu());
-
-        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            public boolean onMenuItemClick(MenuItem item) {
-                return true;
-            }
-        });
-
-        popup.show();*/
-
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
