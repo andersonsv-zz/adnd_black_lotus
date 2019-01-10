@@ -121,7 +121,7 @@
         style="@style/Text.14sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="@dimen/margin_large"
         android:text="@string/deck_clear_color_underline"
         app:layout_constraintBottom_toBottomOf="@+id/imageViewColor"
         app:layout_constraintStart_toEndOf="@+id/imageViewColor"
@@ -163,6 +163,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-
 </android.support.constraint.ConstraintLayout>

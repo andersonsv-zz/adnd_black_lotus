@@ -36,6 +36,7 @@ import br.com.andersonsv.blacklotus.firebase.CardModel;
 import br.com.andersonsv.blacklotus.firebase.DeckModel;
 import br.com.andersonsv.blacklotus.model.CardColor;
 import br.com.andersonsv.blacklotus.model.Rarity;
+import br.com.andersonsv.blacklotus.util.ImageHtmlUtil;
 import br.com.andersonsv.blacklotus.util.StringUtils;
 import br.com.andersonsv.blacklotus.widget.TextDrawable;
 import butterknife.BindView;
@@ -45,11 +46,10 @@ import butterknife.OnClick;
 import static br.com.andersonsv.blacklotus.util.Constants.CARD_DATA;
 import static br.com.andersonsv.blacklotus.util.Constants.CARD_LIST;
 import static br.com.andersonsv.blacklotus.util.Constants.CARD_MODEL;
-import static br.com.andersonsv.blacklotus.util.Constants.DECK_ID;
 import static br.com.andersonsv.blacklotus.util.Constants.DECK_PARCELABLE;
 import static br.com.andersonsv.blacklotus.util.StringUtils.replaceTypetImgSrc;
 
-public class CardEditorFragment extends BaseFragment implements Html.ImageGetter {
+public class CardEditorFragment extends BaseFragment {
 
     public static CardEditorFragment newInstance() {
         return new CardEditorFragment();
@@ -167,13 +167,29 @@ public class CardEditorFragment extends BaseFragment implements Html.ImageGetter
 
         if (mCard.getText() != null) {
             String text = replaceTypetImgSrc(mCard.getText());
-            Spanned spanned = Html.fromHtml(text, this, null);
+
+            Html.ImageGetter imageGetter =  new Html.ImageGetter() {
+                @Override
+                public Drawable getDrawable(String source) {
+                    return new ImageHtmlUtil(getContext()).generate(source);
+                }
+            };
+
+            Spanned spanned = Html.fromHtml(text, imageGetter, null);
             mDescription.setText(spanned);
         }
 
         if (mCard.getCost() != null) {
             String cost = replaceTypetImgSrc(mCard.getCost());
-            Spanned spannedCost = Html.fromHtml(cost, this, null);
+
+            Html.ImageGetter imageGetter =  new Html.ImageGetter() {
+                @Override
+                public Drawable getDrawable(String source) {
+                    return new ImageHtmlUtil(getContext()).generate(source);
+                }
+            };
+
+            Spanned spannedCost = Html.fromHtml(cost, imageGetter, null);
             mCost.setText(spannedCost);
         }
 
@@ -193,41 +209,6 @@ public class CardEditorFragment extends BaseFragment implements Html.ImageGetter
             public void onStopTrackingTouch(DiscreteSeekBar seekBar) { }
         });
 
-    }
-
-    @Override
-    public Drawable getDrawable(String name) {
-
-        CardColor cardColor = CardColor.getById(name);
-        int size = getResources().getInteger(R.integer.card_cost_list);
-
-        if (cardColor != null) {
-            LevelListDrawable d = new LevelListDrawable();
-
-            Drawable empty = getResources().getDrawable(cardColor.getImage());
-            d.addLevel(0, 0, empty);
-            d.setBounds(0, 0, size, size);
-
-            return d;
-
-        } else {
-            //Copied by - https://github.com/devunwired/textdrawable
-            TextDrawable textDrawable = new TextDrawable(getContext());
-
-            textDrawable.setText(name);
-            textDrawable.setTextColor(Color.BLACK);
-            //textDrawable.setTextSize(12);
-            textDrawable.setTextAlign(Layout.Alignment.ALIGN_NORMAL);
-
-            GradientDrawable gD = new GradientDrawable();
-            gD.setColor(Color.GRAY);
-            gD.setShape(GradientDrawable.OVAL);
-            LayerDrawable layerDrawable = new LayerDrawable(new Drawable[]{gD, textDrawable});
-
-            layerDrawable.setBounds(0, 0, size, size);
-
-            return layerDrawable;
-        }
     }
 
     @OnClick(R.id.buttonSaveCard)

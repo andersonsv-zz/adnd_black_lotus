@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.text.Html;
+import android.text.Spanned;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
@@ -12,8 +13,11 @@ import java.util.List;
 import br.com.andersonsv.blacklotus.R;
 import br.com.andersonsv.blacklotus.firebase.CardModel;
 import br.com.andersonsv.blacklotus.provider.DeckWidgetProvider;
+import br.com.andersonsv.blacklotus.util.ImageHtmlUtil;
 
-public class DeckWidgetService extends RemoteViewsService  implements Html.ImageGetter {
+import static br.com.andersonsv.blacklotus.util.StringUtils.replaceTypetImgSrc;
+
+public class DeckWidgetService extends RemoteViewsService  {
     private List<CardModel> cards;
 
     @Override
@@ -55,6 +59,7 @@ public class DeckWidgetService extends RemoteViewsService  implements Html.Image
             final RemoteViews views = new RemoteViews(mContext.getPackageName(), R.layout.widget_card_item);
             CardModel card = cards.get(index);
             views.setTextViewText(R.id.textViewCardName, card.getName());
+            views.setTextViewText(R.id.textViewQuantity, card.getQuantity().toString());
 
             return views;
         }
@@ -78,10 +83,5 @@ public class DeckWidgetService extends RemoteViewsService  implements Html.Image
         public boolean hasStableIds() {
             return false;
         }
-    }
-
-    @Override
-    public Drawable getDrawable(String source) {
-        return null;
     }
 }

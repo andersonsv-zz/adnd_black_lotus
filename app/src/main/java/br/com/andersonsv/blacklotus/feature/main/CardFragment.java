@@ -12,7 +12,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,23 +22,16 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.Transaction;
 
 import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -47,10 +39,7 @@ import java.util.List;
 
 import br.com.andersonsv.blacklotus.BuildConfig;
 import br.com.andersonsv.blacklotus.R;
-import br.com.andersonsv.blacklotus.adapter.CardAdapter;
 import br.com.andersonsv.blacklotus.adapter.CardNewAdapter;
-import br.com.andersonsv.blacklotus.adapter.DeckAdapter;
-import br.com.andersonsv.blacklotus.data.Card;
 import br.com.andersonsv.blacklotus.feature.base.BaseFragment;
 import br.com.andersonsv.blacklotus.firebase.CardModel;
 import br.com.andersonsv.blacklotus.firebase.DeckModel;
@@ -239,33 +228,19 @@ public class CardFragment extends BaseFragment implements CardNewAdapter.OnCardS
                 if (writeExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
                     ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_WRITE_EXTERNAL_STORAGE_PERMISSION);
                 } else {
+                    File target = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+                    String outString = new SimpleDateFormat(getResources().getString(R.string.date_convert_short)).format(new Date());
 
-            /*File target = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-            List<CardModel> cardModelList = new ArrayList<>();
+                    CsvWriter.generateCsvFile(target, outString, cardModelList, getResources());
 
-            cardModelList.addAll(mLandAdapter.getSnapshots());
-            cardModelList.addAll(mCardAdapter.getSnapshots());
-
-            String outString = new SimpleDateFormat("dd-MM-yyyy hh-mm-ss").format(new Date());
-
-            File mFile = new File(target, "csv_deck_" + outString + ".csv");
-            try {
-                mFile.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            CsvWriter.generateCsvFile(cardModelList, mFile);*/
-
-            Intent sendIntent = new Intent();
-            sendIntent.setAction(Intent.ACTION_SEND);
-            //sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(mFile));
-            sendIntent.setType("text/csv");
-            startActivity(sendIntent);
-
+                    Intent sendIntent = new Intent();
+                    sendIntent.setAction(Intent.ACTION_SEND);
+                    sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(target));
+                    sendIntent.setType(CsvWriter.TYPE_CSV);
+                    startActivity(sendIntent);
+                }
+             break;
         }
-        return true;
-        }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -281,11 +256,6 @@ public class CardFragment extends BaseFragment implements CardNewAdapter.OnCardS
         openFragment(cardEditorFragment);
     }
 
-    /*@Override
-    public void onClick(CardModel cardModel) {
-
-    }*/
-
     public void sendCardsToWidget(){
         mDb.collection(BuildConfig.FIREBASE_COLLECTION)
             .document(BuildConfig.FIREBASE_DOCUMENT)
@@ -295,21 +265,21 @@ public class CardFragment extends BaseFragment implements CardNewAdapter.OnCardS
             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if (task.isSuccessful()) {
+                if (task.isSuccessful()) {
 
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            cardModelList.add(document.toObject(CardModel.class));
-                        }
-
-                        Intent intent = new Intent(getActivity(), DeckWidgetProvider.class);
-
-                        intent.putExtra(DECK_PARCELABLE, mDeck);
-                        intent.putParcelableArrayListExtra(CARD_LIST,  (ArrayList<? extends Parcelable>) cardModelList);
-                        getActivity().sendBroadcast(intent);
-
-                    } else {
-                        //Log.d(TAG, "Error getting documents: ", task.getException());
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        cardModelList.add(document.toObject(CardModel.class));
                     }
+
+                    Intent intent = new Intent(getActivity(), DeckWidgetProvider.class);
+
+                    intent.putExtra(DECK_PARCELABLE, mDeck);
+                    intent.putParcelableArrayListExtra(CARD_LIST,  (ArrayList<? extends Parcelable>) cardModelList);
+                    getActivity().sendBroadcast(intent);
+
+                } else {
+                    //Log.d(TAG, "Error getting documents: ", task.getException());
+                }
                 }
             });
     }

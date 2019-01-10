@@ -3,35 +3,24 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="@dimen/margin_large">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="@dimen/widget_title_height"
         android:background="@color/colorPrimary"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp">
+        android:paddingLeft="@dimen/margin_large"
+        android:paddingRight="@dimen/margin_large">
 
         <TextView
-            android:text="No deck selected"
+            android:text="@string/widget_no_deck_selected"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:textSize="20sp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
             android:gravity="center_vertical"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:id="@+id/textViewDeckName"
             style="@style/Text.14sp.Bold"/>
-
-        <ImageView
-            android:id="@+id/imageViewOpenApp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_width="24dp"
-            android:src="@drawable/ic_open_in_new_white_24dp"
-            android:layout_height="24dp" />
     </RelativeLayout>
 
     <ListView
@@ -43,7 +32,7 @@
 
     <TextView
         android:gravity="center"
-        android:text="Carregando..."
+        android:text="@string/default_loading"
         android:textColor="@android:color/white"
         android:id="@+id/textViewLoading"
         android:layout_width="match_parent"

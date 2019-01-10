@@ -8,7 +8,7 @@
         style="@style/Text.14sp.Bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="@dimen/margin_normal"
         android:text="@string/default_second_language"
         app:layout_constraintBottom_toBottomOf="@+id/switchSecondLanguage"
         app:layout_constraintEnd_toStartOf="@+id/switchSecondLanguage"

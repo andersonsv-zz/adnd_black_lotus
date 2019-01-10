@@ -14,6 +14,7 @@
     <string name="default_cancel">Cancel</string>
     <string name="default_error_title">Error</string>
     <string name="default_deleted">Deleted</string>
+    <string name="default_loading">Loading</string>
 
     <!-- Content description -->
     <string name="default_card_content_description">Card image</string>
@@ -119,4 +120,13 @@
     <string name="forgot_dialog_title">E-mail send</string>
     <string name="forgot_dialog_message">You will receive an email to reset your password</string>
     <string name="default_second_language">SL</string>
+
+    <!-- CSV -->
+    <string name="csv_card_name">Card Name</string>
+    <string name="csv_quantity">Quantity</string>
+    <string name="csv_rarity">Rarity</string>
+    <string name="date_convert_short">dd-MM-yyyy</string>
+
+    <!-- Widget -->
+    <string name="widget_no_deck_selected">No deck selected</string>
 </resources>

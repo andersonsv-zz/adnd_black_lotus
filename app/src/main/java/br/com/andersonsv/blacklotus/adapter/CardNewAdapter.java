@@ -3,7 +3,11 @@ package br.com.andersonsv.blacklotus.adapter;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.LayerDrawable;
+import android.graphics.drawable.LevelListDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.Spanned;
@@ -19,20 +23,18 @@ import com.squareup.picasso.Picasso;
 
 import br.com.andersonsv.blacklotus.R;
 import br.com.andersonsv.blacklotus.firebase.CardModel;
+import br.com.andersonsv.blacklotus.model.CardColor;
 import br.com.andersonsv.blacklotus.model.Rarity;
+import br.com.andersonsv.blacklotus.util.ImageHtmlUtil;
+import br.com.andersonsv.blacklotus.widget.TextDrawable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static br.com.andersonsv.blacklotus.util.StringUtils.replaceTypetImgSrc;
 
-public class CardNewAdapter extends FirestoreAdapter<CardNewAdapter.ViewHolder> implements Html.ImageGetter {
+public class CardNewAdapter extends FirestoreAdapter<CardNewAdapter.ViewHolder>{
 
-    private Context mContext;
-
-    @Override
-    public Drawable getDrawable(String source) {
-        return null;
-    }
+    private static Context mContext;
 
     public interface OnCardSelectedListener {
         void onSelected(DocumentSnapshot card);
@@ -48,6 +50,7 @@ public class CardNewAdapter extends FirestoreAdapter<CardNewAdapter.ViewHolder> 
     @Override
     public CardNewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        mContext = parent.getContext();
         return new CardNewAdapter.ViewHolder(inflater.inflate(R.layout.item_card, parent, false));
     }
 
@@ -135,7 +138,15 @@ public class CardNewAdapter extends FirestoreAdapter<CardNewAdapter.ViewHolder> 
 
             if( model.getCost() != null) {
                 String text = replaceTypetImgSrc(model.getCost());
-                Spanned spanned = Html.fromHtml(text);
+
+                Html.ImageGetter imageGetter =  new Html.ImageGetter() {
+                    @Override
+                    public Drawable getDrawable(String source) {
+                        return new ImageHtmlUtil(mContext).generate(source);
+                    }
+                };
+
+                Spanned spanned = Html.fromHtml(text, imageGetter, null);
                 mCost.setText(spanned);
             }
 
