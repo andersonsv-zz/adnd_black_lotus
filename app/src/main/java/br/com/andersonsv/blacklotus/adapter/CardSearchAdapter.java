@@ -20,12 +20,10 @@ import butterknife.ButterKnife;
 public class CardSearchAdapter extends RecyclerView.Adapter<CardSearchAdapter.ViewHolder>{
     private LayoutInflater mInflater;
     private List<Card> mData;
-    private String mDeckId;
     private final CardSearchRecyclerOnClickHandler mClickHandler;
 
-    public CardSearchAdapter(List<Card> data, String deckId, CardSearchRecyclerOnClickHandler clickHandler) {
+    public CardSearchAdapter(List<Card> data, CardSearchRecyclerOnClickHandler clickHandler) {
         mData = data;
-        mDeckId = deckId;
         mClickHandler = clickHandler;
     }
     @NonNull

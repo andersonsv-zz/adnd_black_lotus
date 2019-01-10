@@ -252,7 +252,7 @@ public class CardFragment extends BaseFragment implements CardAdapter.OnCardSele
         openFragment(cardEditorFragment);
     }
 
-    public void sendCardsToWidget(){
+    private void sendCardsToWidget(){
         mDb.collection(BuildConfig.FIREBASE_COLLECTION)
             .document(BuildConfig.FIREBASE_DOCUMENT)
             .collection(CARD_LIST)

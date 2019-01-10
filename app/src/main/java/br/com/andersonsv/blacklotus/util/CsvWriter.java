@@ -13,10 +13,10 @@ import br.com.andersonsv.blacklotus.firebase.CardModel;
 
 public class CsvWriter {
 
-    public static final String SEPARATOR = ";";
-    public static final String CSV_DECK = "csv_deck_";
-    public static final String CSV_EXTENSION = ".csv";
-    public static final String NEW_LINE = "\n";
+    private static final String SEPARATOR = ";";
+    private static final String CSV_DECK = "csv_deck_";
+    private static final String CSV_EXTENSION = ".csv";
+    private static final String NEW_LINE = "\n";
     public static final String TYPE_CSV = "text/csv";
 
     public static void generateCsvFile(File target, String file, List<CardModel> cardModelList, Resources resources){

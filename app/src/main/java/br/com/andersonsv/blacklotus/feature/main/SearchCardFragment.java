@@ -78,7 +78,7 @@ public class SearchCardFragment extends BaseFragment implements SearchView.OnQue
             mDeck = bundle.getParcelable(DECK_PARCELABLE);
         }
 
-        mAdapter = new CardSearchAdapter(null, mDeck.getId(), this);
+        mAdapter = new CardSearchAdapter(null,  this);
 
         setLinearLayoutVerticalWithDivider(mRecyclerCard);
         mRecyclerCard.setAdapter(mAdapter);
@@ -152,7 +152,7 @@ public class SearchCardFragment extends BaseFragment implements SearchView.OnQue
         Call<Cards> call = service.getCardsByLanguage(query.toLowerCase(), 10, secondLanguage);
         call.enqueue(new Callback<Cards>() {
             @Override
-            public void onResponse(Call<Cards> call, Response<Cards> response) {
+            public void onResponse(@NonNull Call<Cards> call, @NonNull Response<Cards> response) {
                 if (response.isSuccessful()){
                     Log.d("OK", "ok" + response.body().getCards().size());
                     mAdapter.setCards(response.body().getCards());
@@ -166,7 +166,7 @@ public class SearchCardFragment extends BaseFragment implements SearchView.OnQue
             }
 
             @Override
-            public void onFailure(Call<Cards> call, Throwable t) {
+            public void onFailure(@NonNull Call<Cards> call, @NonNull Throwable t) {
                 Log.e("ERROR", t.getLocalizedMessage());
                 mProgressBar.setVisibility(View.GONE);
             }
@@ -180,7 +180,7 @@ public class SearchCardFragment extends BaseFragment implements SearchView.OnQue
         Call<Cards> call = service.getCards(query.toLowerCase(), 10);
         call.enqueue(new Callback<Cards>() {
             @Override
-            public void onResponse(Call<Cards> call, Response<Cards> response) {
+            public void onResponse(@NonNull Call<Cards> call, @NonNull Response<Cards> response) {
                 if (response.isSuccessful()){
                     Log.d("OK", "ok" + response.body().getCards().size());
                     mAdapter.setCards(response.body().getCards());
@@ -194,7 +194,7 @@ public class SearchCardFragment extends BaseFragment implements SearchView.OnQue
             }
 
             @Override
-            public void onFailure(Call<Cards> call, Throwable t) {
+            public void onFailure(@NonNull Call<Cards> call, @NonNull Throwable t) {
                 Log.e("ERROR", t.getLocalizedMessage());
                 mProgressBar.setVisibility(View.GONE);
             }

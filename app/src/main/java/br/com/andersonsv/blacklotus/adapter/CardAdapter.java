@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.Spanned;
@@ -41,15 +42,16 @@ public class CardAdapter extends FirestoreAdapter<CardAdapter.ViewHolder>{
         mListener = listener;
     }
 
+    @NonNull
     @Override
-    public CardAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public CardAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         mContext = parent.getContext();
         return new CardAdapter.ViewHolder(inflater.inflate(R.layout.item_card, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(CardAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull CardAdapter.ViewHolder holder, int position) {
         holder.bind(getSnapshot(position), mListener);
     }
 
@@ -77,8 +79,8 @@ public class CardAdapter extends FirestoreAdapter<CardAdapter.ViewHolder>{
             ButterKnife.bind(this, itemView);
         }
 
-        public void bind(final DocumentSnapshot snapshot,
-                         final CardAdapter.OnCardSelectedListener listener) {
+        void bind(final DocumentSnapshot snapshot,
+                  final CardAdapter.OnCardSelectedListener listener) {
 
             final CardModel model = snapshot.toObject(CardModel.class);
             model.setId(snapshot.getId());

@@ -7,10 +7,10 @@
         android:orderInCategory="1"
         myapp:showAsAction="always"
         myapp:actionViewClass="android.widget.SearchView"
-        android:title="Search" />
+        android:title="@string/default_search" />
     <item
         android:id="@+id/app_bar_switch"
-        android:title="Switch"
+        android:title=""
         android:orderInCategory="2"
         myapp:actionLayout="@layout/switch_item"
         myapp:showAsAction="always" />
