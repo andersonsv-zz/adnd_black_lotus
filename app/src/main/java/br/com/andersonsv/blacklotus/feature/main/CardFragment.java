@@ -24,7 +24,9 @@ import android.widget.TextView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 
 import java.io.File;
@@ -37,6 +39,9 @@ import java.util.List;
 import br.com.andersonsv.blacklotus.BuildConfig;
 import br.com.andersonsv.blacklotus.R;
 import br.com.andersonsv.blacklotus.adapter.CardAdapter;
+import br.com.andersonsv.blacklotus.adapter.CardNewAdapter;
+import br.com.andersonsv.blacklotus.adapter.DeckAdapter;
+import br.com.andersonsv.blacklotus.data.Card;
 import br.com.andersonsv.blacklotus.feature.base.BaseFragment;
 import br.com.andersonsv.blacklotus.firebase.CardModel;
 import br.com.andersonsv.blacklotus.firebase.DeckModel;
@@ -52,12 +57,12 @@ import static br.com.andersonsv.blacklotus.util.Constants.CARD_MODEL;
 import static br.com.andersonsv.blacklotus.util.Constants.DECK_ID;
 import static br.com.andersonsv.blacklotus.util.Constants.DECK_PARCELABLE;
 
-public class CardFragment extends BaseFragment implements CardAdapter.CardRecyclerOnClickHandler {
+public class CardFragment extends BaseFragment implements CardNewAdapter.OnCardSelectedListener {
 
     private DeckModel mDeck;
     private FirebaseFirestore mDb;
-    private FirestoreRecyclerAdapter mLandAdapter;
-    private FirestoreRecyclerAdapter mCardAdapter;
+    private CardNewAdapter mLandAdapter;
+    private CardNewAdapter mCardAdapter;
 
     @BindView(R.id.deckName)
     TextView mDeckName;
@@ -66,10 +71,10 @@ public class CardFragment extends BaseFragment implements CardAdapter.CardRecycl
     ProgressBar mProgressBar;
 
     @BindView(R.id.linearLayoutEmptyStateLand)
-    LinearLayout mLandEmptyStateLand;
+    LinearLayout mLandEmptyState;
 
     @BindView(R.id.linearLayoutEmptyStateCard)
-    LinearLayout mLandEmptyStateCard;
+    LinearLayout mCardEmptyState;
 
     @BindView(R.id.recyclerViewCardLand)
     RecyclerView mCardLandRecycler;
@@ -113,7 +118,6 @@ public class CardFragment extends BaseFragment implements CardAdapter.CardRecycl
     }
 
     private void getCardList() {
-        setLinearLayoutVerticalWithDivider(mCardRecycler);
 
         Query query = mDb.collection(BuildConfig.FIREBASE_COLLECTION)
                 .document(BuildConfig.FIREBASE_DOCUMENT)
@@ -121,12 +125,27 @@ public class CardFragment extends BaseFragment implements CardAdapter.CardRecycl
                 .whereEqualTo(DECK_ID, mDeck.getId())
                 .whereEqualTo(CARD_LAND, false);
 
-        FirestoreRecyclerOptions<CardModel> response = new FirestoreRecyclerOptions.Builder<CardModel>()
-                .setQuery(query, CardModel.class)
-                .build();
+        mCardAdapter = new CardNewAdapter(query, this) {
+            @Override
+            protected void onDataChanged() {
+                if (getItemCount() == 0) {
+                    mCardEmptyState.setVisibility(View.VISIBLE);
 
-        mCardAdapter = new CardAdapter(response, mProgressBar, mLandEmptyStateCard, this);
-        mCardAdapter.notifyDataSetChanged();
+                } else {
+                    mCardEmptyState.setVisibility(View.GONE);
+                }
+                mProgressBar.setVisibility(View.GONE);
+            }
+
+            @Override
+            protected void onError(FirebaseFirestoreException e) {
+                // Show a snackbar on errors
+                //Snackbar.make(findViewById(android.R.id.content),
+                //        "Error: check logs for info.", Snackbar.LENGTH_LONG).show();
+            }
+        };
+
+        setLinearLayoutVerticalWithDivider(mCardRecycler);
         mCardRecycler.setAdapter(mCardAdapter);
     }
 
@@ -139,12 +158,28 @@ public class CardFragment extends BaseFragment implements CardAdapter.CardRecycl
                 .whereEqualTo(DECK_ID, mDeck.getId())
                 .whereEqualTo(CARD_LAND, true);
 
-        FirestoreRecyclerOptions<CardModel> response = new FirestoreRecyclerOptions.Builder<CardModel>()
-                .setQuery(query, CardModel.class)
-                .build();
+        mLandAdapter = new CardNewAdapter(query, this) {
+            @Override
+            protected void onDataChanged() {
+                if (getItemCount() == 0) {
+                    mLandEmptyState.setVisibility(View.VISIBLE);
 
-        mLandAdapter = new CardAdapter(response, mProgressBar, mLandEmptyStateLand, this);
-        mLandAdapter.notifyDataSetChanged();
+                } else {
+                    mLandEmptyState.setVisibility(View.GONE);
+                }
+
+                mProgressBar.setVisibility(View.GONE);
+            }
+
+            @Override
+            protected void onError(FirebaseFirestoreException e) {
+                // Show a snackbar on errors
+                //Snackbar.make(findViewById(android.R.id.content),
+                //        "Error: check logs for info.", Snackbar.LENGTH_LONG).show();
+            }
+        };
+
+        setLinearLayoutVerticalWithDivider(mCardLandRecycler);
         mCardLandRecycler.setAdapter(mLandAdapter);
     }
 
@@ -153,7 +188,6 @@ public class CardFragment extends BaseFragment implements CardAdapter.CardRecycl
         super.onStart();
         mLandAdapter.startListening();
         mCardAdapter.startListening();
-        mProgressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -192,7 +226,7 @@ public class CardFragment extends BaseFragment implements CardAdapter.CardRecycl
                     ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_WRITE_EXTERNAL_STORAGE_PERMISSION);
                 } else {
 
-            File target = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+            /*File target = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
             List<CardModel> cardModelList = new ArrayList<>();
 
             cardModelList.addAll(mLandAdapter.getSnapshots());
@@ -206,11 +240,11 @@ public class CardFragment extends BaseFragment implements CardAdapter.CardRecycl
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            CsvWriter.generateCsvFile(cardModelList, mFile);
+            CsvWriter.generateCsvFile(cardModelList, mFile);*/
 
             Intent sendIntent = new Intent();
             sendIntent.setAction(Intent.ACTION_SEND);
-            sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(mFile));
+            //sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(mFile));
             sendIntent.setType("text/csv");
             startActivity(sendIntent);
 
@@ -222,10 +256,11 @@ public class CardFragment extends BaseFragment implements CardAdapter.CardRecycl
     }
 
     @Override
-    public void onClick(CardModel cardModel) {
+    public void onSelected(DocumentSnapshot card) {
 
-        sendCardsToWidget();
+        //sendCardsToWidget();
         Fragment cardEditorFragment = CardEditorFragment.newInstance();
+        CardModel cardModel  = card.toObject(CardModel.class);
 
         Bundle bundle = new Bundle();
         bundle.putParcelable(CARD_MODEL, cardModel);
@@ -234,7 +269,12 @@ public class CardFragment extends BaseFragment implements CardAdapter.CardRecycl
         openFragment(cardEditorFragment);
     }
 
-    private void sendCardsToWidget() {
+    /*@Override
+    public void onClick(CardModel cardModel) {
+
+    }*/
+
+    /*private void sendCardsToWidget() {
 
         List<CardModel> cardModelList = new ArrayList<>();
 
@@ -246,7 +286,7 @@ public class CardFragment extends BaseFragment implements CardAdapter.CardRecycl
         intent.putExtra(DECK_PARCELABLE, mDeck);
         intent.putParcelableArrayListExtra(CARD_LIST,  (ArrayList<? extends Parcelable>) cardModelList);
         getActivity().sendBroadcast(intent);
-    }
+    }*/
 
 
 }

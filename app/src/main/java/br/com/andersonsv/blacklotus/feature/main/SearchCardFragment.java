@@ -1,13 +1,15 @@
 package br.com.andersonsv.blacklotus.feature.main;
 
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -72,6 +74,8 @@ public class SearchCardFragment extends BaseFragment implements SearchView.OnQue
 
         ButterKnife.bind(this, rootView);
 
+        ((MainActivity) getActivity()).getSupportActionBar().setTitle("");
+
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             mDeck = bundle.getParcelable(DECK_PARCELABLE);
@@ -97,9 +101,10 @@ public class SearchCardFragment extends BaseFragment implements SearchView.OnQue
         searchView.setQueryHint(getString(R.string.default_search));
         searchView.setQuery("Black Lotus",false);
         searchView.setFocusable(true);
+        searchView.setIconified(false);
         searchView.requestFocusFromTouch();
 
-        MenuItem item = menu.findItem(R.id.app_bar_switch);
+        final MenuItem item = menu.findItem(R.id.app_bar_switch);
         item.setActionView(R.layout.switch_item);
 
         final Switch switchSecondLanguage = item.getActionView().findViewById(R.id.switchSecondLanguage);

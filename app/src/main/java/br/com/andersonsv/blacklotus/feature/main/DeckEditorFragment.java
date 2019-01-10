@@ -131,9 +131,9 @@ public class DeckEditorFragment extends BaseFragment implements Validator.Valida
             .setPositiveButtonText(R.string.deck_select_color_confirm)
             .setOnColorSelectedListener(new SpectrumDialog.OnColorSelectedListener() {
                 @Override public void onColorSelected(boolean positiveResult, @ColorInt int color) {
-                    if (positiveResult) {
-                        checkNextColor(color);
-                    }
+                if (positiveResult) {
+                    checkNextColor(color);
+                }
                 }
             }).build().show(getFragmentManager(), "dialog_demo_1");
     }
@@ -226,8 +226,8 @@ public class DeckEditorFragment extends BaseFragment implements Validator.Valida
 
         if (colorArray.length > 1){
             GradientDrawable gradientDrawable = new GradientDrawable(
-                    GradientDrawable.Orientation.TOP_BOTTOM,
-                    colorArray);
+                GradientDrawable.Orientation.TOP_BOTTOM,
+                colorArray);
             gradientDrawable.setShape(GradientDrawable.OVAL);
             mColor.setImageDrawable(gradientDrawable);
         } else {
@@ -264,69 +264,69 @@ public class DeckEditorFragment extends BaseFragment implements Validator.Valida
 
     public void insertDocument() {
         mDb.collection(BuildConfig.FIREBASE_COLLECTION)
-                .document(BuildConfig.FIREBASE_DOCUMENT)
-                .collection(DECK_LIST)
-                .add(mDeck.objectMap(mUserUid))
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Fragment cardFragment = CardFragment.newInstance();
+            .document(BuildConfig.FIREBASE_DOCUMENT)
+            .collection(DECK_LIST)
+            .add(mDeck.objectMap(mUserUid))
+            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                @Override
+                public void onSuccess(DocumentReference documentReference) {
+                Fragment cardFragment = CardFragment.newInstance();
 
-                        mDeck.setId(documentReference.getId());
+                mDeck.setId(documentReference.getId());
 
-                        Bundle bundle = new Bundle();
-                        bundle.putParcelable(DECK_PARCELABLE, mDeck);
-                        cardFragment.setArguments(bundle);
+                Bundle bundle = new Bundle();
+                bundle.putParcelable(DECK_PARCELABLE, mDeck);
+                cardFragment.setArguments(bundle);
 
-                        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                        transaction.replace(R.id.container, cardFragment);
-                        transaction.addToBackStack(null);
-                        transaction.commit();
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.container, cardFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
 
-                        mProgressBar.setVisibility(View.GONE);
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getContext(), R.string.default_error_save, Toast.LENGTH_LONG).show();
-                        mProgressBar.setVisibility(View.GONE);
-                    }
-                });
+                mProgressBar.setVisibility(View.GONE);
+                }
+            })
+            .addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getContext(), R.string.default_error_save, Toast.LENGTH_LONG).show();
+                mProgressBar.setVisibility(View.GONE);
+                }
+            });
     }
 
     public void updateDocument() {
         mDb.collection(BuildConfig.FIREBASE_COLLECTION)
-                .document(BuildConfig.FIREBASE_DOCUMENT)
-                .collection(DECK_LIST)
-                .document(mDeck.getId())
-                .set(mDeck.objectMap(mUserUid))
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Fragment cardFragment = CardFragment.newInstance();
+            .document(BuildConfig.FIREBASE_DOCUMENT)
+            .collection(DECK_LIST)
+            .document(mDeck.getId())
+            .set(mDeck.objectMap(mUserUid))
+            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                Fragment cardFragment = CardFragment.newInstance();
 
-                        mDeck.setId(mDeck.getId());
+                mDeck.setId(mDeck.getId());
 
-                        Bundle bundle = new Bundle();
-                        bundle.putParcelable(DECK_PARCELABLE, mDeck);
-                        cardFragment.setArguments(bundle);
+                Bundle bundle = new Bundle();
+                bundle.putParcelable(DECK_PARCELABLE, mDeck);
+                cardFragment.setArguments(bundle);
 
-                        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                        transaction.replace(R.id.container, cardFragment);
-                        transaction.addToBackStack(null);
-                        transaction.commit();
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.container, cardFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
 
-                        mProgressBar.setVisibility(View.GONE);
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getContext(), R.string.default_error_save, Toast.LENGTH_LONG).show();
-                        mProgressBar.setVisibility(View.GONE);
-                    }
-                });
+                mProgressBar.setVisibility(View.GONE);
+                }
+            })
+            .addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getContext(), R.string.default_error_save, Toast.LENGTH_LONG).show();
+                mProgressBar.setVisibility(View.GONE);
+                }
+            });
     }
 
     @Override

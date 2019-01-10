@@ -4,9 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.VisibleForTesting;
-import android.support.test.espresso.IdlingResource;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -18,14 +15,14 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -35,7 +32,6 @@ import br.com.andersonsv.blacklotus.R;
 import br.com.andersonsv.blacklotus.adapter.DeckAdapter;
 import br.com.andersonsv.blacklotus.feature.base.BaseFragment;
 import br.com.andersonsv.blacklotus.firebase.DeckModel;
-import br.com.andersonsv.blacklotus.util.SimpleIdlingResource;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -46,9 +42,8 @@ import static br.com.andersonsv.blacklotus.util.Constants.DECK_LIST;
 import static br.com.andersonsv.blacklotus.util.Constants.DECK_PARCELABLE;
 import static br.com.andersonsv.blacklotus.util.Constants.USER_ID;
 
-public class DeckFragment extends BaseFragment implements DeckAdapter.DeckRecyclerOnClickHandler{
+public class DeckFragment extends BaseFragment implements DeckAdapter.OnDeckSelectedListener {
 
-    private FirestoreRecyclerAdapter mAdapter;
 
     @BindView(R.id.recyclerViewDeck)
     RecyclerView mDeckRecycler;
@@ -63,17 +58,7 @@ public class DeckFragment extends BaseFragment implements DeckAdapter.DeckRecycl
 
     private DeckModel mDeck;
 
-    @Nullable
-    private SimpleIdlingResource mIdlingResource;
-
-    @VisibleForTesting
-    @NonNull
-    public IdlingResource getIdlingResource() {
-        if (mIdlingResource == null) {
-            mIdlingResource = new SimpleIdlingResource();
-        }
-        return mIdlingResource;
-    }
+    private DeckAdapter mAdapter;
 
     public static DeckFragment newInstance() {
         return new DeckFragment();
@@ -85,10 +70,10 @@ public class DeckFragment extends BaseFragment implements DeckAdapter.DeckRecycl
         View rootView = inflater.inflate(R.layout.fragment_deck, container, false);
         ButterKnife.bind(this, rootView);
 
-        getIdlingResource();
 
         ((MainActivity) getActivity()).getSupportActionBar().setTitle(R.string.navigation_decks);
 
+        FirebaseFirestore.setLoggingEnabled(true);
         getDeckList();
 
         setHasOptionsMenu(true);
@@ -116,8 +101,6 @@ public class DeckFragment extends BaseFragment implements DeckAdapter.DeckRecycl
         FirebaseFirestore mDb = FirebaseFirestore.getInstance();
         FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
 
-        setLinearLayoutVerticalWithDivider(mDeckRecycler);
-
         mProgressBar.setVisibility(View.VISIBLE);
 
         Query query = mDb.collection(BuildConfig.FIREBASE_COLLECTION)
@@ -125,14 +108,29 @@ public class DeckFragment extends BaseFragment implements DeckAdapter.DeckRecycl
                 .collection(DECK_LIST)
                 .whereEqualTo(USER_ID, mUser.getUid());
 
-        FirestoreRecyclerOptions<DeckModel> response = new FirestoreRecyclerOptions.Builder<DeckModel>()
-                .setQuery(query, DeckModel.class)
+        mAdapter = new DeckAdapter(query, this) {
+            @Override
+            protected void onDataChanged() {
+                // Show/hide content if the query returns empty.
 
-                .build();
+                if (getItemCount() == 0) {
+                    mEmptyState.setVisibility(View.VISIBLE);
 
-        mAdapter = new DeckAdapter(response, mProgressBar, mEmptyState, this);
-        mAdapter.notifyDataSetChanged();
+                } else {
+                    mEmptyState.setVisibility(View.GONE);
+                }
+                mProgressBar.setVisibility(View.GONE);
+            }
 
+            @Override
+            protected void onError(FirebaseFirestoreException e) {
+                // Show a snackbar on errors
+                //Snackbar.make(findViewById(android.R.id.content),
+                //        "Error: check logs for info.", Snackbar.LENGTH_LONG).show();
+            }
+        };
+
+        setLinearLayoutVerticalWithDivider(mDeckRecycler);
         mDeckRecycler.setAdapter(mAdapter);
     }
 
@@ -146,39 +144,20 @@ public class DeckFragment extends BaseFragment implements DeckAdapter.DeckRecycl
     @Override
     public void onStart() {
         super.onStart();
-        mAdapter.startListening();
-        mIdlingResource.setIdleState(false);
 
+        // Start listening for Firestore updates
+        if (mAdapter != null) {
+            mAdapter.startListening();
+        }
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        mAdapter.stopListening();
-        mIdlingResource.setIdleState(true);
-
+        if (mAdapter != null) {
+            mAdapter.stopListening();
+        }
     }
-
-    @Override
-    public void onClick(DeckModel deck) {
-        Fragment cardFragment = CardFragment.newInstance();
-
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(DECK_PARCELABLE, deck);
-        cardFragment.setArguments(bundle);
-        openFragment(cardFragment);
-    }
-
-    @Override
-    public void onLongClick(DeckModel deck) {
-        mMenu.findItem(R.id.edit_deck).setVisible(true);
-        mMenu.findItem(R.id.delete_deck).setVisible(true);
-        mMenu.findItem(R.id.cancel_edit).setVisible(true);
-        mMenu.findItem(R.id.settings).setVisible(false);
-
-        mDeck = deck;
-    }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -245,6 +224,10 @@ public class DeckFragment extends BaseFragment implements DeckAdapter.DeckRecycl
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
+                        mMenu.findItem(R.id.edit_deck).setVisible(false);
+                        mMenu.findItem(R.id.delete_deck).setVisible(false);
+                        mMenu.findItem(R.id.cancel_edit).setVisible(false);
+                        mMenu.findItem(R.id.settings).setVisible(true);
                         showSaveDialog(getString(R.string.default_deleted), getString(R.string.deck_delete_confim_msg));
                     }
                 });
@@ -259,5 +242,27 @@ public class DeckFragment extends BaseFragment implements DeckAdapter.DeckRecycl
             }
         });
         builder.show();
+    }
+
+    @Override
+    public void onDeckSelected(DocumentSnapshot deck) {
+        mDeck = deck.toObject(DeckModel.class);
+
+        Fragment cardFragment = CardFragment.newInstance();
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(DECK_PARCELABLE, mDeck);
+        cardFragment.setArguments(bundle);
+        openFragment(cardFragment);
+    }
+
+    @Override
+    public void onDeckEdited(DocumentSnapshot deck) {
+        mMenu.findItem(R.id.edit_deck).setVisible(true);
+        mMenu.findItem(R.id.delete_deck).setVisible(true);
+        mMenu.findItem(R.id.cancel_edit).setVisible(true);
+        mMenu.findItem(R.id.settings).setVisible(false);
+
+        mDeck = deck.toObject(DeckModel.class);
     }
 }
