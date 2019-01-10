@@ -91,6 +91,8 @@ public class CardFragment extends BaseFragment implements CardNewAdapter.OnCardS
     @BindView(R.id.recyclerViewCard)
     RecyclerView mCardRecycler;
 
+    private List<CardModel> cardModelList = new ArrayList<>();
+
     private static final int REQUEST_CODE_WRITE_EXTERNAL_STORAGE_PERMISSION = 1;
 
     public static CardFragment newInstance() {
@@ -269,8 +271,6 @@ public class CardFragment extends BaseFragment implements CardNewAdapter.OnCardS
 
     @Override
     public void onSelected(DocumentSnapshot card) {
-
-        //sendCardsToWidget();
         Fragment cardEditorFragment = CardEditorFragment.newInstance();
         CardModel cardModel  = card.toObject(CardModel.class);
 
@@ -288,35 +288,29 @@ public class CardFragment extends BaseFragment implements CardNewAdapter.OnCardS
 
     public void sendCardsToWidget(){
         mDb.collection(BuildConfig.FIREBASE_COLLECTION)
-                .document(BuildConfig.FIREBASE_DOCUMENT)
-                .collection(CARD_LIST)
-                .whereEqualTo(DECK_ID, mDeck.getId())
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
+            .document(BuildConfig.FIREBASE_DOCUMENT)
+            .collection(CARD_LIST)
+            .whereEqualTo(DECK_ID, mDeck.getId())
+            .get()
+            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
 
-                            List<CardModel> cardModelList = new ArrayList<>();
-
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                cardModelList.add(document.toObject(CardModel.class));
-                            }
-
-                            Intent intent = new Intent(getActivity(), DeckWidgetProvider.class);
-
-                            intent.putExtra(DECK_PARCELABLE, mDeck);
-                            intent.putParcelableArrayListExtra(CARD_LIST,  (ArrayList<? extends Parcelable>) cardModelList);
-                            getActivity().sendBroadcast(intent);
-
-                        } else {
-                            //Log.d(TAG, "Error getting documents: ", task.getException());
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            cardModelList.add(document.toObject(CardModel.class));
                         }
+
+                        Intent intent = new Intent(getActivity(), DeckWidgetProvider.class);
+
+                        intent.putExtra(DECK_PARCELABLE, mDeck);
+                        intent.putParcelableArrayListExtra(CARD_LIST,  (ArrayList<? extends Parcelable>) cardModelList);
+                        getActivity().sendBroadcast(intent);
+
+                    } else {
+                        //Log.d(TAG, "Error getting documents: ", task.getException());
                     }
-                });
-
-
+                }
+            });
     }
-
-
 }
