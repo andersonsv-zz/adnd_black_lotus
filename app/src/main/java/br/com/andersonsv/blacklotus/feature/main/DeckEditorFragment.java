@@ -260,6 +260,8 @@ public class DeckEditorFragment extends BaseFragment implements Validator.Valida
         } else {
             updateDocument();
         }
+
+        hideKeyboardFrom(getContext(), layout);
     }
 
     public void insertDocument() {

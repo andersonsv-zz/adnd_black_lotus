@@ -247,6 +247,7 @@ public class DeckFragment extends BaseFragment implements DeckAdapter.OnDeckSele
     @Override
     public void onDeckSelected(DocumentSnapshot deck) {
         mDeck = deck.toObject(DeckModel.class);
+        mDeck.setId(deck.getId());
 
         Fragment cardFragment = CardFragment.newInstance();
 
@@ -264,5 +265,6 @@ public class DeckFragment extends BaseFragment implements DeckAdapter.OnDeckSele
         mMenu.findItem(R.id.settings).setVisible(false);
 
         mDeck = deck.toObject(DeckModel.class);
+        mDeck.setId(deck.getId());
     }
 }

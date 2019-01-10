@@ -12,6 +12,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,10 +25,18 @@ import android.widget.TextView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.Transaction;
 
 import java.io.File;
 import java.io.IOException;
@@ -107,6 +116,9 @@ public class CardFragment extends BaseFragment implements CardNewAdapter.OnCardS
 
         getLandList();
         getCardList();
+
+        sendCardsToWidget();
+
         setHasOptionsMenu(true);
 
         return rootView;
@@ -274,19 +286,37 @@ public class CardFragment extends BaseFragment implements CardNewAdapter.OnCardS
 
     }*/
 
-    /*private void sendCardsToWidget() {
+    public void sendCardsToWidget(){
+        mDb.collection(BuildConfig.FIREBASE_COLLECTION)
+                .document(BuildConfig.FIREBASE_DOCUMENT)
+                .collection(CARD_LIST)
+                .whereEqualTo(DECK_ID, mDeck.getId())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
 
-        List<CardModel> cardModelList = new ArrayList<>();
+                            List<CardModel> cardModelList = new ArrayList<>();
 
-        cardModelList.addAll(mLandAdapter.getSnapshots());
-        cardModelList.addAll(mCardAdapter.getSnapshots());
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                cardModelList.add(document.toObject(CardModel.class));
+                            }
 
-        Intent intent = new Intent(getActivity(), DeckWidgetProvider.class);
+                            Intent intent = new Intent(getActivity(), DeckWidgetProvider.class);
 
-        intent.putExtra(DECK_PARCELABLE, mDeck);
-        intent.putParcelableArrayListExtra(CARD_LIST,  (ArrayList<? extends Parcelable>) cardModelList);
-        getActivity().sendBroadcast(intent);
-    }*/
+                            intent.putExtra(DECK_PARCELABLE, mDeck);
+                            intent.putParcelableArrayListExtra(CARD_LIST,  (ArrayList<? extends Parcelable>) cardModelList);
+                            getActivity().sendBroadcast(intent);
+
+                        } else {
+                            //Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
+
+    }
 
 
 }
