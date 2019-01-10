@@ -128,10 +128,6 @@ public class Card implements Parcelable {
         return text;
     }
 
-    public String getOriginalType() {
-        return originalType;
-    }
-
     public String getPower() {
         return power;
     }

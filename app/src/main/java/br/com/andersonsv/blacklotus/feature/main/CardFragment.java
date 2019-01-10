@@ -39,7 +39,7 @@ import java.util.List;
 
 import br.com.andersonsv.blacklotus.BuildConfig;
 import br.com.andersonsv.blacklotus.R;
-import br.com.andersonsv.blacklotus.adapter.CardNewAdapter;
+import br.com.andersonsv.blacklotus.adapter.CardAdapter;
 import br.com.andersonsv.blacklotus.feature.base.BaseFragment;
 import br.com.andersonsv.blacklotus.firebase.CardModel;
 import br.com.andersonsv.blacklotus.firebase.DeckModel;
@@ -55,12 +55,12 @@ import static br.com.andersonsv.blacklotus.util.Constants.CARD_MODEL;
 import static br.com.andersonsv.blacklotus.util.Constants.DECK_ID;
 import static br.com.andersonsv.blacklotus.util.Constants.DECK_PARCELABLE;
 
-public class CardFragment extends BaseFragment implements CardNewAdapter.OnCardSelectedListener {
+public class CardFragment extends BaseFragment implements CardAdapter.OnCardSelectedListener {
 
     private DeckModel mDeck;
     private FirebaseFirestore mDb;
-    private CardNewAdapter mLandAdapter;
-    private CardNewAdapter mCardAdapter;
+    private CardAdapter mLandAdapter;
+    private CardAdapter mCardAdapter;
 
     @BindView(R.id.deckName)
     TextView mDeckName;
@@ -115,11 +115,6 @@ public class CardFragment extends BaseFragment implements CardNewAdapter.OnCardS
         return rootView;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
     private void getCardList() {
 
         Query query = mDb.collection(BuildConfig.FIREBASE_COLLECTION)
@@ -128,7 +123,7 @@ public class CardFragment extends BaseFragment implements CardNewAdapter.OnCardS
                 .whereEqualTo(DECK_ID, mDeck.getId())
                 .whereEqualTo(CARD_LAND, false);
 
-        mCardAdapter = new CardNewAdapter(query, this) {
+        mCardAdapter = new CardAdapter(query, this) {
             @Override
             protected void onDataChanged() {
                 if (getItemCount() == 0) {
@@ -161,7 +156,7 @@ public class CardFragment extends BaseFragment implements CardNewAdapter.OnCardS
                 .whereEqualTo(DECK_ID, mDeck.getId())
                 .whereEqualTo(CARD_LAND, true);
 
-        mLandAdapter = new CardNewAdapter(query, this) {
+        mLandAdapter = new CardAdapter(query, this) {
             @Override
             protected void onDataChanged() {
                 if (getItemCount() == 0) {

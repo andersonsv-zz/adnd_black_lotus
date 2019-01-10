@@ -38,11 +38,6 @@ public class LoginActivityTest extends BaseActivityTest {
     @Rule
     public final ActivityTestRule<LoginActivity> mActivityTestRule = new ActivityTestRule<>(LoginActivity.class);
 
-    @Before
-    public void setUp() {
-
-    }
-
     @Test
     public void whenEmailPasswordIsEmpty_andClickOnLogin_shouldDisplayErrors() {
 

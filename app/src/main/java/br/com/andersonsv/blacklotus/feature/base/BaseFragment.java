@@ -28,7 +28,7 @@ import static br.com.andersonsv.blacklotus.util.Constants.VALIDATION_TEXT_INPUT_
 
 public class BaseFragment extends Fragment {
 
-    public void setLinearLayoutVerticalWithDivider(final RecyclerView recyclerView){
+    protected void setLinearLayoutVerticalWithDivider(final RecyclerView recyclerView){
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.getContext(), LinearLayoutManager.VERTICAL, false);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(),
                 linearLayoutManager.getOrientation());
@@ -44,7 +44,7 @@ public class BaseFragment extends Fragment {
                 .setAction("Action", null).show();
     }
 
-    public void showSaveDialog(String title, String message){
+    protected void showSaveDialog(String title, String message){
         final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
         builder.setTitle(title);
@@ -58,13 +58,13 @@ public class BaseFragment extends Fragment {
 
     }
 
-    public void openActivity(Class destination){
+    protected void openActivity(Class destination){
         Intent intent = new Intent(getActivity(), destination);
         startActivity(intent);
         getActivity().finish();
     }
 
-    public void checkFormValidation(List<ValidationError> errors){
+    protected void checkFormValidation(List<ValidationError> errors){
         for (ValidationError error : errors) {
             View view = error.getView();
             String message = error.getCollatedErrorMessage(getActivity());
@@ -79,18 +79,18 @@ public class BaseFragment extends Fragment {
         }
     }
 
-    public static void hideKeyboardFrom(Context context, View view) {
+    protected static void hideKeyboardFrom(Context context, View view) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
-    public static void removeErrorTextInputLayout(TextInputEditText textInputEditText){
+    protected static void removeErrorTextInputLayout(TextInputEditText textInputEditText){
         TextInputLayout textInputLayout = (TextInputLayout) textInputEditText.getParent().getParent();
         textInputLayout.setErrorEnabled(true);
         textInputLayout.setError("");
     }
 
-    public void openFragment(Fragment fragment) {
+    protected void openFragment(Fragment fragment) {
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.container, fragment);
         transaction.addToBackStack(null);

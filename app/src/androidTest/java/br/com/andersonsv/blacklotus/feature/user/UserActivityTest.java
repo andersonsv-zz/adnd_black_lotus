@@ -31,12 +31,6 @@ public class UserActivityTest extends BaseActivityTest {
     @Rule
     public final ActivityTestRule<UserActivity> mActivityTestRule = new ActivityTestRule<>(UserActivity.class);
 
-    @Before
-    public void setUp() {
-
-    }
-
-
     @Test
     public void whenInputsAreEmpty_andClickOnSignUp_shouldDisplayErrors() {
 
@@ -49,7 +43,6 @@ public class UserActivityTest extends BaseActivityTest {
         onView(withId(R.id.textInputLayoutPassword)).check(matches(hasTextInputLayoutHintText(msgPassword)));
         onView(withId(R.id.textInputLayoutPasswordConfirmation)).check(matches(hasTextInputLayoutHintText(TEXT_MSG_REQUIRED)));
     }
-
 
     @Test
     public void whenNameIsOkAndOthersInputsAreEmpty_andClickOnSignUp_shouldDisplayErrors() {

@@ -162,7 +162,7 @@ public class TextDrawable extends Drawable {
      * @param unit Units for the text size, such as dp or sp
      * @param size Text size value
      */
-    public void setTextSize(int unit, float size) {
+    private void setTextSize(int unit, float size) {
         float dimension = TypedValue.applyDimension(unit, size,
                 mResources.getDisplayMetrics());
         setRawTextSize(dimension);

@@ -116,11 +116,6 @@ public class SearchCardFragment extends BaseFragment implements SearchView.OnQue
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-    }
-
-    @Override
     public boolean onQueryTextSubmit(String query) {
 
         if (query == null || query.trim().isEmpty()) {

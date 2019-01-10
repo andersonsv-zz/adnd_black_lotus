@@ -27,11 +27,6 @@ public class ForgotPasswordActivityTest extends BaseActivityTest {
     @Rule
     public final ActivityTestRule<ForgotPasswordActivity> mActivityTestRule = new ActivityTestRule<>(ForgotPasswordActivity.class);
 
-    @Before
-    public void setUp() {
-
-    }
-
     @Test
     public void whenEmailIsEmpty_andClickOnRecover_shouldDisplayErrors() {
         String msgEmail = TEXT_MSG_REQUIRED.concat("\n").concat(TEXT_MSG_EMAIL);

@@ -2,162 +2,58 @@ package br.com.andersonsv.blacklotus.adapter;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.graphics.Color;
+import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.LayerDrawable;
-import android.graphics.drawable.LevelListDrawable;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.Spanned;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.Query;
 import com.squareup.picasso.Picasso;
-
-import java.util.List;
 
 import br.com.andersonsv.blacklotus.R;
 import br.com.andersonsv.blacklotus.firebase.CardModel;
-import br.com.andersonsv.blacklotus.model.CardColor;
 import br.com.andersonsv.blacklotus.model.Rarity;
-import br.com.andersonsv.blacklotus.widget.TextDrawable;
+import br.com.andersonsv.blacklotus.util.ImageHtmlUtil;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static br.com.andersonsv.blacklotus.util.StringUtils.replaceTypetImgSrc;
 
-public class CardAdapter extends FirestoreRecyclerAdapter<CardModel, CardAdapter.ViewHolder> implements Html.ImageGetter {
-    private ProgressBar mProgressBar;
-    private LinearLayout mEmptyState;
-    private LayoutInflater mInflater;
-    private Context mContext;
-    private List<CardModel> mData;
+public class CardAdapter extends FirestoreAdapter<CardAdapter.ViewHolder>{
 
-    private final CardAdapter.CardRecyclerOnClickHandler mClickHandler;
+    private static Context mContext;
 
-    public CardAdapter(FirestoreRecyclerOptions recyclerOptions, @NonNull ProgressBar progressBar, LinearLayout emptyState, CardRecyclerOnClickHandler clickHandler) {
-        super(recyclerOptions);
-        this.mProgressBar = progressBar;
-        this.mEmptyState = emptyState;
-        mClickHandler = clickHandler;
+    public interface OnCardSelectedListener {
+        void onSelected(DocumentSnapshot card);
     }
 
-    public interface CardRecyclerOnClickHandler {
-        void onClick(CardModel cardModel);
-    }
+    private OnCardSelectedListener mListener;
 
-    @NonNull
-    @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        this.mContext = parent.getContext();
-        this.mInflater = LayoutInflater.from(mContext);
-        View view = mInflater.inflate(R.layout.item_card, parent, false);
-
-        return new ViewHolder(view);
-    }
-
-
-    @Override
-    protected void onBindViewHolder(ViewHolder holder, int position, final CardModel model) {
-        mProgressBar.setVisibility(View.GONE);
-
-        final String docId = getSnapshots().getSnapshot(position).getId();
-        model.setId(docId);
-
-        holder.mCardName.setText(model.getName());
-        holder.mQuantity.setText(model.getQuantity().toString());
-        holder.mType.setText(model.getType());
-
-        Rarity rarity = Rarity.getByType(model.getRarity());
-
-        if(rarity != null){
-            holder.mRarity.setText(rarity.getTypeId());
-
-            int color = mInflater.getContext().getResources().getColor(rarity.getColor());
-            holder.mRarity.setTextColor(color);
-        }
-
-        if (model.getImage() != null) {
-            Picasso.with(mInflater.getContext())
-                    .load(model.getImage())
-                    .into(holder.mCardImage);
-        }
-
-        holder.mCardImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                View layoutDialog = View.inflate(mContext, R.layout.dialog_card_image, null);
-                ImageView imgRefInflated = layoutDialog.findViewById(R.id.imageViewDialog);
-
-                if (model.getImage() != null){
-                    Picasso.with(mInflater.getContext()).load(model.getImage()).into(imgRefInflated);
-                } else {
-                    imgRefInflated.setImageDrawable(mContext.getDrawable(R.drawable.ic_image_not_found));
-                }
-
-                final Dialog dialog = new Dialog(mContext,android.R.style.Theme_Light_NoTitleBar_Fullscreen); //default fullscreen titlebar
-
-                dialog.setContentView(layoutDialog);
-                dialog.show();
-
-                imgRefInflated.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View paramView) {
-                        dialog.cancel();
-                    }
-                });
-            }
-        });
-
-        if( model.getCost() != null) {
-            String text = replaceTypetImgSrc(model.getCost());
-            Spanned spanned = Html.fromHtml(text, this, null);
-            holder.mCost.setText(spanned);
-        }
+    public CardAdapter(Query query, CardAdapter.OnCardSelectedListener listener) {
+        super(query);
+        mListener = listener;
     }
 
     @Override
-    public void onError(FirebaseFirestoreException e) {
-        Log.e("error", e.getMessage());
+    public CardAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        mContext = parent.getContext();
+        return new CardAdapter.ViewHolder(inflater.inflate(R.layout.item_card, parent, false));
     }
 
     @Override
-    public void onDataChanged() {
-        notifyDataSetChanged();
-
-        mProgressBar.setVisibility(View.GONE);
-        mData = getSnapshots();
-        if (getItemCount() == 0) {
-            mEmptyState.setVisibility(View.VISIBLE);
-        } else {
-            mEmptyState.setVisibility(View.GONE);
-        }
+    public void onBindViewHolder(CardAdapter.ViewHolder holder, int position) {
+        holder.bind(getSnapshot(position), mListener);
     }
 
-    public void addItems(List<CardModel> moreItems) {
-        mData.addAll(moreItems);
-        notifyDataSetChanged();
-    }
-
-    public void deleteItem(int position) {
-        getSnapshots().getSnapshot(position).getReference().delete();
-        notifyItemRemoved(position);
-        notifyItemRangeChanged(position, getItemCount());
-    }
-
-    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-
+    static class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.textViewCardName)
         TextView mCardName;
 
@@ -179,47 +75,84 @@ public class CardAdapter extends FirestoreRecyclerAdapter<CardModel, CardAdapter
         ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            itemView.setOnClickListener(this);
         }
 
-        @Override
-        public void onClick(View view) {
-            int adapterPosition = getAdapterPosition();
-            CardModel movie = mData.get(adapterPosition);
-            mClickHandler.onClick(movie);
-        }
-    }
+        public void bind(final DocumentSnapshot snapshot,
+                         final CardAdapter.OnCardSelectedListener listener) {
 
-    @Override
-    public Drawable getDrawable(String name) {
+            final CardModel model = snapshot.toObject(CardModel.class);
+            model.setId(snapshot.getId());
 
-        CardColor cardColor = CardColor.getById(name);
-        int size = mContext.getResources().getInteger(R.integer.card_cost_list);
+            Resources resources = itemView.getResources();
 
-        if (cardColor != null) {
-            LevelListDrawable d = new LevelListDrawable();
+            mCardName.setText(model.getName());
+            mQuantity.setText(model.getQuantity().toString());
+            mType.setText(model.getType());
 
-            Drawable empty = mContext.getResources().getDrawable(cardColor.getImage());
-            d.addLevel(0, 0, empty);
-            d.setBounds(0, 0, size, size);
+            Rarity rarity = Rarity.getByType(model.getRarity());
 
-            return d;
+            if(rarity != null){
+                mRarity.setText(rarity.getTypeId());
 
-        } else {
-            //Copied by - https://github.com/devunwired/textdrawable
-            TextDrawable textDrawable = new TextDrawable(mContext);
+                int color = resources.getColor(rarity.getColor());
+                mRarity.setTextColor(color);
+            }
 
-            textDrawable.setText(name);
-            textDrawable.setTextColor(Color.BLACK);
+            if (model.getImage() != null) {
+                Picasso.with(itemView.getContext())
+                        .load(model.getImage())
+                        .into(mCardImage);
+            }
 
-            GradientDrawable gD = new GradientDrawable();
-            gD.setColor(Color.GRAY);
-            gD.setShape(GradientDrawable.OVAL);
-            LayerDrawable layerDrawable = new LayerDrawable(new Drawable[]{gD, textDrawable});
+            mCardImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
 
-            layerDrawable.setBounds(0, 0, size, size);
+                    View layoutDialog = View.inflate(itemView.getContext(), R.layout.dialog_card_image, null);
+                    ImageView imgRefInflated = layoutDialog.findViewById(R.id.imageViewDialog);
 
-            return layerDrawable;
+                    if (model.getImage() != null){
+                        Picasso.with(itemView.getContext()).load(model.getImage()).into(imgRefInflated);
+                    } else {
+                        imgRefInflated.setImageDrawable(itemView.getContext().getDrawable(R.drawable.ic_image_not_found));
+                    }
+
+                    final Dialog dialog = new Dialog(itemView.getContext(),android.R.style.Theme_Light_NoTitleBar_Fullscreen); //default fullscreen titlebar
+
+                    dialog.setContentView(layoutDialog);
+                    dialog.show();
+
+                    imgRefInflated.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View paramView) {
+                            dialog.cancel();
+                        }
+                    });
+                }
+            });
+
+            if( model.getCost() != null) {
+                String text = replaceTypetImgSrc(model.getCost());
+
+                Html.ImageGetter imageGetter =  new Html.ImageGetter() {
+                    @Override
+                    public Drawable getDrawable(String source) {
+                        return new ImageHtmlUtil(mContext).generate(source);
+                    }
+                };
+
+                Spanned spanned = Html.fromHtml(text, imageGetter, null);
+                mCost.setText(spanned);
+            }
+
+            // Click listener
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (listener != null) {
+                        listener.onSelected(snapshot);
+                    }
+                }
+            });
         }
     }
 }

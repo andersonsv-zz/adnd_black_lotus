@@ -8,7 +8,7 @@ import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
 public class BaseActivityTest {
-    public static Matcher<View> hasTextInputLayoutHintText(final String expectedErrorText) {
+    protected static Matcher<View> hasTextInputLayoutHintText(final String expectedErrorText) {
         return new TypeSafeMatcher<View>() {
 
             @Override

@@ -62,7 +62,7 @@ public class DeckAdapter extends FirestoreAdapter<DeckAdapter.ViewHolder> {
         @BindView(R.id.imageViewColor)
         ImageView mColor;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
