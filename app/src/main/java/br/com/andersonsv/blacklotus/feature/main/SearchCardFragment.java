@@ -95,7 +95,9 @@ public class SearchCardFragment extends BaseFragment implements SearchView.OnQue
         searchView.setOnQueryTextListener(this);
 
         searchView.setQueryHint(getString(R.string.default_search));
-        searchView.requestFocus();
+        searchView.setQuery("Black Lotus",false);
+        searchView.setFocusable(true);
+        searchView.requestFocusFromTouch();
 
         MenuItem item = menu.findItem(R.id.app_bar_switch);
         item.setActionView(R.layout.switch_item);
