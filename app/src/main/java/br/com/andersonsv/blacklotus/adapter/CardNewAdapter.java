@@ -3,11 +3,7 @@ package br.com.andersonsv.blacklotus.adapter;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.LayerDrawable;
-import android.graphics.drawable.LevelListDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.Spanned;
@@ -23,10 +19,8 @@ import com.squareup.picasso.Picasso;
 
 import br.com.andersonsv.blacklotus.R;
 import br.com.andersonsv.blacklotus.firebase.CardModel;
-import br.com.andersonsv.blacklotus.model.CardColor;
 import br.com.andersonsv.blacklotus.model.Rarity;
 import br.com.andersonsv.blacklotus.util.ImageHtmlUtil;
-import br.com.andersonsv.blacklotus.widget.TextDrawable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 

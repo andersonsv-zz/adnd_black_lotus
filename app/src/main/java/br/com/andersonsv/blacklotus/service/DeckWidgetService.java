@@ -2,9 +2,6 @@ package br.com.andersonsv.blacklotus.service;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.text.Html;
-import android.text.Spanned;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
@@ -13,9 +10,6 @@ import java.util.List;
 import br.com.andersonsv.blacklotus.R;
 import br.com.andersonsv.blacklotus.firebase.CardModel;
 import br.com.andersonsv.blacklotus.provider.DeckWidgetProvider;
-import br.com.andersonsv.blacklotus.util.ImageHtmlUtil;
-
-import static br.com.andersonsv.blacklotus.util.StringUtils.replaceTypetImgSrc;
 
 public class DeckWidgetService extends RemoteViewsService  {
     private List<CardModel> cards;

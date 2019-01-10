@@ -248,6 +248,7 @@ public class CardFragment extends BaseFragment implements CardNewAdapter.OnCardS
     public void onSelected(DocumentSnapshot card) {
         Fragment cardEditorFragment = CardEditorFragment.newInstance();
         CardModel cardModel  = card.toObject(CardModel.class);
+        cardModel.setId(card.getId());
 
         Bundle bundle = new Bundle();
         bundle.putParcelable(CARD_MODEL, cardModel);

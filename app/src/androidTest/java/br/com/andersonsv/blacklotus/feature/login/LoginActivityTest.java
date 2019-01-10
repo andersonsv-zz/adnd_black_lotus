@@ -3,7 +3,6 @@ package br.com.andersonsv.blacklotus.feature.login;
 import android.app.Activity;
 import android.app.Instrumentation;
 import android.content.Intent;
-import android.support.test.espresso.IdlingRegistry;
 import android.support.test.espresso.intent.Intents;
 import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;

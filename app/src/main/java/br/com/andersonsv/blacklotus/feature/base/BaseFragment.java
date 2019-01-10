@@ -46,23 +46,6 @@ public class BaseFragment extends Fragment {
                 .setAction("Action", null).show();
     }
 
-    public boolean validate(@NonNull TextInputLayout textInputLayout, @NonNull TextInputEditText textInputEditText) {
-        if (textInputEditText.getText().toString().trim().isEmpty()) {
-            textInputLayout.setError(getString(R.string.default_required));
-            requestFocus(textInputEditText);
-            return false;
-        } else {
-            textInputLayout.setErrorEnabled(false);
-        }
-        return true;
-    }
-
-    private void requestFocus(View view) {
-        if (view.requestFocus()) {
-            getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-        }
-    }
-
     public void showSaveDialog(String title, String message){
         final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 

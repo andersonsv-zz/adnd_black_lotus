@@ -1,16 +1,10 @@
 package br.com.andersonsv.blacklotus.feature.main;
 
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.LayerDrawable;
-import android.graphics.drawable.LevelListDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.text.Html;
-import android.text.Layout;
 import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +15,7 @@ import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
@@ -34,11 +29,9 @@ import br.com.andersonsv.blacklotus.data.Card;
 import br.com.andersonsv.blacklotus.feature.base.BaseFragment;
 import br.com.andersonsv.blacklotus.firebase.CardModel;
 import br.com.andersonsv.blacklotus.firebase.DeckModel;
-import br.com.andersonsv.blacklotus.model.CardColor;
 import br.com.andersonsv.blacklotus.model.Rarity;
 import br.com.andersonsv.blacklotus.util.ImageHtmlUtil;
 import br.com.andersonsv.blacklotus.util.StringUtils;
-import br.com.andersonsv.blacklotus.widget.TextDrawable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -160,7 +153,6 @@ public class CardEditorFragment extends BaseFragment {
         String powerToughness = "-";
         if (power != 0 && toughness != 0){
             powerToughness = StringUtils.formatStringInt(getContext().getString(R.string.card_editor_format_power_toughness), Arrays.asList( power, toughness));
-            //powerToughness = String.format(getContext().getString(R.string.card_editor_format_power_toughness), power, toughness);
         }
 
         mPowerToughness.setText(powerToughness);
@@ -217,36 +209,71 @@ public class CardEditorFragment extends BaseFragment {
         mProgressBar.setVisibility(View.VISIBLE);
         mCard.setQuantity(mQuantity.getProgress());
 
+        if (mCard.getId() == null) {
+            insertDocument();
+        } else {
+            updateDocument();
+        }
+    }
+
+    private void insertDocument() {
         FirebaseFirestore mDb = FirebaseFirestore.getInstance();
 
         mDb.collection(BuildConfig.FIREBASE_COLLECTION)
-                .document(BuildConfig.FIREBASE_DOCUMENT)
-                .collection(CARD_LIST)
-                .document(mCard.getId())
-                .set(mCard.objectMap(mDeck.getId()))
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
+            .document(BuildConfig.FIREBASE_DOCUMENT)
+            .collection(CARD_LIST)
+            .add(mCard.objectMap(null))
+            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                @Override
+                public void onSuccess(DocumentReference documentReference) {
+                    Fragment cardFragment = CardFragment.newInstance();
 
-                        Fragment cardFragment = CardFragment.newInstance();
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable(DECK_PARCELABLE, mDeck);
+                    cardFragment.setArguments(bundle);
+                    openFragment(cardFragment);
 
-                        Bundle bundle = new Bundle();
-                        bundle.putParcelable(DECK_PARCELABLE, mDeck);
-                        cardFragment.setArguments(bundle);
+                    mProgressBar.setVisibility(View.GONE);
+                }
+            })
+            .addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    showSaveDialog(getString(R.string.card_error_title),getString(R.string.card_error_message));
+                    mProgressBar.setVisibility(View.GONE);
+                }
+            });
+    }
 
+    private void updateDocument() {
+        FirebaseFirestore mDb = FirebaseFirestore.getInstance();
 
-                        openFragment(cardFragment);
+        mDb.collection(BuildConfig.FIREBASE_COLLECTION)
+            .document(BuildConfig.FIREBASE_DOCUMENT)
+            .collection(CARD_LIST)
+            .document(mCard.getId())
+            .set(mCard.objectMap(mDeck.getId()))
+            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
 
-                        mProgressBar.setVisibility(View.GONE);
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        showSaveDialog(getString(R.string.card_error_title),getString(R.string.card_error_message));
-                        mProgressBar.setVisibility(View.GONE);
-                    }
-                });
+                    Fragment cardFragment = CardFragment.newInstance();
+
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable(DECK_PARCELABLE, mDeck);
+                    cardFragment.setArguments(bundle);
+                    openFragment(cardFragment);
+
+                    mProgressBar.setVisibility(View.GONE);
+                }
+            })
+            .addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    showSaveDialog(getString(R.string.card_error_title),getString(R.string.card_error_message));
+                    mProgressBar.setVisibility(View.GONE);
+                }
+            });
     }
 }
 

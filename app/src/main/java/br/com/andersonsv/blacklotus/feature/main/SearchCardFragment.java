@@ -1,12 +1,9 @@
 package br.com.andersonsv.blacklotus.feature.main;
 
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -111,11 +108,7 @@ public class SearchCardFragment extends BaseFragment implements SearchView.OnQue
         switchSecondLanguage.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    secondLanguageActive = true;
-                } else {
-                    secondLanguageActive = false;
-                }
+                secondLanguageActive = isChecked;
             }
         });
 
