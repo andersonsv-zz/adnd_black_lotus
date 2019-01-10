@@ -7,6 +7,8 @@ import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.LevelListDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.text.Html;
 import android.text.Layout;
 import android.text.Spanned;
@@ -31,6 +33,7 @@ import br.com.andersonsv.blacklotus.R;
 import br.com.andersonsv.blacklotus.data.Card;
 import br.com.andersonsv.blacklotus.feature.base.BaseFragment;
 import br.com.andersonsv.blacklotus.firebase.CardModel;
+import br.com.andersonsv.blacklotus.firebase.DeckModel;
 import br.com.andersonsv.blacklotus.model.CardColor;
 import br.com.andersonsv.blacklotus.model.Rarity;
 import br.com.andersonsv.blacklotus.util.StringUtils;
@@ -43,6 +46,7 @@ import static br.com.andersonsv.blacklotus.util.Constants.CARD_DATA;
 import static br.com.andersonsv.blacklotus.util.Constants.CARD_LIST;
 import static br.com.andersonsv.blacklotus.util.Constants.CARD_MODEL;
 import static br.com.andersonsv.blacklotus.util.Constants.DECK_ID;
+import static br.com.andersonsv.blacklotus.util.Constants.DECK_PARCELABLE;
 import static br.com.andersonsv.blacklotus.util.StringUtils.replaceTypetImgSrc;
 
 public class CardEditorFragment extends BaseFragment implements Html.ImageGetter {
@@ -51,7 +55,7 @@ public class CardEditorFragment extends BaseFragment implements Html.ImageGetter
         return new CardEditorFragment();
     }
 
-    private String mDeckId;
+    private DeckModel mDeck;
     private CardModel mCard;
 
     @BindView(R.id.imageViewCard)
@@ -96,7 +100,8 @@ public class CardEditorFragment extends BaseFragment implements Html.ImageGetter
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {
-            mDeckId = bundle.getString(DECK_ID, "");
+
+            mDeck = bundle.getParcelable(DECK_PARCELABLE);
 
             if (bundle.containsKey(CARD_DATA)) {
                 Card card = bundle.getParcelable(CARD_DATA);
@@ -237,16 +242,20 @@ public class CardEditorFragment extends BaseFragment implements Html.ImageGetter
                 .document(BuildConfig.FIREBASE_DOCUMENT)
                 .collection(CARD_LIST)
                 .document(mCard.getId())
-                .set(mCard.objectMap(mDeckId))
+                .set(mCard.objectMap(mDeck.getId()))
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        if(getFragmentManager().getBackStackEntryCount() > 0){
-                            getFragmentManager().popBackStackImmediate();
-                        }
-                        else{
-                            getActivity().onBackPressed();
-                        }
+
+                        Fragment cardFragment = CardFragment.newInstance();
+
+                        Bundle bundle = new Bundle();
+                        bundle.putParcelable(DECK_PARCELABLE, mDeck);
+                        cardFragment.setArguments(bundle);
+
+
+                        openFragment(cardFragment);
+
                         mProgressBar.setVisibility(View.GONE);
                     }
                 })

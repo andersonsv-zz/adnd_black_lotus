@@ -118,4 +118,5 @@
 
     <string name="forgot_dialog_title">E-mail send</string>
     <string name="forgot_dialog_message">You will receive an email to reset your password</string>
+    <string name="default_second_language">SL</string>
 </resources>

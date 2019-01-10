@@ -15,7 +15,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import br.com.andersonsv.blacklotus.util.EspressoIdlingResource;
 import br.com.andersonsv.blacklotus.R;
 import br.com.andersonsv.blacklotus.feature.BaseActivityTest;
 import br.com.andersonsv.blacklotus.feature.main.MainActivity;
@@ -42,7 +41,7 @@ public class LoginActivityTest extends BaseActivityTest {
 
     @Before
     public void setUp() {
-        IdlingRegistry.getInstance().register(EspressoIdlingResource.getIdlingResource());
+
     }
 
     @Test

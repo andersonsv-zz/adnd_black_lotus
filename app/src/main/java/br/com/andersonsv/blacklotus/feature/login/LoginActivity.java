@@ -21,7 +21,6 @@ import com.mobsandgeeks.saripaar.annotation.Password;
 
 import java.util.List;
 
-import br.com.andersonsv.blacklotus.util.EspressoIdlingResource;
 import br.com.andersonsv.blacklotus.R;
 import br.com.andersonsv.blacklotus.feature.base.BaseActivity;
 import br.com.andersonsv.blacklotus.feature.main.MainActivity;
@@ -106,7 +105,6 @@ public class LoginActivity extends BaseActivity implements Validator.ValidationL
         final String email = mEmail.getText().toString();
         final String password = mPassword.getText().toString();
 
-        EspressoIdlingResource.increment();
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
         firebaseAuth.signInWithEmailAndPassword(email, password)
@@ -114,7 +112,6 @@ public class LoginActivity extends BaseActivity implements Validator.ValidationL
                 @Override
                 public void onSuccess(AuthResult authResult) {
                     if (authResult.getUser() != null) {
-                        EspressoIdlingResource.decrement(); // Tells Espresso test to resume
                         mProgressBar.setVisibility(View.GONE);
                         openActivity(MainActivity.class);
                     }

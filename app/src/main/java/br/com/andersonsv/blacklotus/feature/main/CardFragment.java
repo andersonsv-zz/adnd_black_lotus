@@ -10,7 +10,6 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -175,14 +174,10 @@ public class CardFragment extends BaseFragment implements CardAdapter.CardRecycl
         Fragment searchCardFragment = SearchCardFragment.newInstance();
 
         Bundle bundle = new Bundle();
-        bundle.putString(DECK_ID, mDeck.getId());
+        bundle.putParcelable(DECK_PARCELABLE, mDeck);
         searchCardFragment.setArguments(bundle);
 
-
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.container, searchCardFragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
+        openFragment(searchCardFragment);
     }
 
     @Override
@@ -234,15 +229,10 @@ public class CardFragment extends BaseFragment implements CardAdapter.CardRecycl
 
         Bundle bundle = new Bundle();
         bundle.putParcelable(CARD_MODEL, cardModel);
-        bundle.putString(DECK_ID, mDeck.getId());
+        bundle.putParcelable(DECK_PARCELABLE, mDeck);
         cardEditorFragment.setArguments(bundle);
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.container, cardEditorFragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
-
+        openFragment(cardEditorFragment);
     }
-
 
     private void sendCardsToWidget() {
 

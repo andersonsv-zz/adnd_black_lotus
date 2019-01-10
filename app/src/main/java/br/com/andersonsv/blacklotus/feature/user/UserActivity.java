@@ -26,7 +26,6 @@ import com.mobsandgeeks.saripaar.annotation.Password;
 
 import java.util.List;
 
-import br.com.andersonsv.blacklotus.util.EspressoIdlingResource;
 import br.com.andersonsv.blacklotus.R;
 import br.com.andersonsv.blacklotus.feature.base.BaseActivity;
 import br.com.andersonsv.blacklotus.feature.main.MainActivity;
@@ -105,8 +104,6 @@ public class UserActivity extends BaseActivity implements Validator.ValidationLi
     private void createUser(final String email, final String password, final String name){
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
-        EspressoIdlingResource.increment();
-
         firebaseAuth.createUserWithEmailAndPassword(email, password)
                 .addOnFailureListener(this, new OnFailureListener() {
                     @Override
@@ -122,7 +119,7 @@ public class UserActivity extends BaseActivity implements Validator.ValidationLi
 
                             if (task.isSuccessful()){
                                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                                EspressoIdlingResource.decrement();
+
                                 UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                                         .setDisplayName(name).build();
                                 user.updateProfile(profileUpdates);

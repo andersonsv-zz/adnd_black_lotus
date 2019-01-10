@@ -4,8 +4,10 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
+import android.support.test.espresso.IdlingResource;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -33,7 +35,7 @@ import br.com.andersonsv.blacklotus.R;
 import br.com.andersonsv.blacklotus.adapter.DeckAdapter;
 import br.com.andersonsv.blacklotus.feature.base.BaseFragment;
 import br.com.andersonsv.blacklotus.firebase.DeckModel;
-import br.com.andersonsv.blacklotus.util.EspressoIdlingResource;
+import br.com.andersonsv.blacklotus.util.SimpleIdlingResource;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -61,6 +63,18 @@ public class DeckFragment extends BaseFragment implements DeckAdapter.DeckRecycl
 
     private DeckModel mDeck;
 
+    @Nullable
+    private SimpleIdlingResource mIdlingResource;
+
+    @VisibleForTesting
+    @NonNull
+    public IdlingResource getIdlingResource() {
+        if (mIdlingResource == null) {
+            mIdlingResource = new SimpleIdlingResource();
+        }
+        return mIdlingResource;
+    }
+
     public static DeckFragment newInstance() {
         return new DeckFragment();
     }
@@ -71,9 +85,10 @@ public class DeckFragment extends BaseFragment implements DeckAdapter.DeckRecycl
         View rootView = inflater.inflate(R.layout.fragment_deck, container, false);
         ButterKnife.bind(this, rootView);
 
+        getIdlingResource();
+
         ((MainActivity) getActivity()).getSupportActionBar().setTitle(R.string.navigation_decks);
 
-        setupView();
         getDeckList();
 
         setHasOptionsMenu(true);
@@ -96,14 +111,7 @@ public class DeckFragment extends BaseFragment implements DeckAdapter.DeckRecycl
         super.onCreateOptionsMenu(menu,inflater);
     }
 
-
-    private void setupView() {
-
-    }
-
     private void getDeckList() {
-
-        EspressoIdlingResource.increment();
 
         FirebaseFirestore mDb = FirebaseFirestore.getInstance();
         FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -119,10 +127,12 @@ public class DeckFragment extends BaseFragment implements DeckAdapter.DeckRecycl
 
         FirestoreRecyclerOptions<DeckModel> response = new FirestoreRecyclerOptions.Builder<DeckModel>()
                 .setQuery(query, DeckModel.class)
+
                 .build();
 
         mAdapter = new DeckAdapter(response, mProgressBar, mEmptyState, this);
         mAdapter.notifyDataSetChanged();
+
         mDeckRecycler.setAdapter(mAdapter);
     }
 
@@ -130,23 +140,23 @@ public class DeckFragment extends BaseFragment implements DeckAdapter.DeckRecycl
     @OnClick(R.id.fabAddDeck)
     public void addDeck(View view){
         Fragment deckEditorFragment = DeckEditorFragment.newInstance();
-
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.container, deckEditorFragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
+        openFragment(deckEditorFragment);
     }
 
     @Override
     public void onStart() {
         super.onStart();
         mAdapter.startListening();
+        mIdlingResource.setIdleState(false);
+
     }
 
     @Override
     public void onStop() {
         super.onStop();
         mAdapter.stopListening();
+        mIdlingResource.setIdleState(true);
+
     }
 
     @Override
@@ -156,10 +166,7 @@ public class DeckFragment extends BaseFragment implements DeckAdapter.DeckRecycl
         Bundle bundle = new Bundle();
         bundle.putParcelable(DECK_PARCELABLE, deck);
         cardFragment.setArguments(bundle);
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.container, cardFragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
+        openFragment(cardFragment);
     }
 
     @Override
@@ -252,12 +259,5 @@ public class DeckFragment extends BaseFragment implements DeckAdapter.DeckRecycl
             }
         });
         builder.show();
-    }
-
-    private void openFragment(Fragment fragment){
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.container, fragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
     }
 }

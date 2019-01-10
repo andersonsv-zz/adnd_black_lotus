@@ -1,6 +1,5 @@
 package br.com.andersonsv.blacklotus.feature.user;
 
-import android.support.test.espresso.IdlingRegistry;
 import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -12,7 +11,6 @@ import org.junit.runner.RunWith;
 
 import java.util.Random;
 
-import br.com.andersonsv.blacklotus.util.EspressoIdlingResource;
 import br.com.andersonsv.blacklotus.R;
 import br.com.andersonsv.blacklotus.feature.BaseActivityTest;
 
@@ -35,7 +33,7 @@ public class UserActivityTest extends BaseActivityTest {
 
     @Before
     public void setUp() {
-        IdlingRegistry.getInstance().register(EspressoIdlingResource.getIdlingResource());
+
     }
 
 

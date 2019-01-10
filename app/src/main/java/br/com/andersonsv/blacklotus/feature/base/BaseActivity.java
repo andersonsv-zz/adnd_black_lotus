@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatEditText;
 import android.view.View;
@@ -85,5 +87,12 @@ public class BaseActivity extends AppCompatActivity {
         TextInputLayout textInputLayout = (TextInputLayout) textInputEditText.getParent().getParent();
         textInputLayout.setErrorEnabled(true);
         textInputLayout.setError("");
+    }
+
+    public void openFragment(Fragment fragment) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 }

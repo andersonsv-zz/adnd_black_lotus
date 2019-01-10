@@ -1,6 +1,5 @@
 package br.com.andersonsv.blacklotus.feature.login;
 
-import android.support.test.espresso.IdlingRegistry;
 import android.support.test.filters.MediumTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -12,7 +11,6 @@ import org.junit.runner.RunWith;
 
 import br.com.andersonsv.blacklotus.R;
 import br.com.andersonsv.blacklotus.feature.BaseActivityTest;
-import br.com.andersonsv.blacklotus.util.EspressoIdlingResource;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -31,7 +29,7 @@ public class ForgotPasswordActivityTest extends BaseActivityTest {
 
     @Before
     public void setUp() {
-        IdlingRegistry.getInstance().register(EspressoIdlingResource.getIdlingResource());
+
     }
 
     @Test

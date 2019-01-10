@@ -8,5 +8,12 @@
         myapp:showAsAction="always"
         myapp:actionViewClass="android.widget.SearchView"
         android:title="Search" />
+    <item
+        android:id="@+id/app_bar_switch"
+        android:title="Switch"
+        android:orderInCategory="2"
+        myapp:actionLayout="@layout/switch_item"
+        myapp:showAsAction="always" />
+
 
 </menu>

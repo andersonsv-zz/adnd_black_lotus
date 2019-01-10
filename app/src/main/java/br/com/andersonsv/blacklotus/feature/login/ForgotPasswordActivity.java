@@ -18,7 +18,6 @@ import com.mobsandgeeks.saripaar.annotation.Order;
 
 import java.util.List;
 
-import br.com.andersonsv.blacklotus.util.EspressoIdlingResource;
 import br.com.andersonsv.blacklotus.R;
 import br.com.andersonsv.blacklotus.feature.base.BaseActivity;
 import butterknife.BindView;
@@ -74,14 +73,13 @@ public class ForgotPasswordActivity extends BaseActivity implements Validator.Va
 
         final String email = mEmail.getText().toString();
 
-        EspressoIdlingResource.increment();
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
         firebaseAuth.sendPasswordResetEmail(email)
             .addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
-                    EspressoIdlingResource.decrement();
+
                     mProgressBar.setVisibility(View.GONE);
                     alertDialogMessage(ForgotPasswordActivity.this, getResources().getString(R.string.forgot_dialog_title), getResources().getString(R.string.forgot_dialog_message));
                 }
