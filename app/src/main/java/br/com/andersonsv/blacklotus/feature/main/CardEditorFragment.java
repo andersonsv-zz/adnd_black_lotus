@@ -1,9 +1,11 @@
 package br.com.andersonsv.blacklotus.feature.main;
 
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.preference.PreferenceManager;
 import android.text.Html;
 import android.text.Spanned;
 import android.view.LayoutInflater;
@@ -30,6 +32,7 @@ import br.com.andersonsv.blacklotus.feature.base.BaseFragment;
 import br.com.andersonsv.blacklotus.firebase.CardModel;
 import br.com.andersonsv.blacklotus.firebase.DeckModel;
 import br.com.andersonsv.blacklotus.model.Rarity;
+import br.com.andersonsv.blacklotus.util.Constants;
 import br.com.andersonsv.blacklotus.util.ImageHtmlUtil;
 import br.com.andersonsv.blacklotus.util.StringUtils;
 import butterknife.BindView;
@@ -129,6 +132,13 @@ public class CardEditorFragment extends BaseFragment {
     }
 
     private void setupView() {
+
+        if (mCard.getId() == null) {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            String qtdSameCardInDeck = prefs.getString(Constants.KEY_QTD_SAME_CARD_IN_DECK, "50");
+            mQuantity.setMax(Integer.valueOf(qtdSameCardInDeck));
+        }
+
         if (mCard.getImage() != null) {
             Picasso.with(getContext())
                     .load(mCard.getImage())

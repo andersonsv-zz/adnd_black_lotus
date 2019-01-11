@@ -27,6 +27,7 @@ import br.com.andersonsv.blacklotus.feature.base.BaseFragment;
 import br.com.andersonsv.blacklotus.firebase.DeckModel;
 import br.com.andersonsv.blacklotus.network.CardService;
 import br.com.andersonsv.blacklotus.network.RetrofitClientInstance;
+import br.com.andersonsv.blacklotus.util.Constants;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Call;
@@ -49,6 +50,9 @@ public class SearchCardFragment extends BaseFragment implements SearchView.OnQue
 
     @BindView(R.id.progressBar)
     ProgressBar mProgressBar;
+
+    @BindView(R.id.textViewMessage)
+    TextView mMessage;
 
     private SearchView searchView;
 
@@ -82,6 +86,7 @@ public class SearchCardFragment extends BaseFragment implements SearchView.OnQue
 
         setLinearLayoutVerticalWithDivider(mRecyclerCard);
         mRecyclerCard.setAdapter(mAdapter);
+        mMessage.setText(getString(R.string.search_card_help));
 
         return rootView;
     }
@@ -96,7 +101,6 @@ public class SearchCardFragment extends BaseFragment implements SearchView.OnQue
         searchView.setOnQueryTextListener(this);
 
         searchView.setQueryHint(getString(R.string.default_search));
-        searchView.setQuery("Black Lotus",false);
         searchView.setFocusable(true);
         searchView.setIconified(false);
         searchView.requestFocusFromTouch();
@@ -130,7 +134,7 @@ public class SearchCardFragment extends BaseFragment implements SearchView.OnQue
             mProgressBar.setVisibility(View.VISIBLE);
 
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-            String secondLanguage = prefs.getString("key_second_language_api", "");
+            String secondLanguage = prefs.getString(Constants.KEY_SECOND_LANGUAGE, "");
 
             //second language
             if (secondLanguageActive && !"".equalsIgnoreCase(secondLanguage)){
@@ -161,6 +165,9 @@ public class SearchCardFragment extends BaseFragment implements SearchView.OnQue
 
                     if (response.body().getCards().size() <= 0) {
                         mEmptyTextView.setVisibility(View.VISIBLE);
+                    } else {
+                        mMessage.setVisibility(View.GONE);
+                        mRecyclerCard.setVisibility(View.VISIBLE);
                     }
                 }
             }
@@ -169,6 +176,9 @@ public class SearchCardFragment extends BaseFragment implements SearchView.OnQue
             public void onFailure(@NonNull Call<Cards> call, @NonNull Throwable t) {
                 Log.e("ERROR", t.getLocalizedMessage());
                 mProgressBar.setVisibility(View.GONE);
+                mMessage.setText(t.getMessage());
+                mMessage.setVisibility(View.VISIBLE);
+                mRecyclerCard.setVisibility(View.GONE);
             }
         });
     }
@@ -189,14 +199,19 @@ public class SearchCardFragment extends BaseFragment implements SearchView.OnQue
 
                     if (response.body().getCards().size() <= 0) {
                         mEmptyTextView.setVisibility(View.VISIBLE);
+                    } else {
+                        mMessage.setVisibility(View.GONE);
+                        mRecyclerCard.setVisibility(View.VISIBLE);
                     }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<Cards> call, @NonNull Throwable t) {
-                Log.e("ERROR", t.getLocalizedMessage());
                 mProgressBar.setVisibility(View.GONE);
+                mMessage.setText(getString(R.string.search_card_error));
+                mMessage.setVisibility(View.VISIBLE);
+                mRecyclerCard.setVisibility(View.GONE);
             }
         });
     }

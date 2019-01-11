@@ -3,8 +3,6 @@
 
 <android.support.v7.preference.PreferenceCategory
     android:title="@string/pref_language">
-
-
     <ListPreference
         android:key="key_second_language_api"
         android:title="@string/pref_language"
@@ -12,19 +10,18 @@
         android:entries="@array/second_language_api"
         android:entryValues="@array/second_language_api" />
 
-
 </android.support.v7.preference.PreferenceCategory>
 
     <android.support.v7.preference.PreferenceCategory
-        android:title="2">
+        android:title="@string/navigation_decks">
 
-        <android.support.v7.preference.CheckBoxPreference
-            android:key="key3"
-            android:title="CheckBox Preference"
-            android:summary="CheckBox Summary"
-            android:defaultValue="true"/>
-
+        <android.support.v7.preference.EditTextPreference
+            android:key="key_quantity_same_cards_in_deck"
+            android:title="@string/pref_quantity_same_cards_in_deck_title"
+            android:persistent="true"
+            android:dialogTitle="@string/pref_quantity_same_cards_in_deck_title"
+            android:dialogMessage="@string/pref_quantity_same_cards_in_deck_msg"
+            android:defaultValue="50" />
 
     </android.support.v7.preference.PreferenceCategory>
-
 </android.support.v7.preference.PreferenceScreen>

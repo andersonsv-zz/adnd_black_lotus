@@ -13,8 +13,9 @@ public class Constants {
     public final static String IMAGE_REPLACE = "<img src='$1'>";
     public final static String REG_EXP_COST = "\\{([^}]*)\\}";
 
-    public final static String DATE_FORMAT_BR = "dd-MM-yyyy hh:mm:ss";
-
     public final static String VALIDATION_APP_COMPAT_EDIT_TEXT = "AppCompatEditText";
     public final static String VALIDATION_TEXT_INPUT_EDIT_TEXT = "TextInputEditText";
+
+    public final static String KEY_SECOND_LANGUAGE = "key_second_language_api";
+    public final static String KEY_QTD_SAME_CARD_IN_DECK = "key_quantity_same_cards_in_deck";
 }

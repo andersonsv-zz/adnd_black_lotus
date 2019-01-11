@@ -22,8 +22,6 @@
     <string name="default_empty_state_deck_content_description">Empty state deck image</string>
     <string name="default_empty_state_card_content_description">Empty state card image</string>
     <string name="default_logo_content_description">Card image</string>
-
-
     <string name="offline_no_internet">Without internet?</string>
     <string name="offline_no_internet_retry">Retry again</string>
 
@@ -46,7 +44,6 @@
     <string name="login_sign_message">Don\'t have an account?</string>
     <string name="login_signup"><u>Sign up</u></string>
     <string name="login_forgot_password"><u>Forgot password?</u></string>
-    <string name="title_activity_main">MainActivity</string>
     <string name="login_signin">Sign in</string>
     <string name="login_auth_error">Authentication error occurred.</string>
     <string name="login_auth_password_error">Password with a minimum of 6 digits</string>
@@ -108,8 +105,14 @@
         <item>Russian</item>
         <item>Spanish</item>
     </array>
-    <string name="appwidget_text">EXAMPLE</string>
-    <string name="add_widget">Add widget</string>
+    <string name="pref_quantity_same_cards_in_deck">Quantity cards in same deck</string>
+    <string name="pref_quantity_same_cards_in_deck_title">Quantity</string>
+    <string name="pref_quantity_same_cards_in_deck_msg">Input quantity cards in same deck</string>
+
+    <!-- Search -->
+    <string name="search_card_help">Enter the name of the card in the search.\n
+    If you have activated the second language, you can indicate the toggle (SL)</string>
+    <string name="search_card_error">An error occured</string>
 
     <!-- Forgot -->
     <string name="forgot_title">Recover password</string>
