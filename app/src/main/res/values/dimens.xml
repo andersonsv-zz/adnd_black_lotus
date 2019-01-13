@@ -13,6 +13,8 @@
     <dimen name="margin_42dp">42dp</dimen>
     <dimen name="margin_40dp">40dp</dimen>
     <dimen name="margin_80dp">80dp</dimen>
+    <dimen name="margin_45dp">45dp</dimen>
+
 
     <!-- Common -->
     <dimen name="height_card_view_line">4dp</dimen>
@@ -85,4 +87,9 @@ http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
     <dimen name="widget_margin">8dp</dimen>
     <dimen name="input_layout_2columns_height">90dp</dimen>
     <dimen name="widget_title_height">40dp</dimen>
+    <dimen name="height_cost">30dp</dimen>
+
+    <!--card editor -->
+    <dimen name="image_card_view_width">110dp</dimen>
+    <dimen name="image_card_view_height">180dp</dimen>
 </resources>
