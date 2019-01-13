@@ -12,6 +12,7 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -167,7 +168,6 @@ public class CardFragment extends BaseFragment implements CardAdapter.OnCardSele
                 } else {
                     mLandEmptyState.setVisibility(View.GONE);
                 }
-
                 mProgressBar.setVisibility(View.GONE);
             }
 
@@ -228,9 +228,11 @@ public class CardFragment extends BaseFragment implements CardAdapter.OnCardSele
 
                     CsvWriter.generateCsvFile(target, outString, cardModelList, getResources());
 
+                    Uri contentUri = FileProvider.getUriForFile(getActivity(), "br.com.andersonsv.blacklotus.app.fileprovider", target);
+
                     Intent sendIntent = new Intent();
                     sendIntent.setAction(Intent.ACTION_SEND);
-                    sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(target));
+                    sendIntent.putExtra(Intent.EXTRA_STREAM, contentUri);
                     sendIntent.setType(CsvWriter.TYPE_CSV);
                     startActivity(sendIntent);
                 }

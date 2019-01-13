@@ -197,40 +197,40 @@ public class DeckFragment extends BaseFragment implements DeckAdapter.OnDeckSele
         builder.setPositiveButton(getString(R.string.deck_delete_button), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+
                 FirebaseFirestore mDb = FirebaseFirestore.getInstance();
 
                 mDb.collection(BuildConfig.FIREBASE_COLLECTION)
-                        .document(BuildConfig.FIREBASE_DOCUMENT)
-                        .collection(CARD_LIST)
-                        .whereEqualTo(DECK_ID, mDeck.getId())
-                        .get()
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                        document.getReference().delete();
-                                    }
-
+                   .document(BuildConfig.FIREBASE_DOCUMENT)
+                   .collection(CARD_LIST)
+                   .whereEqualTo(DECK_ID, mDeck.getId())
+                   .get()
+                   .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    document.getReference().delete();
                                 }
+
                             }
-                        });
+                        }
+                   });
 
                 mDb.collection(BuildConfig.FIREBASE_COLLECTION)
-                        .document(BuildConfig.FIREBASE_DOCUMENT)
-                        .collection(DECK_LIST).document(mDeck.getId())
-                        .delete()
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        mMenu.findItem(R.id.edit_deck).setVisible(false);
-                        mMenu.findItem(R.id.delete_deck).setVisible(false);
-                        mMenu.findItem(R.id.cancel_edit).setVisible(false);
-                        mMenu.findItem(R.id.settings).setVisible(true);
-                        showSaveDialog(getString(R.string.default_deleted), getString(R.string.deck_delete_confirm_msg));
-                    }
+                    .document(BuildConfig.FIREBASE_DOCUMENT)
+                    .collection(DECK_LIST).document(mDeck.getId())
+                    .delete()
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            mMenu.findItem(R.id.edit_deck).setVisible(false);
+                            mMenu.findItem(R.id.delete_deck).setVisible(false);
+                            mMenu.findItem(R.id.cancel_edit).setVisible(false);
+                            mMenu.findItem(R.id.settings).setVisible(true);
+                            showSaveDialog(getString(R.string.default_deleted), getString(R.string.deck_delete_confirm_msg));
+                        }
                 });
-
                 dialogInterface.dismiss();
             }
         });

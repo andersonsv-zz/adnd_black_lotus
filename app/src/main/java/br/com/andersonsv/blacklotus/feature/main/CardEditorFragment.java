@@ -124,6 +124,7 @@ public class CardEditorFragment extends BaseFragment {
             }
             setupView();
         }
+        setHasOptionsMenu(true);
         return rootView;
     }
 
@@ -333,15 +334,23 @@ public class CardEditorFragment extends BaseFragment {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
+                        Fragment cardFragment = CardFragment.newInstance();
+
+                        Bundle bundle = new Bundle();
+                        bundle.putParcelable(DECK_PARCELABLE, mDeck);
+                        cardFragment.setArguments(bundle);
+                        openFragment(cardFragment);
+
                         showSaveDialog(getString(R.string.default_deleted), getString(R.string.card_delete_confirm_msg));
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            snack(layout, String.format(getString(R.string.default_error), e.getMessage()));
-                        }
-                    });
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        snack(layout, String.format(getString(R.string.default_error), e.getMessage()));
+                    }
+                });
                 dialogInterface.dismiss();
             }
         });
