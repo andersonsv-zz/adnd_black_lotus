@@ -25,7 +25,7 @@
                 android:layout_height="@dimen/image_card_view_height"
                 android:layout_marginStart="@dimen/margin_large"
                 android:layout_marginTop="@dimen/margin_large"
-                android:scaleType="centerInside"
+                android:scaleType="centerCrop"
                 android:contentDescription="@string/default_card_content_description"
                 app:srcCompat="@drawable/ic_image_not_found"
                 app:layout_constraintStart_toStartOf="parent"
