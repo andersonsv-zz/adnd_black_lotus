@@ -7,6 +7,7 @@ import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 
 import br.com.andersonsv.blacklotus.R;
+import br.com.andersonsv.blacklotus.util.Constants;
 
 public class SettingPreferencesFragment extends PreferenceFragmentCompat {
 
@@ -17,7 +18,7 @@ public class SettingPreferencesFragment extends PreferenceFragmentCompat {
     public void onCreatePreferences(Bundle bundle, String s) {
         setPreferencesFromResource(R.xml.app_preferences, s);
 
-        secondLanguage = (ListPreference) findPreference("key_second_language_api");
+        secondLanguage = (ListPreference) findPreference(Constants.KEY_SECOND_LANGUAGE);
 
         if(secondLanguage.getValue() != null){
             secondLanguage.setTitle(secondLanguage.getValue());

@@ -1,24 +1,34 @@
 package br.com.andersonsv.blacklotus.feature.main;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.preference.PreferenceManager;
 import android.text.Html;
 import android.text.Spanned;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
@@ -42,6 +52,8 @@ import butterknife.OnClick;
 import static br.com.andersonsv.blacklotus.util.Constants.CARD_DATA;
 import static br.com.andersonsv.blacklotus.util.Constants.CARD_LIST;
 import static br.com.andersonsv.blacklotus.util.Constants.CARD_MODEL;
+import static br.com.andersonsv.blacklotus.util.Constants.DECK_ID;
+import static br.com.andersonsv.blacklotus.util.Constants.DECK_LIST;
 import static br.com.andersonsv.blacklotus.util.Constants.DECK_PARCELABLE;
 import static br.com.andersonsv.blacklotus.util.StringUtils.replaceTypetImgSrc;
 
@@ -87,6 +99,9 @@ public class CardEditorFragment extends BaseFragment {
     @BindView(R.id.textViewQuantityInfo)
     TextView mQuantityInfo;
 
+    @BindView(R.id.cardEditorLayout)
+    ConstraintLayout layout;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -112,6 +127,12 @@ public class CardEditorFragment extends BaseFragment {
         return rootView;
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.card_menu, menu);
+        super.onCreateOptionsMenu(menu,inflater);
+    }
+
     private CardModel convertDataToModel(Card card) {
         CardModel cardModel = new CardModel();
 
@@ -133,11 +154,9 @@ public class CardEditorFragment extends BaseFragment {
 
     private void setupView() {
 
-        if (mCard.getId() == null) {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-            String qtdSameCardInDeck = prefs.getString(Constants.KEY_QTD_SAME_CARD_IN_DECK, "50");
-            mQuantity.setMax(Integer.valueOf(qtdSameCardInDeck));
-        }
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String qtdSameCardInDeck = prefs.getString(Constants.KEY_QTD_SAME_CARD_IN_DECK, "50");
+        mQuantity.setMax(Integer.valueOf(qtdSameCardInDeck));
 
         if (mCard.getImage() != null) {
             Picasso.with(getContext())
@@ -236,21 +255,21 @@ public class CardEditorFragment extends BaseFragment {
             .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                 @Override
                 public void onSuccess(DocumentReference documentReference) {
-                    Fragment cardFragment = CardFragment.newInstance();
+                Fragment cardFragment = CardFragment.newInstance();
 
-                    Bundle bundle = new Bundle();
-                    bundle.putParcelable(DECK_PARCELABLE, mDeck);
-                    cardFragment.setArguments(bundle);
-                    openFragment(cardFragment);
+                Bundle bundle = new Bundle();
+                bundle.putParcelable(DECK_PARCELABLE, mDeck);
+                cardFragment.setArguments(bundle);
+                openFragment(cardFragment);
 
-                    mProgressBar.setVisibility(View.GONE);
+                mProgressBar.setVisibility(View.GONE);
                 }
             })
             .addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    showSaveDialog(getString(R.string.card_error_title),getString(R.string.card_error_message));
-                    mProgressBar.setVisibility(View.GONE);
+                snack(layout, String.format(getString(R.string.default_error), e.getMessage()));
+                mProgressBar.setVisibility(View.GONE);
                 }
             });
     }
@@ -266,24 +285,72 @@ public class CardEditorFragment extends BaseFragment {
             .addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
+                Fragment cardFragment = CardFragment.newInstance();
 
-                    Fragment cardFragment = CardFragment.newInstance();
+                Bundle bundle = new Bundle();
+                bundle.putParcelable(DECK_PARCELABLE, mDeck);
+                cardFragment.setArguments(bundle);
+                openFragment(cardFragment);
 
-                    Bundle bundle = new Bundle();
-                    bundle.putParcelable(DECK_PARCELABLE, mDeck);
-                    cardFragment.setArguments(bundle);
-                    openFragment(cardFragment);
-
-                    mProgressBar.setVisibility(View.GONE);
+                mProgressBar.setVisibility(View.GONE);
                 }
             })
             .addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    showSaveDialog(getString(R.string.card_error_title),getString(R.string.card_error_message));
-                    mProgressBar.setVisibility(View.GONE);
+                snack(layout, String.format(getString(R.string.default_error), e.getMessage()));
+                mProgressBar.setVisibility(View.GONE);
                 }
             });
     }
-}
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.delete_card:
+                deleteCards();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void deleteCards() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setCancelable(false);
+        builder.setTitle(getString(R.string.card_delete_title));
+        builder.setMessage(String.format(getString(R.string.card_delete_title_confirm), mDeck.getName()));
+        builder.setPositiveButton(getString(R.string.card_delete_button), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+            FirebaseFirestore mDb = FirebaseFirestore.getInstance();
+
+            mDb.collection(BuildConfig.FIREBASE_COLLECTION)
+                .document(BuildConfig.FIREBASE_DOCUMENT)
+                .collection(CARD_LIST)
+                .document(mCard.getId())
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        showSaveDialog(getString(R.string.default_deleted), getString(R.string.card_delete_confirm_msg));
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            snack(layout, String.format(getString(R.string.default_error), e.getMessage()));
+                        }
+                    });
+                dialogInterface.dismiss();
+            }
+        });
+        builder.setNegativeButton(getString(R.string.default_cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        builder.show();
+    }
+}

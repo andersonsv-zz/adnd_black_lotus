@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -80,6 +81,9 @@ public class CardFragment extends BaseFragment implements CardAdapter.OnCardSele
     @BindView(R.id.recyclerViewCard)
     RecyclerView mCardRecycler;
 
+    @BindView(R.id.cardLayout)
+    ConstraintLayout layout;
+
     private List<CardModel> cardModelList = new ArrayList<>();
 
     private static final int REQUEST_CODE_WRITE_EXTERNAL_STORAGE_PERMISSION = 1;
@@ -137,9 +141,7 @@ public class CardFragment extends BaseFragment implements CardAdapter.OnCardSele
 
             @Override
             protected void onError(FirebaseFirestoreException e) {
-                // Show a snackbar on errors
-                //Snackbar.make(findViewById(android.R.id.content),
-                //        "Error: check logs for info.", Snackbar.LENGTH_LONG).show();
+                snack(layout, String.format(getString(R.string.default_error), e.getMessage()));
             }
         };
 
@@ -171,9 +173,7 @@ public class CardFragment extends BaseFragment implements CardAdapter.OnCardSele
 
             @Override
             protected void onError(FirebaseFirestoreException e) {
-                // Show a snackbar on errors
-                //Snackbar.make(findViewById(android.R.id.content),
-                //        "Error: check logs for info.", Snackbar.LENGTH_LONG).show();
+                snack(layout, String.format(getString(R.string.default_error), e.getMessage()));
             }
         };
 
@@ -273,8 +273,6 @@ public class CardFragment extends BaseFragment implements CardAdapter.OnCardSele
                     intent.putParcelableArrayListExtra(CARD_LIST,  (ArrayList<? extends Parcelable>) cardModelList);
                     getActivity().sendBroadcast(intent);
 
-                } else {
-                    //Log.d(TAG, "Error getting documents: ", task.getException());
                 }
                 }
             });

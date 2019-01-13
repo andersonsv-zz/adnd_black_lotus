@@ -136,7 +136,6 @@ public class SearchCardFragment extends BaseFragment implements SearchView.OnQue
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
             String secondLanguage = prefs.getString(Constants.KEY_SECOND_LANGUAGE, "");
 
-            //second language
             if (secondLanguageActive && !"".equalsIgnoreCase(secondLanguage)){
                 searchSecondLanguage(query, secondLanguage);
             } else {
@@ -158,7 +157,6 @@ public class SearchCardFragment extends BaseFragment implements SearchView.OnQue
             @Override
             public void onResponse(@NonNull Call<Cards> call, @NonNull Response<Cards> response) {
                 if (response.isSuccessful()){
-                    Log.d("OK", "ok" + response.body().getCards().size());
                     mAdapter.setCards(response.body().getCards());
                     mProgressBar.setVisibility(View.GONE);
                     mEmptyTextView.setVisibility(View.GONE);
@@ -174,7 +172,6 @@ public class SearchCardFragment extends BaseFragment implements SearchView.OnQue
 
             @Override
             public void onFailure(@NonNull Call<Cards> call, @NonNull Throwable t) {
-                Log.e("ERROR", t.getLocalizedMessage());
                 mProgressBar.setVisibility(View.GONE);
                 mMessage.setText(t.getMessage());
                 mMessage.setVisibility(View.VISIBLE);

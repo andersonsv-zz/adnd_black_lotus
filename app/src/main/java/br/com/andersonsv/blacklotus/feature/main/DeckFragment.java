@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -60,6 +61,9 @@ public class DeckFragment extends BaseFragment implements DeckAdapter.OnDeckSele
 
     private DeckAdapter mAdapter;
 
+    @BindView(R.id.deckLayout)
+    ConstraintLayout layout;
+
     public static DeckFragment newInstance() {
         return new DeckFragment();
     }
@@ -111,8 +115,6 @@ public class DeckFragment extends BaseFragment implements DeckAdapter.OnDeckSele
         mAdapter = new DeckAdapter(query, this) {
             @Override
             protected void onDataChanged() {
-                // Show/hide content if the query returns empty.
-
                 if (getItemCount() == 0) {
                     mEmptyState.setVisibility(View.VISIBLE);
 
@@ -124,9 +126,7 @@ public class DeckFragment extends BaseFragment implements DeckAdapter.OnDeckSele
 
             @Override
             protected void onError(FirebaseFirestoreException e) {
-                // Show a snackbar on errors
-                //Snackbar.make(findViewById(android.R.id.content),
-                //        "Error: check logs for info.", Snackbar.LENGTH_LONG).show();
+                snack(layout, String.format(getString(R.string.default_error), e.getMessage()));
             }
         };
 
@@ -145,7 +145,6 @@ public class DeckFragment extends BaseFragment implements DeckAdapter.OnDeckSele
     public void onStart() {
         super.onStart();
 
-        // Start listening for Firestore updates
         if (mAdapter != null) {
             mAdapter.startListening();
         }
@@ -228,7 +227,7 @@ public class DeckFragment extends BaseFragment implements DeckAdapter.OnDeckSele
                         mMenu.findItem(R.id.delete_deck).setVisible(false);
                         mMenu.findItem(R.id.cancel_edit).setVisible(false);
                         mMenu.findItem(R.id.settings).setVisible(true);
-                        showSaveDialog(getString(R.string.default_deleted), getString(R.string.deck_delete_confim_msg));
+                        showSaveDialog(getString(R.string.default_deleted), getString(R.string.deck_delete_confirm_msg));
                     }
                 });
 

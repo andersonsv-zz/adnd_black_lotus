@@ -15,6 +15,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:fullBackupContent="@xml/backup_descriptor">
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="br.com.andersonsv.blacklotus.app.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true" >
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepaths" />
+        </provider>
+
         <activity android:name=".feature.login.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
