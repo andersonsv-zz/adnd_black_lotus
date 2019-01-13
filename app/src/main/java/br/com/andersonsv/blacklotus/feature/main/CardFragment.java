@@ -263,19 +263,19 @@ public class CardFragment extends BaseFragment implements CardAdapter.OnCardSele
             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
+                    if (task.isSuccessful()) {
 
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        cardModelList.add(document.toObject(CardModel.class));
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            cardModelList.add(document.toObject(CardModel.class));
+                        }
+
+                        Intent intent = new Intent(getActivity(), DeckWidgetProvider.class);
+
+                        intent.putExtra(DECK_PARCELABLE, mDeck);
+                        intent.putParcelableArrayListExtra(CARD_LIST,  (ArrayList<? extends Parcelable>) cardModelList);
+                        getActivity().sendBroadcast(intent);
+
                     }
-
-                    Intent intent = new Intent(getActivity(), DeckWidgetProvider.class);
-
-                    intent.putExtra(DECK_PARCELABLE, mDeck);
-                    intent.putParcelableArrayListExtra(CARD_LIST,  (ArrayList<? extends Parcelable>) cardModelList);
-                    getActivity().sendBroadcast(intent);
-
-                }
                 }
             });
     }

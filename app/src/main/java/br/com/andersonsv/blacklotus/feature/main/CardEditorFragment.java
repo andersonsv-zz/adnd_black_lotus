@@ -21,14 +21,10 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
@@ -52,8 +48,6 @@ import butterknife.OnClick;
 import static br.com.andersonsv.blacklotus.util.Constants.CARD_DATA;
 import static br.com.andersonsv.blacklotus.util.Constants.CARD_LIST;
 import static br.com.andersonsv.blacklotus.util.Constants.CARD_MODEL;
-import static br.com.andersonsv.blacklotus.util.Constants.DECK_ID;
-import static br.com.andersonsv.blacklotus.util.Constants.DECK_LIST;
 import static br.com.andersonsv.blacklotus.util.Constants.DECK_PARCELABLE;
 import static br.com.andersonsv.blacklotus.util.StringUtils.replaceTypetImgSrc;
 

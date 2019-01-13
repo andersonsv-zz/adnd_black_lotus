@@ -53,7 +53,6 @@ dependencies {
     implementation "com.google.firebase:firebase-auth:$firebaseGeneralVersion"
     implementation "com.google.firebase:firebase-core:$firebaseGeneralVersion"
 
-    implementation "com.firebaseui:firebase-ui-firestore:$firebaseuiVersion"
     implementation "com.firebaseui:firebase-ui-auth:$firebaseuiVersion"
 
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
