@@ -320,7 +320,7 @@ public class CardEditorFragment extends BaseFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setCancelable(false);
         builder.setTitle(getString(R.string.card_delete_title));
-        builder.setMessage(String.format(getString(R.string.card_delete_title_confirm), mDeck.getName()));
+        builder.setMessage(String.format(getString(R.string.card_delete_title_confirm), mCard.getName()));
         builder.setPositiveButton(getString(R.string.card_delete_button), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
