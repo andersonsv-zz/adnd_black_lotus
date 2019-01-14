@@ -19,7 +19,6 @@ import org.junit.runner.RunWith;
 import br.com.andersonsv.blacklotus.R;
 import br.com.andersonsv.blacklotus.condition.FirebaseAuthInstruction;
 import br.com.andersonsv.blacklotus.feature.base.DebugActivity;
-import br.com.andersonsv.blacklotus.feature.deck.DeckFragment;
 import br.com.andersonsv.blacklotus.firebase.DeckModel;
 
 import static android.support.test.espresso.Espresso.onData;
