@@ -189,7 +189,6 @@ public class SearchCardFragment extends BaseFragment implements SearchView.OnQue
             @Override
             public void onResponse(@NonNull Call<Cards> call, @NonNull Response<Cards> response) {
                 if (response.isSuccessful()){
-                    Log.d("OK", "ok" + response.body().getCards().size());
                     mAdapter.setCards(response.body().getCards());
                     mProgressBar.setVisibility(View.GONE);
                     mEmptyTextView.setVisibility(View.GONE);

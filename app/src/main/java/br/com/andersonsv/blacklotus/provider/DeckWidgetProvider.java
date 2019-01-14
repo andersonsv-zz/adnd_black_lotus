@@ -54,6 +54,8 @@ public class DeckWidgetProvider extends AppWidgetProvider {
     @Override
     public void onReceive(Context context, Intent intent) {
 
+        text = context.getResources().getString(R.string.widget_no_deck_selected);
+
         if (intent != null ) {
             if (intent.hasExtra(DECK_PARCELABLE)) {
                 DeckModel deck = intent.getParcelableExtra(DECK_PARCELABLE);
@@ -62,9 +64,6 @@ public class DeckWidgetProvider extends AppWidgetProvider {
             if (intent.hasExtra(CARD_LIST)) {
                 cards = intent.getParcelableArrayListExtra(CARD_LIST);
             }
-        } else {
-            //text = context.getString(R.string.widget_no_recipe_selected);
-            text = "No cards";
         }
 
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context.getApplicationContext());

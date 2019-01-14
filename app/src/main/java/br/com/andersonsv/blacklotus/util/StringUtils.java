@@ -18,4 +18,14 @@ public class StringUtils {
     public static String formatStringInt(String template, List<Integer> values){
         return String.format(template, values.toArray());
     }
+
+    public static String leftCompleteString(String leftContent, String rightContent){
+        return leftContent.concat(rightContent);
+    }
+
+    public static String transformHex(Integer color) {
+        return Integer.toHexString(color).toUpperCase();
+    }
+
+
 }

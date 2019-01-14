@@ -38,6 +38,7 @@ import br.com.andersonsv.blacklotus.R;
 import br.com.andersonsv.blacklotus.feature.base.BaseFragment;
 import br.com.andersonsv.blacklotus.firebase.DeckModel;
 import br.com.andersonsv.blacklotus.util.ColorDeckUtil;
+import br.com.andersonsv.blacklotus.util.StringUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -80,6 +81,8 @@ public class DeckEditorFragment extends BaseFragment implements Validator.Valida
     private String mUserUid;
 
     private Validator mValidator;
+
+    private static final String HEX_COLOR = "#";
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -165,8 +168,7 @@ public class DeckEditorFragment extends BaseFragment implements Validator.Valida
 
     private void checkNextColor(int color){
 
-        //TODO - transformar em método
-        String colorHex = "#".concat(Integer.toHexString(color).toUpperCase());
+        final String colorHex = StringUtils.leftCompleteString(HEX_COLOR, StringUtils.transformHex(color));
 
         boolean existsColor = checkColorExists(colorHex);
 
