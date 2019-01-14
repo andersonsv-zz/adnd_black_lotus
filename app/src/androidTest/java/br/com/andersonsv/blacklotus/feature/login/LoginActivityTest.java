@@ -53,7 +53,6 @@ public class LoginActivityTest extends BaseActivityTest {
         onView(withId(R.id.buttonLogin)).perform(click());
         onView(withId(R.id.textInputLayoutEmail)).check(matches(hasTextInputLayoutHintText(TEXT_MSG_EMAIL)));
         onView(withId(R.id.textInputLayoutPassword)).check(matches(hasTextInputLayoutHintText(msgPassword)));
-
     }
 
     @Test
@@ -64,7 +63,6 @@ public class LoginActivityTest extends BaseActivityTest {
         onView(withId(R.id.textInputEditTextEmail)).perform(typeText("aaaa@aaa.com"),closeSoftKeyboard());
         onView(withId(R.id.textInputEditTextPassword)).perform(typeText("12345"),closeSoftKeyboard());
         onView(withId(R.id.buttonLogin)).perform(click());
-
         onView(withId(R.id.textInputLayoutPassword)).check(matches(hasTextInputLayoutHintText(msgPassword)));
     }
 
@@ -72,9 +70,7 @@ public class LoginActivityTest extends BaseActivityTest {
     public void whenAuthError_andClickOnLoginButton_shouldDisplayDialog() {
         onView(withId(R.id.textInputEditTextEmail)).perform(typeText("test@test.com"), closeSoftKeyboard());
         onView(withId(R.id.textInputEditTextPassword)).perform(typeText("123456aaaaaa"), closeSoftKeyboard());
-
         onView(withId(R.id.buttonLogin)).perform(click());
-
         onView(withText("Error")).check(matches(isDisplayed()));
     }
 
@@ -82,16 +78,10 @@ public class LoginActivityTest extends BaseActivityTest {
     public void whenAuthOk_andClickOnLoginButton_shouldDecksActivity() {
         onView(withId(R.id.textInputEditTextEmail)).perform(typeText("test@test.com"), closeSoftKeyboard());
         onView(withId(R.id.textInputEditTextPassword)).perform(typeText("123456"), closeSoftKeyboard());
-
         onView(withId(R.id.buttonLogin)).perform(click());
-
         onView(withText("Decks")).check(matches(isDisplayed()));
 
         FirebaseAuth.getInstance().signOut();
     }
 
-    @AfterClass
-    public static void signOutFirebase(){
-
-    }
 }

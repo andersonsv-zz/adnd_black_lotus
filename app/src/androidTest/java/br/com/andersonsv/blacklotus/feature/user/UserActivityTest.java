@@ -113,8 +113,8 @@ public class UserActivityTest extends BaseActivityTest {
         onView(withId(R.id.textInputLayoutPasswordConfirmation)).check(matches(hasTextInputLayoutHintText(TEXT_MSG_PASSWORD_CONFIRMATION)));
     }
 
-    //@Test
-   /* public void insert_new_user() {
+    @Test
+   public void insert_new_user() {
 
         String email = "user" + randomInt() + "@test.com";
 
@@ -123,7 +123,7 @@ public class UserActivityTest extends BaseActivityTest {
         onView(withId(R.id.textInputEditTextPassword)).perform(typeText("123456"),closeSoftKeyboard());
         onView(withId(R.id.textInputEditTextPasswordConfirmation)).perform(typeText("123456"),closeSoftKeyboard());
         onView(withId(R.id.buttonSignUp)).perform(click());
-    }*/
+    }
 
     // @Test
     /*public void whenBothFieldsAreFilled_andClickOnLoginButton_shouldOpenMainActivity() {
