@@ -1,6 +1,7 @@
 package br.com.andersonsv.blacklotus.feature.main;
 
 import android.os.Bundle;
+import android.support.annotation.VisibleForTesting;
 import android.support.v4.app.Fragment;
 
 import br.com.andersonsv.blacklotus.R;
@@ -9,7 +10,7 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends BaseActivity {
 
-
+    @VisibleForTesting
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

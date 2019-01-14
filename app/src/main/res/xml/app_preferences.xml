@@ -8,7 +8,8 @@
         android:title="@string/pref_language"
         android:summary="@string/pref_language_summary"
         android:entries="@array/second_language_api"
-        android:entryValues="@array/second_language_api" />
+        android:entryValues="@array/second_language_api"
+        android:id="@+id/selectSecondLanguage"/>
 
 </android.support.v7.preference.PreferenceCategory>
 

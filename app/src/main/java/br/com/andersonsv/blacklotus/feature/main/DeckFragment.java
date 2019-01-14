@@ -74,13 +74,12 @@ public class DeckFragment extends BaseFragment implements DeckAdapter.OnDeckSele
         View rootView = inflater.inflate(R.layout.fragment_deck, container, false);
         ButterKnife.bind(this, rootView);
 
-
-        ((MainActivity) getActivity()).getSupportActionBar().setTitle(R.string.navigation_decks);
+        getActivity().setTitle(R.string.navigation_decks);
 
         FirebaseFirestore.setLoggingEnabled(true);
-        getDeckList();
-
         setHasOptionsMenu(true);
+
+        getDeckList();
 
         return rootView;
     }

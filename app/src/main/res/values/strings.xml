@@ -140,4 +140,9 @@
 
     <!-- Widget -->
     <string name="widget_no_deck_selected">No deck selected</string>
+
+    <!-- Signout -->
+    <string name="sign_out_title">Sign out</string>
+    <string name="sign_out_confirm">Do you really want to exit?</string>
+
 </resources>

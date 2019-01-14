@@ -48,6 +48,8 @@
 
         <activity android:name=".feature.base.BaseActivity" />
 
+        <activity android:name=".feature.base.DebugActivity" />
+
         <receiver android:name=".provider.DeckWidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
