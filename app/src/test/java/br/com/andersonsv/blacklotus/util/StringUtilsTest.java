@@ -46,6 +46,24 @@ public class StringUtilsTest {
         assertEquals(typeConverted, expected);
     }
 
+    @Test
+    public void transform_hex_success() {
+        Integer color =  -14399861;
+        String expected = "FF24468B";
+
+        String colorConverted = StringUtils.transformHex(color);
+        assertEquals(colorConverted, expected);
+    }
+
+    @Test
+    public void left_complete_string_success() {
+        String colorHex = "FF24468B";
+        String expected = "#FF24468B";
+
+        String colorHexTransform = StringUtils.leftCompleteString("#", colorHex);
+        assertEquals(colorHexTransform, expected);
+    }
+
 
 
 

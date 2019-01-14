@@ -26,6 +26,4 @@ public class StringUtils {
     public static String transformHex(Integer color) {
         return Integer.toHexString(color).toUpperCase();
     }
-
-
 }
