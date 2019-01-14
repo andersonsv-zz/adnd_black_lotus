@@ -16,7 +16,9 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static br.com.andersonsv.blacklotus.util.ConstantsTest.TEXT_MSG_EMAIL;
 import static br.com.andersonsv.blacklotus.util.ConstantsTest.TEXT_MSG_REQUIRED;
 
@@ -34,9 +36,23 @@ public class ForgotPasswordActivityTest extends BaseActivityTest {
     }
 
     @Test
-    public void whenEmailInvalidPasswordIsEmpty_andOnClickLogin_shouldDisplayErrors() {
+    public void whenEmailInvalidPasswordIsEmpty_andOnClickRecover_shouldDisplayErrors() {
         onView(withId(R.id.textInputEditTextEmail)).perform(typeText("aaaaa"),closeSoftKeyboard());
         onView(withId(R.id.buttonRecover)).perform(click());
         onView(withId(R.id.textInputLayoutEmail)).check(matches(hasTextInputLayoutHintText(TEXT_MSG_EMAIL)));
+    }
+
+    @Test
+    public void whenEmailIsValid_andOnClickRecover_shouldMessageSendRecover() {
+        onView(withId(R.id.textInputEditTextEmail)).perform(typeText("test@test.com"),closeSoftKeyboard());
+        onView(withId(R.id.buttonRecover)).perform(click());
+        onView(withText("E-mail send")).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void whenEmailIsInValid_andOnClickRecover_shouldDisplayErrors() {
+        onView(withId(R.id.textInputEditTextEmail)).perform(typeText("aaa@aaa.com"),closeSoftKeyboard());
+        onView(withId(R.id.buttonRecover)).perform(click());
+        onView(withText("Error")).check(matches(isDisplayed()));
     }
 }

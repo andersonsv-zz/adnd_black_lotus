@@ -4,6 +4,9 @@ import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
+import com.google.firebase.auth.FirebaseAuth;
+
+import org.junit.AfterClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -73,5 +76,22 @@ public class LoginActivityTest extends BaseActivityTest {
         onView(withId(R.id.buttonLogin)).perform(click());
 
         onView(withText("Error")).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void whenAuthOk_andClickOnLoginButton_shouldDecksActivity() {
+        onView(withId(R.id.textInputEditTextEmail)).perform(typeText("test@test.com"), closeSoftKeyboard());
+        onView(withId(R.id.textInputEditTextPassword)).perform(typeText("123456"), closeSoftKeyboard());
+
+        onView(withId(R.id.buttonLogin)).perform(click());
+
+        onView(withText("Decks")).check(matches(isDisplayed()));
+
+        FirebaseAuth.getInstance().signOut();
+    }
+
+    @AfterClass
+    public static void signOutFirebase(){
+
     }
 }

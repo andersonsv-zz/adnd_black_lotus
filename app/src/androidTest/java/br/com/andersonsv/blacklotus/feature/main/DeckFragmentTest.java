@@ -53,7 +53,7 @@ public class DeckFragmentTest {
                 assertThat(authResult.getUser().getUid(), notNullValue());
             }
         });
-  }
+    }
 
     @Test
     public void whenDeckListIsEmpty_onLoadFragment_shouldDisplayEmptyStates(){
