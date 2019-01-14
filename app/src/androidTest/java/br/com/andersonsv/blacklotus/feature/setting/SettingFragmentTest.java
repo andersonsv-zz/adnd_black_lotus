@@ -32,6 +32,7 @@ import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -105,6 +106,31 @@ public class SettingFragmentTest extends BaseActivityTest {
         appCompatCheckedTextView.perform(click());
 
     }
+
+    @Test
+    public void whenInputSameCardsInDeck_onClickQuantity_shouldApplySameCardsInDeck() throws Exception{
+
+        ConditionWatcher.waitForCondition(new FirebaseAuthInstruction());
+
+
+        ViewInteraction recyclerView2 = onView(
+                allOf(withId(R.id.recycler_view),
+                        childAtPosition(
+                                withId(android.R.id.list_container),
+                                0)));
+        recyclerView2.perform(actionOnItemAtPosition(3, click()));
+
+        ViewInteraction appCompatButton3 = onView(
+                allOf(withId(android.R.id.button1), withText("OK"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.buttonPanel),
+                                        0),
+                                3)));
+        appCompatButton3.perform(scrollTo(), click());
+
+    }
+
 
     @AfterClass
     public static void signOut(){
