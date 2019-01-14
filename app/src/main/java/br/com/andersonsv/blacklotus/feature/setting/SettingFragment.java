@@ -1,4 +1,4 @@
-package br.com.andersonsv.blacklotus.feature.main;
+package br.com.andersonsv.blacklotus.feature.setting;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -11,22 +11,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
 
-import br.com.andersonsv.blacklotus.BuildConfig;
 import br.com.andersonsv.blacklotus.R;
 import br.com.andersonsv.blacklotus.feature.base.BaseFragment;
 import br.com.andersonsv.blacklotus.feature.login.LoginActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
-import static br.com.andersonsv.blacklotus.util.Constants.CARD_LIST;
-import static br.com.andersonsv.blacklotus.util.Constants.DECK_PARCELABLE;
 
 public class SettingFragment extends BaseFragment {
 

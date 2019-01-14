@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 
 import br.com.andersonsv.blacklotus.R;
 import br.com.andersonsv.blacklotus.feature.base.BaseActivity;
+import br.com.andersonsv.blacklotus.feature.deck.DeckFragment;
 import butterknife.ButterKnife;
 
 public class MainActivity extends BaseActivity {

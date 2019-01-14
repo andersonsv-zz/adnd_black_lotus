@@ -1,4 +1,4 @@
-package br.com.andersonsv.blacklotus.feature.main;
+package br.com.andersonsv.blacklotus.feature.deck;
 
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
@@ -36,6 +36,7 @@ import java.util.List;
 import br.com.andersonsv.blacklotus.BuildConfig;
 import br.com.andersonsv.blacklotus.R;
 import br.com.andersonsv.blacklotus.feature.base.BaseFragment;
+import br.com.andersonsv.blacklotus.feature.card.CardFragment;
 import br.com.andersonsv.blacklotus.firebase.DeckModel;
 import br.com.andersonsv.blacklotus.util.ColorDeckUtil;
 import br.com.andersonsv.blacklotus.util.StringUtils;

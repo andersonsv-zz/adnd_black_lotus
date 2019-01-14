@@ -1,4 +1,4 @@
-package br.com.andersonsv.blacklotus.feature.main;
+package br.com.andersonsv.blacklotus.feature.card;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -75,7 +75,7 @@ public class SearchCardFragment extends BaseFragment implements SearchView.OnQue
 
         ButterKnife.bind(this, rootView);
 
-        ((MainActivity) getActivity()).getSupportActionBar().setTitle("");
+        getActivity().setTitle("");
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {

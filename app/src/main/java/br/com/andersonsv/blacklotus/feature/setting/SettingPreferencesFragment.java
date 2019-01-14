@@ -1,4 +1,4 @@
-package br.com.andersonsv.blacklotus.feature.main;
+package br.com.andersonsv.blacklotus.feature.setting;
 
 import android.os.Bundle;
 import android.support.v7.preference.EditTextPreference;

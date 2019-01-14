@@ -1,4 +1,4 @@
-package br.com.andersonsv.blacklotus.feature.main;
+package br.com.andersonsv.blacklotus.feature.deck;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -32,6 +32,8 @@ import br.com.andersonsv.blacklotus.BuildConfig;
 import br.com.andersonsv.blacklotus.R;
 import br.com.andersonsv.blacklotus.adapter.DeckAdapter;
 import br.com.andersonsv.blacklotus.feature.base.BaseFragment;
+import br.com.andersonsv.blacklotus.feature.card.CardFragment;
+import br.com.andersonsv.blacklotus.feature.setting.SettingFragment;
 import br.com.andersonsv.blacklotus.firebase.DeckModel;
 import butterknife.BindView;
 import butterknife.ButterKnife;
