@@ -1,4 +1,4 @@
-package br.com.andersonsv.blacklotus.feature.main;
+package br.com.andersonsv.blacklotus.feature.deck;
 
 import android.support.test.filters.LargeTest;
 import android.support.test.runner.AndroidJUnit4;
@@ -19,6 +19,7 @@ import org.junit.runner.RunWith;
 import br.com.andersonsv.blacklotus.R;
 import br.com.andersonsv.blacklotus.condition.FirebaseAuthInstruction;
 import br.com.andersonsv.blacklotus.feature.base.DebugActivity;
+import br.com.andersonsv.blacklotus.feature.deck.DeckFragment;
 import br.com.andersonsv.blacklotus.firebase.DeckModel;
 
 import static android.support.test.espresso.Espresso.onData;

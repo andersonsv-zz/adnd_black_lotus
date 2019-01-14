@@ -1,4 +1,4 @@
-package br.com.andersonsv.blacklotus.feature.main;
+package br.com.andersonsv.blacklotus.feature.card;
 
 import android.support.test.uiautomator.UiDevice;
 
@@ -14,12 +14,13 @@ import org.junit.Rule;
 
 import br.com.andersonsv.blacklotus.feature.BaseActivityTest;
 import br.com.andersonsv.blacklotus.feature.base.DebugActivity;
+import br.com.andersonsv.blacklotus.feature.card.CardEditorFragment;
 
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsNull.notNullValue;
 
-public class CardFragmentTest extends BaseActivityTest {
+public class SearchCardFragmentTest extends BaseActivityTest {
 
     UiDevice mDevice;
 
