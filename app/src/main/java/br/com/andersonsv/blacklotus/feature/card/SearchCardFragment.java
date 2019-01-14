@@ -125,24 +125,18 @@ public class SearchCardFragment extends BaseFragment implements SearchView.OnQue
             return false;
         }
 
-        if(query.length() > 3){
+        //close keyboard
+        searchView.clearFocus();
 
-            //close keyboard
-            searchView.clearFocus();
+        mProgressBar.setVisibility(View.VISIBLE);
 
-            mProgressBar.setVisibility(View.VISIBLE);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String secondLanguage = prefs.getString(Constants.KEY_SECOND_LANGUAGE, "");
 
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-            String secondLanguage = prefs.getString(Constants.KEY_SECOND_LANGUAGE, "");
-
-            if (secondLanguageActive && !"".equalsIgnoreCase(secondLanguage)){
-                searchSecondLanguage(query, secondLanguage);
-            } else {
-                searchDefaultLanguage(query);
-            }
-
-
-            return true;
+        if (secondLanguageActive && !"".equalsIgnoreCase(secondLanguage)){
+            searchSecondLanguage(query, secondLanguage);
+        } else {
+            searchDefaultLanguage(query);
         }
         return true;
     }

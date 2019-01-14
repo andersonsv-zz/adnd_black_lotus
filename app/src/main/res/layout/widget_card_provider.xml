@@ -23,6 +23,7 @@
             style="@style/Text.14sp.Bold"/>
     </RelativeLayout>
 
+
     <ListView
         android:id="@+id/listViewCard"
         android:layout_width="match_parent"
