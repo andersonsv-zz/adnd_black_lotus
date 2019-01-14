@@ -112,7 +112,6 @@ public class SettingFragmentTest extends BaseActivityTest {
 
         ConditionWatcher.waitForCondition(new FirebaseAuthInstruction());
 
-
         ViewInteraction recyclerView2 = onView(
                 allOf(withId(R.id.recycler_view),
                         childAtPosition(
@@ -128,9 +127,7 @@ public class SettingFragmentTest extends BaseActivityTest {
                                         0),
                                 3)));
         appCompatButton3.perform(scrollTo(), click());
-
     }
-
 
     @AfterClass
     public static void signOut(){
