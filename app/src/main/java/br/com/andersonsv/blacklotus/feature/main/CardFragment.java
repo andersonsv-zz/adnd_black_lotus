@@ -221,24 +221,37 @@ public class CardFragment extends BaseFragment implements CardAdapter.OnCardSele
                 int writeExternalStoragePermission = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
                 if (writeExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_WRITE_EXTERNAL_STORAGE_PERMISSION);
+                    requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_WRITE_EXTERNAL_STORAGE_PERMISSION);
                 } else {
-                    File target = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-                    String outString = new SimpleDateFormat(getResources().getString(R.string.date_convert_short)).format(new Date());
-
-                    CsvWriter.generateCsvFile(target, outString, cardModelList, getResources());
-
-                    Uri contentUri = FileProvider.getUriForFile(getActivity(), "br.com.andersonsv.blacklotus.app.fileprovider", target);
-
-                    Intent sendIntent = new Intent();
-                    sendIntent.setAction(Intent.ACTION_SEND);
-                    sendIntent.putExtra(Intent.EXTRA_STREAM, contentUri);
-                    sendIntent.setType(CsvWriter.TYPE_CSV);
-                    startActivity(sendIntent);
+                    sendCsvToShare();
                 }
              break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void sendCsvToShare() {
+        File target = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        String outString = new SimpleDateFormat(getResources().getString(R.string.date_convert_short)).format(new Date());
+
+        CsvWriter.generateCsvFile(target, outString, cardModelList, getResources());
+
+        Uri contentUri = FileProvider.getUriForFile(getActivity(), "br.com.andersonsv.blacklotus.app.fileprovider", target);
+
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_STREAM, contentUri);
+        sendIntent.setType(CsvWriter.TYPE_CSV);
+        startActivity(sendIntent);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (permissions != null && permissions.length > 0) {
+            if (ActivityCompat.checkSelfPermission(getContext(), permissions[0]) == PackageManager.PERMISSION_GRANTED) {
+                sendCsvToShare();
+            }
+        }
     }
 
     @Override

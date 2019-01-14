@@ -58,9 +58,6 @@ public class DeckAdapter extends FirestoreAdapter<DeckAdapter.ViewHolder> {
         @BindView(R.id.textViewDeckDescription)
         TextView mDeckDescription;
 
-        @BindView(R.id.textViewNumberOfCards)
-        TextView mNumberOfCards;
-
         @BindView(R.id.imageViewColor)
         ImageView mColor;
 
@@ -79,9 +76,6 @@ public class DeckAdapter extends FirestoreAdapter<DeckAdapter.ViewHolder> {
 
             mDeckName.setText(model.getName());
             mDeckDescription.setText(model.getDescription());
-
-            String numberOfCards = model.getNumberOfCards() != null ? model.getNumberOfCards().toString() : "0";
-            mNumberOfCards.setText(String.format(resources.getString(R.string.decks_number_cards), numberOfCards));
 
             List<Integer> colors = new ArrayList<>();
 
