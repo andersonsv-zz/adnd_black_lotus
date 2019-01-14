@@ -1,10 +1,7 @@
 package br.com.andersonsv.blacklotus.feature.main;
 
-import android.content.Intent;
 import android.support.test.filters.LargeTest;
-import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.support.test.uiautomator.UiDevice;
 
 import com.android21buttons.fragmenttestrule.FragmentTestRule;
 import com.azimolabs.conditionwatcher.ConditionWatcher;
@@ -24,7 +21,6 @@ import br.com.andersonsv.blacklotus.condition.FirebaseAuthInstruction;
 import br.com.andersonsv.blacklotus.feature.base.DebugActivity;
 import br.com.andersonsv.blacklotus.firebase.DeckModel;
 
-import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;

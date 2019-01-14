@@ -1,16 +1,11 @@
 package br.com.andersonsv.blacklotus.feature;
 
-import android.app.Activity;
 import android.support.design.widget.TextInputLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
-
-import br.com.andersonsv.blacklotus.R;
 
 public class BaseActivityTest {
     protected static Matcher<View> hasTextInputLayoutHintText(final String expectedErrorText) {

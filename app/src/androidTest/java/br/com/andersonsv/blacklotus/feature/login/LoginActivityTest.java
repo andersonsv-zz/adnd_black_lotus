@@ -6,7 +6,6 @@ import android.support.test.runner.AndroidJUnit4;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-import org.junit.AfterClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
