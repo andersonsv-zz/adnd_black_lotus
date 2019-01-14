@@ -12,9 +12,17 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
-
     def FIREBASE_COLLECTION = "FIREBASE_COLLECTION"
     def FIREBASE_DOCUMENT = "FIREBASE_DOCUMENT"
+
+    signingConfigs {
+        release {
+            storeFile file(RELEASE_STORE_FILE)
+            storePassword RELEASE_STORE_PASSWORD
+            keyAlias RELEASE_KEY_ALIAS
+            keyPassword RELEASE_KEY_PASSWORD
+        }
+    }
 
     buildTypes {
         debug {
@@ -27,6 +35,8 @@ android {
 
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            signingConfig signingConfigs.release
         }
     }
 
@@ -38,6 +48,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
+    //ui
     implementation "com.android.support:appcompat-v7:$androidSupportVersion"
     implementation "com.android.support:design:$androidSupportVersion"
     implementation "com.android.support:customtabs:$androidSupportVersion"
@@ -46,30 +57,29 @@ dependencies {
     implementation "com.android.support:support-v4:$androidSupportVersion"
     implementation "com.android.support:animated-vector-drawable:$androidSupportVersion"
     implementation "com.android.support:preference-v7:$androidSupportVersion"
-
     implementation "com.android.support.constraint:constraint-layout:$constraintLayoutVersion"
+    implementation 'com.android.support:design:28.0.0'
+    annotationProcessor "com.jakewharton:butterknife-compiler:$butterKnifeVersion"
+    implementation "com.jakewharton:butterknife:$butterKnifeVersion"
 
+    implementation "org.adw.library:discrete-seekbar:$discreteSeekbarVersion"
+    implementation "com.thebluealliance:spectrum:$spectrumVersion"
+    implementation "com.squareup.picasso:picasso:$picassoVersion"
+
+    //ui validation
+    implementation "com.mobsandgeeks:android-saripaar:$saripaarVersion"
+
+    //firebase
     implementation "com.google.firebase:firebase-firestore:$firebaseFirestoreVersion"
     implementation "com.google.firebase:firebase-auth:$firebaseGeneralVersion"
     implementation "com.google.firebase:firebase-core:$firebaseGeneralVersion"
-
     implementation "com.firebaseui:firebase-ui-auth:$firebaseuiVersion"
 
+    //api
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
     implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
 
-    implementation "com.jakewharton:butterknife:$butterKnifeVersion"
-    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
-    implementation 'com.android.support:design:28.0.0'
-    annotationProcessor "com.jakewharton:butterknife-compiler:$butterKnifeVersion"
-    implementation 'org.adw.library:discrete-seekbar:1.0.1'
-    implementation 'com.chauthai.swipereveallayout:swipe-reveal-layout:1.4.1'
-
-    implementation 'com.mobsandgeeks:android-saripaar:2.0.3'
-
-    implementation 'com.thebluealliance:spectrum:0.7.1'
-    implementation 'com.squareup.picasso:picasso:2.5.2'
-    implementation 'org.jetbrains:annotations-java5:15.0'
+    //implementation 'org.jetbrains:annotations-java5:15.0'
 
     implementation "com.android.support.test.espresso:espresso-idling-resource:$espressoVersion"
     //tests

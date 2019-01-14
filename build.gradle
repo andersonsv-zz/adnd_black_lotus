@@ -36,6 +36,9 @@ allprojects {
         constraintLayoutVersion = "1.1.3"
         retrofitVersion = "2.5.0"
         firebaseuiVersion = "4.2.1"
+        saripaarVersion = "2.0.3"
+        discreteSeekbarVersion = "1.0.1"
+        spectrumVersion = "0.7.1"
 
         //firebase
         firebaseCrashVersion = "2.9.5"
