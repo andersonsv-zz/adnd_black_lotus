@@ -105,30 +105,30 @@ public class UserActivity extends BaseActivity implements Validator.ValidationLi
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
         firebaseAuth.createUserWithEmailAndPassword(email, password)
-                .addOnFailureListener(this, new OnFailureListener() {
+            .addOnFailureListener(this, new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    mProgressBar.setVisibility(View.GONE);
+                    snackLong(mLayout, e.getLocalizedMessage());
+                }
+            })
+            .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
-                    public void onFailure(@NonNull Exception e) {
+                    public void onComplete(@NonNull Task<AuthResult> task) {
                         mProgressBar.setVisibility(View.GONE);
-                        snack(mLayout, e.getLocalizedMessage());
-                    }
-                })
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            mProgressBar.setVisibility(View.GONE);
 
-                            if (task.isSuccessful()){
-                                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                        if (task.isSuccessful()){
+                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-                                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                                        .setDisplayName(name).build();
-                                user.updateProfile(profileUpdates);
+                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                    .setDisplayName(name).build();
+                            user.updateProfile(profileUpdates);
 
-                                openActivity(MainActivity.class);
-                            }
+                            openActivity(MainActivity.class);
                         }
                     }
-                );
+                }
+            );
     }
 
     @Override

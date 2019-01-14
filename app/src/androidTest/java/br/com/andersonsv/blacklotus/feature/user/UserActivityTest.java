@@ -4,6 +4,8 @@ import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,10 +20,13 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static br.com.andersonsv.blacklotus.util.ConstantsTest.TEXT_MSG_EMAIL;
 import static br.com.andersonsv.blacklotus.util.ConstantsTest.TEXT_MSG_PASSWORD_CONFIRMATION;
 import static br.com.andersonsv.blacklotus.util.ConstantsTest.TEXT_MSG_REQUIRED;
+import static org.hamcrest.core.AllOf.allOf;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
@@ -67,24 +72,20 @@ public class UserActivityTest extends BaseActivityTest {
         onView(withId(R.id.textInputLayoutEmail)).check(matches(hasTextInputLayoutHintText(TEXT_MSG_EMAIL)));
         onView(withId(R.id.textInputLayoutPassword)).check(matches(hasTextInputLayoutHintText(msgPassword)));
         onView(withId(R.id.textInputLayoutPasswordConfirmation)).check(matches(hasTextInputLayoutHintText(TEXT_MSG_REQUIRED)));
-
     }
 
     @Test
     public void whenNameAndEmailAreOkAndOthersInputsAreEmpty_andClickOnSignUp_shouldDisplayErrors() {
 
         String msgPassword = mActivityTestRule.getActivity().getResources().getString(R.string.login_auth_password_error);
-
         String msgPasswordConfirmation = TEXT_MSG_REQUIRED.concat("\n").concat(TEXT_MSG_PASSWORD_CONFIRMATION);
 
         onView(withId(R.id.textInputEditTextName)).perform(typeText("Name"),closeSoftKeyboard());
         onView(withId(R.id.textInputEditTextEmail)).perform(typeText("aaaa@aaa.com"),closeSoftKeyboard());
         onView(withId(R.id.textInputEditTextPassword)).perform(typeText("12345"),closeSoftKeyboard());
         onView(withId(R.id.buttonSignUp)).perform(click());
-
         onView(withId(R.id.textInputLayoutPassword)).check(matches(hasTextInputLayoutHintText(msgPassword)));
         onView(withId(R.id.textInputLayoutPasswordConfirmation)).check(matches(hasTextInputLayoutHintText(msgPasswordConfirmation)));
-
     }
 
     @Test
@@ -96,25 +97,35 @@ public class UserActivityTest extends BaseActivityTest {
         onView(withId(R.id.textInputEditTextEmail)).perform(typeText("aaaa@aaa.com"),closeSoftKeyboard());
         onView(withId(R.id.textInputEditTextPassword)).perform(typeText("123456"),closeSoftKeyboard());
         onView(withId(R.id.buttonSignUp)).perform(click());
-
         onView(withId(R.id.textInputLayoutPasswordConfirmation)).check(matches(hasTextInputLayoutHintText(msgPasswordConfirmation)));
-
     }
 
     @Test
-    public void whenNameAndEmailPsswordAreOkAndConfirmationPasswordDifferentPassword_andClickOnSignUp_shouldDisplayErrors() {
+    public void whenNameAndEmailPaswordAreOkAndConfirmationPasswordDifferentPassword_andClickOnSignUp_shouldDisplayErrors() {
 
         onView(withId(R.id.textInputEditTextName)).perform(typeText("Name"),closeSoftKeyboard());
         onView(withId(R.id.textInputEditTextEmail)).perform(typeText("aaaa@aaa.com"),closeSoftKeyboard());
         onView(withId(R.id.textInputEditTextPassword)).perform(typeText("123456"),closeSoftKeyboard());
         onView(withId(R.id.textInputEditTextPasswordConfirmation)).perform(typeText("12345899"),closeSoftKeyboard());
         onView(withId(R.id.buttonSignUp)).perform(click());
-
         onView(withId(R.id.textInputLayoutPasswordConfirmation)).check(matches(hasTextInputLayoutHintText(TEXT_MSG_PASSWORD_CONFIRMATION)));
     }
 
     @Test
-   public void insert_new_user() {
+    public void whenSignUpUserExists_andClickOnSignUp_shouldDisplayErrors() {
+
+        onView(withId(R.id.textInputEditTextName)).perform(typeText("Name"),closeSoftKeyboard());
+        onView(withId(R.id.textInputEditTextEmail)).perform(typeText("test@test.com"),closeSoftKeyboard());
+        onView(withId(R.id.textInputEditTextPassword)).perform(typeText("123456"),closeSoftKeyboard());
+        onView(withId(R.id.textInputEditTextPasswordConfirmation)).perform(typeText("123456"),closeSoftKeyboard());
+        onView(withId(R.id.buttonSignUp)).perform(click());
+
+        onView(allOf(withId(android.support.design.R.id.snackbar_text)))
+                .check(matches(isDisplayed()));
+    }
+
+    @Test
+   public void whenInsertNewUserOk_andClickSignUp_shouldMainActivityDeckList() {
 
         String email = "user" + randomInt() + "@test.com";
 
@@ -123,22 +134,10 @@ public class UserActivityTest extends BaseActivityTest {
         onView(withId(R.id.textInputEditTextPassword)).perform(typeText("123456"),closeSoftKeyboard());
         onView(withId(R.id.textInputEditTextPasswordConfirmation)).perform(typeText("123456"),closeSoftKeyboard());
         onView(withId(R.id.buttonSignUp)).perform(click());
+        onView(withText("Decks")).check(matches(isDisplayed()));
+
+        FirebaseAuth.getInstance().signOut();
     }
-
-    // @Test
-    /*public void whenBothFieldsAreFilled_andClickOnLoginButton_shouldOpenMainActivity() {
-        Intents.init();
-        onView(withId(R.id.textInputEditTextEmail)).perform(typeText("test@test.com"), closeSoftKeyboard());
-        onView(withId(R.id.textInputEditTextPassword)).perform(typeText("123456"), closeSoftKeyboard());
-        Matcher<Intent> matcher = hasComponent(MainActivity.class.getName());
-
-        Instrumentation.ActivityResult result = new Instrumentation.ActivityResult(Activity.RESULT_OK, null);
-        intending(matcher).respondWith(result);
-
-        onView(withId(R.id.buttonLogin)).perform(click());
-        intended(matcher);
-        Intents.release();
-    }*/
 
     private String randomInt() {
         return String.valueOf(((new Random()).nextInt(100000)));

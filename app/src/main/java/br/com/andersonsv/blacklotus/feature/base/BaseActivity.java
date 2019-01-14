@@ -34,10 +34,16 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     protected void snack(View view, String message){
-
         Snackbar.make(view,
                 message,
                 Snackbar.LENGTH_INDEFINITE)
+                .setAction("Action", null).show();
+    }
+
+    protected void snackLong(View view, String message){
+        Snackbar.make(view,
+                message,
+                Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
     }
 
