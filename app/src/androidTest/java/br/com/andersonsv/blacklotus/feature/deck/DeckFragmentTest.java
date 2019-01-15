@@ -18,32 +18,30 @@ import org.junit.runner.RunWith;
 
 import br.com.andersonsv.blacklotus.R;
 import br.com.andersonsv.blacklotus.condition.FirebaseAuthInstruction;
+import br.com.andersonsv.blacklotus.feature.BaseActivityTest;
 import br.com.andersonsv.blacklotus.feature.base.DebugActivity;
-import br.com.andersonsv.blacklotus.firebase.DeckModel;
+import br.com.andersonsv.blacklotus.feature.setting.SettingFragment;
 
-import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.AllOf.allOf;
 import static org.hamcrest.core.IsNull.notNullValue;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class DeckFragmentTest {
+public class DeckFragmentTest extends BaseActivityTest {
 
     @Rule
     public FragmentTestRule<DebugActivity, DeckFragment> fragmentTestRule =
             new FragmentTestRule<>(DebugActivity.class, DeckFragment.class);
 
-   @BeforeClass
+    @Before
+    public void init(){
+    }
+
+    @BeforeClass
     public static void login(){
 
         FirebaseAuth.getInstance().signInWithEmailAndPassword("test@test.com", "123456").addOnSuccessListener(new OnSuccessListener<AuthResult>() {
@@ -54,33 +52,14 @@ public class DeckFragmentTest {
         });
     }
 
-    @Before
-    public void checkAuth() throws Exception{
-        ConditionWatcher.waitForCondition(new FirebaseAuthInstruction());
-    }
-
     @Test
-    public void whenDeckListIsEmpty_onLoadFragment_shouldDisplayEmptyStates() {
-
-
+    public void whenDeckListIsEmpty_onLoadFragment_shouldDisplayEmptyStates() throws Exception {
+        ConditionWatcher.waitForCondition(new FirebaseAuthInstruction());
         onView(withId(R.id.linearLayoutEmptyState)).check(matches(isDisplayed()));
-    }
-
-   // @Test
-    public void whenDeckNotEmpty_onLoadFragment_shouldDisplayItems(){
-
-        DeckModel deckModel = new DeckModel();
-        deckModel.setName("test");
-
-        onData(allOf(is(instanceOf(DeckModel.class)), is(deckModel))).perform(click());
-        onView(withId(R.id.recyclerViewDeck)).check(matches(withText(containsString("test"))));
-
-        //onView(withId(R.id.linearLayoutEmptyState)).check(matches(isDisplayed()));
     }
 
     @AfterClass
     public static void signOut(){
         FirebaseAuth.getInstance().signOut();
     }
-
 }

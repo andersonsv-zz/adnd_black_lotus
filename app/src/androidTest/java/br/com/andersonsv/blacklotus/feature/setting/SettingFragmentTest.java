@@ -40,8 +40,6 @@ import static org.hamcrest.core.IsNull.notNullValue;
 
 public class SettingFragmentTest extends BaseActivityTest {
 
-    UiDevice mDevice;
-
     @Rule
     public FragmentTestRule<DebugActivity, SettingFragment> fragmentTestRule =
             new FragmentTestRule<>(DebugActivity.class, SettingFragment.class);
@@ -59,13 +57,6 @@ public class SettingFragmentTest extends BaseActivityTest {
                 assertThat(authResult.getUser().getUid(), notNullValue());
             }
         });
-    }
-
-    @Before
-    public void setUp() {
-        mDevice = UiDevice.getInstance(getInstrumentation());
-        assertThat(mDevice, notNullValue());
-
     }
 
     @Test
