@@ -51,7 +51,7 @@ public class SettingFragment extends BaseFragment {
 
         if (savedInstanceState == null) {
             Fragment preferenceFragment = new SettingPreferencesFragment();
-            FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
             ft.add(R.id.sharedPreferences, preferenceFragment);
             ft.commit();
         }

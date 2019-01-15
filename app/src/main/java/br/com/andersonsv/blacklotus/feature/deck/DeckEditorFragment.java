@@ -283,7 +283,7 @@ public class DeckEditorFragment extends BaseFragment implements Validator.Valida
                 bundle.putParcelable(DECK_PARCELABLE, mDeck);
                 cardFragment.setArguments(bundle);
 
-                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.replace(R.id.container, cardFragment);
                 transaction.addToBackStack(null);
                 transaction.commit();
@@ -317,7 +317,7 @@ public class DeckEditorFragment extends BaseFragment implements Validator.Valida
                 bundle.putParcelable(DECK_PARCELABLE, mDeck);
                 cardFragment.setArguments(bundle);
 
-                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.replace(R.id.container, cardFragment);
                 transaction.addToBackStack(null);
                 transaction.commit();

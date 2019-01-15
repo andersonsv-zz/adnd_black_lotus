@@ -2,7 +2,6 @@ package br.com.andersonsv.blacklotus.feature.setting;
 
 import android.support.test.espresso.DataInteraction;
 import android.support.test.espresso.ViewInteraction;
-import android.support.test.uiautomator.UiDevice;
 
 import com.android21buttons.fragmenttestrule.FragmentTestRule;
 import com.azimolabs.conditionwatcher.ConditionWatcher;
@@ -21,7 +20,6 @@ import br.com.andersonsv.blacklotus.condition.FirebaseAuthInstruction;
 import br.com.andersonsv.blacklotus.feature.BaseActivityTest;
 import br.com.andersonsv.blacklotus.feature.base.DebugActivity;
 
-import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -65,7 +63,6 @@ public class SettingFragmentTest extends BaseActivityTest {
 
         onView(withId(R.id.buttonSignOut)).perform(click());
         onView(withText(R.string.sign_out_confirm)).check(matches(isDisplayed()));
-
     }
 
     @Test

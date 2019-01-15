@@ -78,6 +78,21 @@ public class Card implements Parcelable {
 
     }
 
+    public Card(String id, String name, String type, Rarity rarity, @Nullable String image, String manaCost, String text, String originalType, String power, String toughness, String setName, List<String> types) {
+        this.id = id;
+        this.name = name;
+        this.type = type;
+        this.rarity = rarity;
+        this.image = image;
+        this.manaCost = manaCost;
+        this.text = text;
+        this.originalType = originalType;
+        this.power = power;
+        this.toughness = toughness;
+        this.setName = setName;
+        this.types = types;
+    }
+
     @Override
     public int describeContents() {
         return 0;

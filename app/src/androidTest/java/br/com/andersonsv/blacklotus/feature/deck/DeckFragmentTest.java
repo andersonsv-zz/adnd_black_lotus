@@ -43,11 +43,10 @@ public class DeckFragmentTest extends BaseActivityTest {
 
     @BeforeClass
     public static void login(){
-
         FirebaseAuth.getInstance().signInWithEmailAndPassword("test@test.com", "123456").addOnSuccessListener(new OnSuccessListener<AuthResult>() {
             @Override
             public void onSuccess(AuthResult authResult) {
-                assertThat(authResult.getUser().getUid(), notNullValue());
+            assertThat(authResult.getUser().getUid(), notNullValue());
             }
         });
     }
