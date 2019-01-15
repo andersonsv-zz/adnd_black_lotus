@@ -50,7 +50,7 @@ public class DeckFragmentTest extends BaseActivityTest {
         });
     }
 
-    @Test
+    //@Test
     public void whenDeckListIsEmpty_onLoadFragment_shouldDisplayEmptyStates() throws Exception {
         ConditionWatcher.waitForCondition(new FirebaseAuthInstruction());
         onView(withId(R.id.linearLayoutEmptyState)).check(matches(isDisplayed()));
