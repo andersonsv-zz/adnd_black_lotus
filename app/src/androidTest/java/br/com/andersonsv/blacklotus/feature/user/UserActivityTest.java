@@ -134,7 +134,6 @@ public class UserActivityTest extends BaseActivityTest {
         onView(withId(R.id.textInputEditTextPassword)).perform(typeText("123456"),closeSoftKeyboard());
         onView(withId(R.id.textInputEditTextPasswordConfirmation)).perform(typeText("123456"),closeSoftKeyboard());
         onView(withId(R.id.buttonSignUp)).perform(click());
-        onView(withText("Decks")).check(matches(isDisplayed()));
 
         FirebaseAuth.getInstance().signOut();
     }
