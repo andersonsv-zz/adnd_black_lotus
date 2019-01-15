@@ -38,7 +38,6 @@ import static org.hamcrest.core.IsNull.notNullValue;
 
 public class CardEditorFragmentTest extends BaseActivityTest {
 
-
     @Rule
     public FragmentTestRule<DebugActivity, CardEditorFragment> fragmentTestRule =
             new FragmentTestRule<>(DebugActivity.class, CardEditorFragment.class, true,true, false);
@@ -88,7 +87,6 @@ public class CardEditorFragmentTest extends BaseActivityTest {
         onView(withId(R.id.textViewQuantityInfo)).check(matches(withText(containsString("1"))));
         onView(withId(R.id.textViewDescription)).check(matches(withText(containsString("Lorem ipsum"))));
     }
-
 
     @AfterClass
     public static void signOut(){
