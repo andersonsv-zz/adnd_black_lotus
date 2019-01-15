@@ -1,7 +1,6 @@
 package br.com.andersonsv.blacklotus.feature.card;
 
 import android.os.Bundle;
-import android.os.Parcel;
 
 import com.android21buttons.fragmenttestrule.FragmentTestRule;
 import com.azimolabs.conditionwatcher.ConditionWatcher;
@@ -17,21 +16,17 @@ import org.junit.Test;
 
 import java.util.Arrays;
 
-import javax.annotation.Nullable;
-
 import br.com.andersonsv.blacklotus.R;
 import br.com.andersonsv.blacklotus.condition.FirebaseAuthInstruction;
 import br.com.andersonsv.blacklotus.data.Card;
 import br.com.andersonsv.blacklotus.feature.BaseActivityTest;
 import br.com.andersonsv.blacklotus.feature.base.DebugActivity;
-import br.com.andersonsv.blacklotus.feature.main.MainActivity;
 import br.com.andersonsv.blacklotus.firebase.CardModel;
 import br.com.andersonsv.blacklotus.firebase.DeckModel;
 import br.com.andersonsv.blacklotus.model.Rarity;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static br.com.andersonsv.blacklotus.util.Constants.CARD_DATA;
