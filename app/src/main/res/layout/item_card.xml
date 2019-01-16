@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="130dp">
+
+    <ImageView
+        android:id="@+id/imageViewCardImage"
+        android:layout_width="70dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="@dimen/margin_large"
+        android:layout_marginTop="@dimen/margin_large"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_image_not_found"
+        android:contentDescription="@string/default_card_content_description"/>
+
+    <TextView
+        android:id="@+id/textViewCardName"
+        style="@style/Text.14sp.Bold"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_large"
+        android:layout_marginEnd="@dimen/margin_normal"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toStartOf="@+id/textViewQuantity"
+        app:layout_constraintStart_toEndOf="@+id/imageViewCardImage"
+        app:layout_constraintTop_toTopOf="@+id/imageViewCardImage" />
+
+    <TextView
+        android:id="@+id/textViewQuantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_large"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewCardName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textViewCardName" />
+
+    <TextView
+        android:id="@+id/textViewRarity"
+        style="@style/Text.12sp"
+        android:layout_width="80dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="@dimen/margin_normal"
+        android:layout_marginTop="@dimen/margin_large"
+        android:layout_marginEnd="@dimen/margin_large"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/textViewCost"
+        app:layout_constraintTop_toBottomOf="@+id/textViewCardName" />
+
+    <TextView
+        android:id="@+id/textViewType"
+        style="@style/Text.12sp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_large"
+        android:layout_marginEnd="@dimen/margin_large"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewCardImage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageViewCardImage" />
+
+    <TextView
+        android:id="@+id/textViewCost"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="@dimen/margin_large"
+        android:layout_marginTop="@dimen/margin_large"
+        app:layout_constraintEnd_toStartOf="@+id/textViewRarity"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/imageViewCardImage"
+        app:layout_constraintTop_toBottomOf="@+id/textViewCardName" />
+
+</android.support.constraint.ConstraintLayout>

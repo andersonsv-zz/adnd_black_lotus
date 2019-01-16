@@ -1,6 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimary">#061f40</color>
+    <color name="colorPrimaryDark">#051933</color>
+    <color name="colorAccent">#7045af</color>
+
+    <!--rarity-->
+    <color name="colorRarityCommon">#413b3b</color>
+    <color name="colorRarityUncommon">#8d8f92</color>
+    <color name="colorRarityRare">#dcba70</color>
+    <color name="colorRarityMithicRare">#ee7f22</color>
+    <color name="colorRarityTimeshifted">#bd98c2</color>
+    <color name="colorRarityMasterpice">#a3dae1</color>
+
+    <color name="transparent">#00000000</color>
+    <color name="white">#ffffff</color>
+    <color name="whiteFa">#fafafa</color>
+    <color name="whiteFa30">#1afafafa</color>
+    <color name="white5">#0Dffffff</color>
+    <color name="white80">#ccffffff</color>
+    <color name="pinkishGrey50">#e5e5e5</color>
+    <color name="gray">#e5e5e5</color>
+    <color name="pinkishGrey">#cccccc</color>
+    <color name="whiteb3">#b3ffffff</color>
+    <color name="white70">#b3ffffff</color>
+    <color name="warmGrey">#999999</color>
+    <color name="grayOpacity50">#80e5e5e5</color>
+    <color name="warmGrey2">#979797</color>
+    <color name="lightGray">#999999</color>
+    <color name="warmGrey70">#b3999999</color>
+    <color name="midGray">#4a4a4a</color>
+    <color name="whiteFaWithShadow">#19000000</color>
+    <color name="black70">#b3000000</color>
+    <color name="black50">#7d000000</color>
+    <color name="black30">#4d000000</color>
+    <color name="black15">#27000000</color>
+    <color name="black5">#0e000000</color>
+    <color name="black">#000000</color>
+    <color name="coral">#f35c58</color>
+    <color name="paleOliveGreen">#A2EF81</color>
+    <color name="appleGreenYellow">#73bd00</color>
+    <color name="redTextInputLayoutError">#FFDD2C00</color>
+    <color name="wheelFade">#e1fafafa</color>
+    <color name="wheelFadeWhiteBackground">#e1ffffff</color>
+    <color name="yellow_orange">#fbba00</color>
+
+    <!-- decks -->
+    <color name="deck_red">#81001f</color>
+    <color name="deck_white">#efedd0</color>
+    <color name="deck_green">#006639</color>
+    <color name="deck_black">#3d3c33</color>
+    <color name="deck_blue">#24468b</color>
+
+    <array name="deck_colors">
+        <item>@color/deck_white</item>
+        <item>@color/deck_red</item>
+        <item>@color/deck_green</item>
+        <item>@color/deck_blue</item>
+        <item>@color/deck_black</item>
+    </array>
 </resources>

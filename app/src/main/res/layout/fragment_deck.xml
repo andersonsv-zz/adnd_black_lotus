@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/deckLayout">
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerViewDeck"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" >
+
+    </android.support.v7.widget.RecyclerView>
+
+    <LinearLayout
+        android:id="@+id/linearLayoutEmptyState"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imageViewEmptyState"
+            android:layout_width="@dimen/empty_state_width"
+            android:layout_height="@dimen/empty_state_height"
+            app:srcCompat="@drawable/deck_empty_state"
+            android:contentDescription="@string/default_empty_state_deck_content_description"/>
+
+        <TextView
+            android:id="@+id/textViewEmptyState"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:lines="2"
+            android:text="@string/deck_empty_state"
+            android:textAlignment="center"
+            style="@style/Text.14sp.SemiBold"
+            android:textColor="@color/lightGray"/>
+    </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabAddDeck"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_large"
+        android:layout_marginBottom="@dimen/margin_large"
+        android:elevation="@dimen/elevation_normal"
+        android:focusable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:rippleColor="@color/white"
+        app:srcCompat="@drawable/ic_plus_24dp" />
+</android.support.constraint.ConstraintLayout>

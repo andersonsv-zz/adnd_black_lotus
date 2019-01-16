@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/cardEditorLayout">
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/scrollView2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/buttonSaveCard"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imageViewCard"
+                android:layout_width="@dimen/image_card_view_width"
+                android:layout_height="@dimen/image_card_view_height"
+                android:layout_marginStart="@dimen/margin_large"
+                android:layout_marginTop="@dimen/margin_large"
+                android:scaleType="centerCrop"
+                android:contentDescription="@string/default_card_content_description"
+                app:srcCompat="@drawable/ic_image_not_found"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textViewCardName"
+                style="@style/Text.14sp.Bold"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_normal"
+                android:layout_marginTop="@dimen/margin_large"
+                android:layout_marginEnd="@dimen/margin_large"
+                android:ellipsize="end"
+                android:lines="1"
+                android:minLines="1"
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imageViewCard"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textViewType"
+                style="@style/Text.12sp.Light"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_normal"
+                android:layout_marginEnd="@dimen/margin_large"
+                android:textColor="@color/black50"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imageViewCard"
+                app:layout_constraintTop_toBottomOf="@+id/textViewCardName" />
+
+            <TextView
+                android:id="@+id/textViewTitleRarity"
+                style="@style/Text.12sp.SemiBold"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_normal"
+                android:layout_marginTop="@dimen/margin_large"
+                android:layout_marginEnd="@dimen/margin_large"
+                android:text="@string/default_rarity"
+                android:textAllCaps="true"
+                android:textColor="@color/colorPrimary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imageViewCard"
+                app:layout_constraintTop_toBottomOf="@+id/textViewType" />
+
+            <TextView
+                android:id="@+id/textViewRarity"
+                style="@style/Text.12sp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_normal"
+                android:layout_marginEnd="@dimen/margin_large"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imageViewCard"
+                app:layout_constraintTop_toBottomOf="@+id/textViewTitleRarity" />
+
+            <TextView
+                android:id="@+id/textViewTitleSetName"
+                style="@style/Text.12sp.SemiBold"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_normal"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:layout_marginEnd="@dimen/margin_large"
+                android:text="@string/default_set"
+                android:textAllCaps="true"
+                android:textColor="@color/colorPrimary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imageViewCard"
+                app:layout_constraintTop_toBottomOf="@+id/textViewRarity" />
+
+            <TextView
+                android:id="@+id/textViewSetName"
+                style="@style/Text.12sp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_normal"
+                android:layout_marginEnd="@dimen/margin_large"
+                android:ellipsize="end"
+                android:lines="1"
+                android:maxLines="1"
+                android:textColor="@color/black50"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imageViewCard"
+                app:layout_constraintTop_toBottomOf="@+id/textViewTitleSetName" />
+
+            <TextView
+                android:id="@+id/textViewCost"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/height_cost"
+                android:layout_marginStart="@dimen/margin_normal"
+                android:layout_marginEnd="@dimen/margin_normal"
+                app:layout_constraintBottom_toBottomOf="@+id/imageViewCard"
+                app:layout_constraintEnd_toStartOf="@+id/textViewPowerToughness"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_chainStyle="spread_inside"
+                app:layout_constraintStart_toEndOf="@+id/imageViewCard" />
+
+            <TextView
+                android:id="@+id/textViewPowerToughness"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin_large"
+                app:layout_constraintBottom_toBottomOf="@+id/textViewCost"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/textViewCost" />
+
+            <TextView
+                android:id="@+id/textViewDeckQuantityTitle"
+                style="@style/Text.12sp.SemiBold"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_large"
+                android:layout_marginTop="@dimen/margin_large"
+                android:layout_marginEnd="@dimen/margin_large"
+                android:text="@string/card_editor_quantity"
+                android:textAllCaps="true"
+                android:textColor="@color/colorPrimary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageViewCard" />
+
+
+            <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
+                android:id="@+id/seekBarQuantity"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_large"
+                android:layout_marginTop="@dimen/margin_45dp"
+                android:layout_marginEnd="@dimen/margin_normal"
+                app:dsb_indicatorColor="@color/colorAccent"
+                app:dsb_progressColor="@color/colorAccent"
+                app:dsb_trackColor="@color/colorAccent"
+                app:dsb_max="50"
+                app:dsb_min="1"
+                app:layout_constraintEnd_toStartOf="@+id/textViewQuantityInfo"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewDeckQuantityTitle" />
+
+            <TextView
+                android:id="@+id/textViewDescriptionTitle"
+                style="@style/Text.12sp.SemiBold"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_large"
+                android:layout_marginTop="@dimen/margin_large"
+                android:layout_marginEnd="@dimen/margin_large"
+                android:text="@string/default_error_save"
+                android:textAllCaps="true"
+                android:textColor="@color/colorPrimary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/seekBarQuantity" />
+
+            <TextView
+                android:id="@+id/textViewDescription"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_large"
+                android:layout_marginEnd="@dimen/margin_large"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewDescriptionTitle" />
+
+            <TextView
+                android:id="@+id/textViewQuantityInfo"
+                style="@style/Text.12sp.SemiBold"
+                android:layout_width="@dimen/margin_huge"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin_large"
+                android:textAlignment="textEnd"
+                app:layout_constraintBottom_toBottomOf="@+id/seekBarQuantity"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/seekBarQuantity" />
+
+        </android.support.constraint.ConstraintLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/buttonSaveCard"
+        style="@style/ActionButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/main_bottom_navigation_height"
+        android:layout_gravity="bottom"
+        android:text="@string/card_editor_save"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/buttonSaveCard"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/scrollView2" />
+</android.support.constraint.ConstraintLayout>

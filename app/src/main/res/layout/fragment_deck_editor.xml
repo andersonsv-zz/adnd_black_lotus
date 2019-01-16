@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/layout_add_deck">
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/textInputLayoutName"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_large"
+        android:layout_marginTop="@dimen/margin_large"
+        android:layout_marginEnd="@dimen/margin_large"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:counterEnabled="true"
+        app:counterMaxLength="@integer/deck_name_length">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/textInputEditTextName"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/deck_name_hint"
+            android:imeOptions="actionNext"
+            android:inputType="textPersonName"
+            android:maxLength="@integer/deck_name_length"
+            android:maxLines="1"
+            app:errorEnabled="true" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/textInputLayoutDescription"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_large"
+        android:layout_marginTop="@dimen/margin_large"
+        android:layout_marginEnd="@dimen/margin_large"
+        app:counterEnabled="true"
+        app:counterMaxLength="@integer/deck_description_length"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayoutName">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/textInputEditTextDescription"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_80dp"
+            android:gravity="top|start"
+            android:hint="@string/default_description"
+            android:imeOptions="actionDone"
+            android:inputType="textMultiLine"
+            android:maxLength="@integer/deck_description_length"
+            android:lines="3"
+            app:errorEnabled="true" />
+    </android.support.design.widget.TextInputLayout>
+
+    <ImageView
+        android:id="@+id/imageViewColor"
+        android:layout_width="@dimen/size48dp"
+        android:layout_height="@dimen/size48dp"
+        android:layout_marginStart="@dimen/margin_normal"
+        android:layout_marginTop="@dimen/margin_large"
+        app:layout_constraintStart_toEndOf="@+id/textViewColor"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        android:contentDescription="@string/default_deck_content_description"/>
+
+    <Button
+        android:id="@+id/buttonAddColor"
+        style="@style/ActionButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_large"
+        android:text="@string/deck_add_color"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewColor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageViewColor"
+        android:padding="@dimen/margin_normal"/>
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_large"
+        android:layout_marginTop="@dimen/margin_large"
+        android:layout_marginEnd="@dimen/margin_normal"
+        android:text="@string/deck_change"
+        style="@style/Text.14sp"
+        app:layout_constraintEnd_toStartOf="@+id/switchDeckChange"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayoutDescription" />
+
+    <Switch
+        android:id="@+id/switchDeckChange"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_large"
+        app:layout_constraintBottom_toBottomOf="@+id/textView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textView" />
+
+
+    <TextView
+        android:id="@+id/textViewColor"
+        style="@style/Text.14sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_large"
+        android:text="@string/default_color"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewColor"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageViewColor" />
+
+    <TextView
+        android:id="@+id/textViewClear"
+        style="@style/Text.14sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_large"
+        android:text="@string/deck_clear_color_underline"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewColor"
+        app:layout_constraintStart_toEndOf="@+id/imageViewColor"
+        app:layout_constraintTop_toTopOf="@+id/imageViewColor" />
+
+    <TextView
+        android:id="@+id/textViewErrorColor"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_large"
+        android:layout_marginTop="@dimen/margin_large"
+        android:layout_marginEnd="@dimen/margin_normal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewClear"
+        style="@style/TextAppearance.Design.Error"
+        android:textColor="@color/redTextInputLayoutError"
+        android:visibility="invisible"
+        android:text="@string/deck_error_one_color"/>
+
+    <Button
+        android:id="@+id/buttonSaveDeck"
+        style="@style/ActionButtonStyle"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/main_bottom_navigation_height"
+        android:text="@string/deck_save_button"
+        android:textAllCaps="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</android.support.constraint.ConstraintLayout>

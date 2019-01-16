@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".feature.user.UserActivity"
+    android:id="@+id/layoutCreateUser">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/textInputLayoutName"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/input_layout_2columns_height"
+            android:layout_marginStart="@dimen/margin_large"
+            android:layout_marginTop="@dimen/margin_large"
+            android:layout_marginEnd="@dimen/margin_large"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/textInputEditTextName"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/register_user_name_hint"
+                android:imeOptions="actionDone"
+                android:inputType="textPersonName"
+                android:maxLength="@integer/name_length"
+                android:maxLines="1"
+                app:errorEnabled="true" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/textInputLayoutEmail"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/input_layout_2columns_height"
+            android:layout_marginStart="@dimen/margin_large"
+            android:layout_marginTop="@dimen/margin_large"
+            android:layout_marginEnd="@dimen/margin_large"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayoutName">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/textInputEditTextEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/register_user_email_hint"
+                android:imeOptions="actionDone"
+                android:inputType="textEmailAddress"
+                android:maxLength="@integer/email_length"
+                android:maxLines="1"
+                app:errorEnabled="true" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/textInputLayoutPassword"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/input_layout_2columns_height"
+            android:layout_marginStart="@dimen/margin_large"
+            android:layout_marginTop="@dimen/margin_large"
+            android:layout_marginEnd="@dimen/margin_large"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayoutEmail"
+            app:passwordToggleEnabled="true">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/textInputEditTextPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/register_user_password_hint"
+                android:inputType="textPassword"
+                android:maxLength="@integer/password_length"
+                android:maxLines="1"
+                app:errorEnabled="true"
+                app:passwordToggleEnabled="true" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/textInputLayoutPasswordConfirmation"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/input_layout_2columns_height"
+            android:layout_marginStart="@dimen/margin_large"
+            android:layout_marginTop="@dimen/margin_large"
+            android:layout_marginEnd="@dimen/margin_large"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayoutPassword"
+            app:passwordToggleEnabled="true">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/textInputEditTextPasswordConfirmation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/register_user_password_confirmation_hint"
+                android:inputType="textPassword"
+                android:maxLength="@integer/password_length"
+                android:maxLines="1"
+                app:errorEnabled="true"
+                app:passwordToggleEnabled="true" />
+        </android.support.design.widget.TextInputLayout>
+
+        <Button
+            android:id="@+id/buttonSignUp"
+            style="@style/ActionButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/main_bottom_navigation_height"
+            android:text="@string/register_user_signup"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/margin_normal"
+            android:layout_marginEnd="@dimen/margin_normal"
+            android:layout_marginBottom="@dimen/margin_normal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="gone"/>
+
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.design.widget.CoordinatorLayout>

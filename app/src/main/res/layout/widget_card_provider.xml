@@ -1,0 +1,42 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:orientation="vertical"
+    android:padding="@dimen/margin_large">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/widget_title_height"
+        android:background="@color/colorPrimary"
+        android:paddingLeft="@dimen/margin_large"
+        android:paddingRight="@dimen/margin_large">
+
+        <TextView
+            android:text="@string/widget_no_deck_selected"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/textViewDeckName"
+            style="@style/Text.14sp.Bold"/>
+    </RelativeLayout>
+
+
+    <ListView
+        android:id="@+id/listViewCard"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </ListView>
+
+    <TextView
+        android:gravity="center"
+        android:text="@string/default_loading"
+        android:textColor="@android:color/white"
+        android:id="@+id/textViewLoading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>
