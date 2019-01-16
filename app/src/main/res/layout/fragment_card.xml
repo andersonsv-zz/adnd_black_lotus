@@ -13,7 +13,8 @@
         android:layout_marginTop="@dimen/margin_normal"
         android:scaleType="centerInside"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/default_deck_content_description"/>
 
     <TextView
         android:id="@+id/deckName"

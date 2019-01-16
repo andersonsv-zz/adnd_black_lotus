@@ -12,9 +12,6 @@ public class FirebaseAuthSignOutInstruction extends Instruction {
     @Override
     public boolean checkCondition() {
         FirebaseAuth auth = FirebaseAuth.getInstance();
-        if (auth != null && auth.getCurrentUser() == null) {
-            return true;
-        }
-        return false;
+        return auth != null && auth.getCurrentUser() == null;
     }
 }
