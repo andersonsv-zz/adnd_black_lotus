@@ -15,5 +15,4 @@
         myapp:actionLayout="@layout/switch_item"
         myapp:showAsAction="always" />
 
-
 </menu>

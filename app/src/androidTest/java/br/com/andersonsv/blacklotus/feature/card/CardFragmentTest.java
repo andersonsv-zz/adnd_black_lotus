@@ -14,21 +14,13 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 
-import br.com.andersonsv.blacklotus.R;
 import br.com.andersonsv.blacklotus.condition.FirebaseAuthInstruction;
 import br.com.andersonsv.blacklotus.feature.BaseActivityTest;
 import br.com.andersonsv.blacklotus.feature.base.DebugActivity;
-import br.com.andersonsv.blacklotus.feature.deck.DeckEditorFragment;
 import br.com.andersonsv.blacklotus.firebase.DeckModel;
 
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static br.com.andersonsv.blacklotus.util.Constants.DECK_PARCELABLE;
 import static junit.framework.TestCase.assertTrue;
-import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsNull.notNullValue;
 

@@ -13,10 +13,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import br.com.andersonsv.blacklotus.R;
-import br.com.andersonsv.blacklotus.condition.FirebaseAuthInstruction;
 import br.com.andersonsv.blacklotus.condition.FirebaseAuthSignOutInstruction;
 import br.com.andersonsv.blacklotus.feature.BaseActivityTest;
-import br.com.andersonsv.blacklotus.feature.user.UserActivity;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
