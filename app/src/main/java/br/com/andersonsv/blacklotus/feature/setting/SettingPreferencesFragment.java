@@ -12,7 +12,7 @@ import br.com.andersonsv.blacklotus.util.Constants;
 public class SettingPreferencesFragment extends PreferenceFragmentCompat {
 
 
-    ListPreference secondLanguage;
+    private ListPreference secondLanguage;
 
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {

@@ -131,7 +131,7 @@ public class TextDrawable extends Drawable {
     public void setText(CharSequence text) {
         if (text == null) text = "";
 
-        mText = text;
+        mText = "  " + text;
 
         measureContent();
     }
@@ -229,7 +229,7 @@ public class TextDrawable extends Drawable {
      * {@link #setTypeface(Typeface, int)} to get the appearance
      * that you actually want.
      */
-    public void setTypeface(Typeface tf) {
+    private void setTypeface(Typeface tf) {
         if (mTextPaint.getTypeface() != tf) {
             mTextPaint.setTypeface(tf);
 
@@ -244,7 +244,7 @@ public class TextDrawable extends Drawable {
      * style that you specified.
      *
      */
-    public void setTypeface(Typeface tf, int style) {
+    private void setTypeface(Typeface tf, int style) {
         if (style > 0) {
             if (tf == null) {
                 tf = Typeface.defaultFromStyle(style);
@@ -285,7 +285,7 @@ public class TextDrawable extends Drawable {
      * Set the text color as a state list
      * @param colorStateList ColorStateList of text colors, such as inflated from an R.color resource
      */
-    public void setTextColor(ColorStateList colorStateList) {
+    private void setTextColor(ColorStateList colorStateList) {
         mTextColors = colorStateList;
         updateTextColors(getState());
     }

@@ -9,28 +9,26 @@ import br.com.andersonsv.blacklotus.R;
 
 public enum Rarity  {
     @SerializedName("Common")
-    COMMON("Common", R.color.colorRarityCommon, "Comum"),
+    COMMON("Common", R.color.colorRarityCommon),
     @SerializedName("Uncommon")
-    UNCOMMON("Uncommon", R.color.colorRarityUncommon, "Incomum"),
+    UNCOMMON("Uncommon", R.color.colorRarityUncommon),
     @SerializedName("Rare")
-    RARE("Rare", R.color.colorRarityRare, "Rara"),
+    RARE("Rare", R.color.colorRarityRare),
     @SerializedName("Mythic Rare")
-    MYTHIC_RARE("Mythic Rare", R.color.colorRarityMithicRare, "Mítica Rara"),
+    MYTHIC_RARE("Mythic Rare", R.color.colorRarityMithicRare),
     @SerializedName("Special")
-    SPECIAL("Special", R.color.colorRarityTimeshifted, "Especial"),
+    SPECIAL("Special", R.color.colorRarityTimeshifted),
     @SerializedName("Basic Land")
-    BASIC_LAND("Basic Land", R.color.colorRarityMasterpice, "Terreno");
+    BASIC_LAND("Basic Land", R.color.colorRarityMasterpice);
 
     private String typeId;
     private int color;
-    private String namePtBR;
 
     private static Map<String, Rarity> rarityByType = new HashMap<>();
 
-    Rarity(String typeId, int color, String namePtBR) {
+    Rarity(String typeId, int color) {
         this.typeId = typeId;
         this.color = color;
-        this.namePtBR = namePtBR;
     }
 
     public String getTypeId() {
@@ -39,10 +37,6 @@ public enum Rarity  {
 
     public int getColor() {
         return color;
-    }
-
-    public String getNamePtBR() {
-        return namePtBR;
     }
 
     static {

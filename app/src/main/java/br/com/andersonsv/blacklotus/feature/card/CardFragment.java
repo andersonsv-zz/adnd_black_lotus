@@ -276,7 +276,7 @@ public class CardFragment extends BaseFragment implements CardAdapter.OnCardSele
             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if (task.isSuccessful()) {
+                    if (task != null && task.isSuccessful()) {
 
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             cardModelList.add(document.toObject(CardModel.class));

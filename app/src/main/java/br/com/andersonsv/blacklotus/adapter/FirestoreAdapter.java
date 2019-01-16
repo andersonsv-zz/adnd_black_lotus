@@ -89,7 +89,7 @@ public abstract class FirestoreAdapter <VH extends RecyclerView.ViewHolder>
         return mSnapshots.size();
     }
 
-    protected DocumentSnapshot getSnapshot(int index) {
+    DocumentSnapshot getSnapshot(int index) {
         return mSnapshots.get(index);
     }
 
@@ -97,7 +97,7 @@ public abstract class FirestoreAdapter <VH extends RecyclerView.ViewHolder>
         return mSnapshots;
     }
 
-    protected void onDocumentAdded(DocumentChange change) {
+    private void onDocumentAdded(DocumentChange change) {
         mSnapshots.add(change.getNewIndex(), change.getDocument());
         notifyItemInserted(change.getNewIndex());
     }

@@ -12,6 +12,6 @@ public class FirebaseAuthInstruction extends Instruction {
     @Override
     public boolean checkCondition() {
         FirebaseAuth auth = FirebaseAuth.getInstance();
-        return auth.getCurrentUser() != null && auth.getCurrentUser().getUid() != null;
+        return auth != null && auth.getCurrentUser() != null && auth.getCurrentUser().getUid() != null;
     }
 }

@@ -10,8 +10,7 @@ public class StringUtilsTest {
 
     @Test
     public void null_string() {
-        String replaceType = null;
-        String typeConverted = StringUtils.replaceTypetImgSrc(replaceType);
+        String typeConverted = StringUtils.replaceTypetImgSrc(null);
         assertEquals(typeConverted, Constants.EMPTY_STRING);
     }
 

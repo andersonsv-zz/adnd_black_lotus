@@ -102,8 +102,16 @@ public class LoginActivity extends BaseActivity implements Validator.ValidationL
 
         mProgressBar.setVisibility(View.VISIBLE);
 
-        final String email = mEmail.getText().toString();
-        final String password = mPassword.getText().toString();
+        String email = null;
+        String password = null;
+
+        if (mEmail != null && mEmail.getText() != null) {
+            email = mEmail.getText().toString();
+        }
+
+        if (mPassword != null && mPassword.getText() != null) {
+            password = mPassword.getText().toString();
+        }
 
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 

@@ -267,7 +267,7 @@ public class DeckEditorFragment extends BaseFragment implements Validator.Valida
         hideKeyboardFrom(getContext(), layout);
     }
 
-    public void insertDocument() {
+    private void insertDocument() {
         mDb.collection(BuildConfig.FIREBASE_COLLECTION)
             .document(BuildConfig.FIREBASE_DOCUMENT)
             .collection(DECK_LIST)
@@ -300,7 +300,7 @@ public class DeckEditorFragment extends BaseFragment implements Validator.Valida
             });
     }
 
-    public void updateDocument() {
+    private void updateDocument() {
         mDb.collection(BuildConfig.FIREBASE_COLLECTION)
             .document(BuildConfig.FIREBASE_DOCUMENT)
             .collection(DECK_LIST)

@@ -15,7 +15,7 @@
     <string name="default_error_title">Error</string>
     <string name="default_deleted">Deleted</string>
     <string name="default_loading">Loading</string>
-    <string name="default_error">An error ocurred %s</string>
+    <string name="default_error">An error occurred %s</string>
 
     <!-- Content description -->
     <string name="default_card_content_description">Card image</string>

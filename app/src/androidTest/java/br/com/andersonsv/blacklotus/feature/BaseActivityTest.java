@@ -36,7 +36,7 @@ public class BaseActivityTest {
         };
     }
 
-    public static Matcher<View> childAtPosition(
+    protected static Matcher<View> childAtPosition(
             final Matcher<View> parentMatcher, final int position) {
 
         return new TypeSafeMatcher<View>() {

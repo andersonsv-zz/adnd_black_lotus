@@ -6,7 +6,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 
@@ -23,9 +22,6 @@ public class SearchCardFragmentTest extends BaseActivityTest {
     public FragmentTestRule<DebugActivity, CardEditorFragment> fragmentTestRule =
             new FragmentTestRule<>(DebugActivity.class, CardEditorFragment.class);
 
-    @Before
-    public void init(){
-    }
 
     @BeforeClass
     public static void login(){
@@ -37,9 +33,6 @@ public class SearchCardFragmentTest extends BaseActivityTest {
         });
     }
 
-    @Before
-    public void setUp() {
-    }
 
     @AfterClass
     public static void signOut(){

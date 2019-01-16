@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
@@ -14,7 +13,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatEditText;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Toast;
 
 import com.mobsandgeeks.saripaar.ValidationError;
 
@@ -31,27 +29,6 @@ public class BaseActivity extends AppCompatActivity {
         Intent intent = new Intent(this, destination);
         startActivity(intent);
         finish();
-    }
-
-    protected void snack(View view, String message){
-        Snackbar.make(view,
-                message,
-                Snackbar.LENGTH_INDEFINITE)
-                .setAction("Action", null).show();
-    }
-
-    protected void snackLong(View view, String message){
-        Snackbar.make(view,
-                message,
-                Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();
-    }
-
-    public void toast(Context context, String message){
-        Toast.makeText(context,
-                message,
-                Toast.LENGTH_LONG)
-                .show();
     }
 
     protected void checkFormValidation(List<ValidationError> errors){

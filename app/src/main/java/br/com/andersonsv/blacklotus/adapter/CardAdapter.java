@@ -35,7 +35,7 @@ public class CardAdapter extends FirestoreAdapter<CardAdapter.ViewHolder>{
         void onSelected(DocumentSnapshot card);
     }
 
-    private OnCardSelectedListener mListener;
+    private final OnCardSelectedListener mListener;
 
     public CardAdapter(Query query, CardAdapter.OnCardSelectedListener listener) {
         super(query);

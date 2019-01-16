@@ -1,6 +1,5 @@
 package br.com.andersonsv.blacklotus.adapter;
 
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.NonNull;
@@ -66,13 +65,11 @@ public class DeckAdapter extends FirestoreAdapter<DeckAdapter.ViewHolder> {
             ButterKnife.bind(this, itemView);
         }
 
-        public void bind(final DocumentSnapshot snapshot,
-                         final OnDeckSelectedListener listener) {
+        void bind(final DocumentSnapshot snapshot,
+                  final OnDeckSelectedListener listener) {
 
             DeckModel model = snapshot.toObject(DeckModel.class);
             model.setId(snapshot.getId());
-
-            Resources resources = itemView.getResources();
 
             mDeckName.setText(model.getName());
             mDeckDescription.setText(model.getDescription());

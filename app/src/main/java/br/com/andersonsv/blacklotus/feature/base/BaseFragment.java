@@ -36,7 +36,7 @@ public class BaseFragment extends Fragment {
         recyclerView.setLayoutManager(linearLayoutManager);
     }
 
-    public void snack(View view, String message){
+    protected void snack(View view, String message){
 
         Snackbar.make(view,
                 message,
