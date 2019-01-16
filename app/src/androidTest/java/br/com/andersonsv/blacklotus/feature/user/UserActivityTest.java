@@ -4,8 +4,6 @@ import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.google.firebase.auth.FirebaseAuth;
-
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,7 +25,6 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static br.com.andersonsv.blacklotus.util.ConstantsTest.TEXT_MSG_EMAIL;
 import static br.com.andersonsv.blacklotus.util.ConstantsTest.TEXT_MSG_PASSWORD_CONFIRMATION;
 import static br.com.andersonsv.blacklotus.util.ConstantsTest.TEXT_MSG_REQUIRED;
-import static org.hamcrest.core.AllOf.allOf;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
@@ -124,7 +121,4 @@ public class UserActivityTest extends BaseActivityTest {
         onView(withText(R.string.default_error_title)).inRoot(isDialog()).check(matches(isDisplayed()));
     }
 
-    private String randomInt() {
-        return String.valueOf(((new Random()).nextInt(100000)));
-    }
 }

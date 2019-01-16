@@ -29,7 +29,6 @@ import java.util.List;
 
 import br.com.andersonsv.blacklotus.R;
 import br.com.andersonsv.blacklotus.feature.base.BaseActivity;
-import br.com.andersonsv.blacklotus.feature.login.LoginActivity;
 import br.com.andersonsv.blacklotus.feature.main.MainActivity;
 import br.com.andersonsv.blacklotus.util.NetworkUtils;
 import butterknife.BindView;

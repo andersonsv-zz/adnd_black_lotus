@@ -4,14 +4,19 @@ import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
+import com.azimolabs.conditionwatcher.ConditionWatcher;
 import com.google.firebase.auth.FirebaseAuth;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import br.com.andersonsv.blacklotus.R;
+import br.com.andersonsv.blacklotus.condition.FirebaseAuthInstruction;
+import br.com.andersonsv.blacklotus.condition.FirebaseAuthSignOutInstruction;
 import br.com.andersonsv.blacklotus.feature.BaseActivityTest;
+import br.com.andersonsv.blacklotus.feature.user.UserActivity;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -33,8 +38,14 @@ public class LoginActivityTest extends BaseActivityTest {
     @Rule
     public final ActivityTestRule<LoginActivity> mActivityTestRule = new ActivityTestRule<>(LoginActivity.class);
 
+    @Before
+    public void init(){
+        FirebaseAuth.getInstance().signOut();
+    }
+
     @Test
-    public void whenEmailPasswordIsEmpty_andClickOnLogin_shouldDisplayErrors() {
+    public void whenEmailPasswordIsEmpty_andClickOnLogin_shouldDisplayErrors() throws Exception{
+        ConditionWatcher.waitForCondition(new FirebaseAuthSignOutInstruction());
 
         String msgEmail = TEXT_MSG_REQUIRED.concat("\n").concat(TEXT_MSG_EMAIL);
         String msgPassword = TEXT_MSG_REQUIRED.concat("\n").concat(mActivityTestRule.getActivity().getResources().getString(R.string.login_auth_password_error));
@@ -45,7 +56,9 @@ public class LoginActivityTest extends BaseActivityTest {
     }
 
     @Test
-    public void whenEmailInvalidPasswordIsEmpty_andOnClickLogin_shouldDisplayErrors() {
+    public void whenEmailInvalidPasswordIsEmpty_andOnClickLogin_shouldDisplayErrors() throws Exception{
+
+        ConditionWatcher.waitForCondition(new FirebaseAuthSignOutInstruction());
 
         String msgPassword = TEXT_MSG_REQUIRED.concat("\n").concat(mActivityTestRule.getActivity().getResources().getString(R.string.login_auth_password_error));
 
@@ -56,7 +69,9 @@ public class LoginActivityTest extends BaseActivityTest {
     }
 
     @Test
-    public void whenPasswordInvalidLength_andClickOnLogin_shouldDisplayErrors() {
+    public void whenPasswordInvalidLength_andClickOnLogin_shouldDisplayErrors() throws Exception{
+
+        ConditionWatcher.waitForCondition(new FirebaseAuthSignOutInstruction());
 
         String msgPassword = mActivityTestRule.getActivity().getResources().getString(R.string.login_auth_password_error);
 
@@ -67,21 +82,14 @@ public class LoginActivityTest extends BaseActivityTest {
     }
 
     @Test
-    public void whenAuthError_andClickOnLoginButton_shouldDisplayDialog() {
+    public void whenAuthError_andClickOnLoginButton_shouldDisplayDialog() throws Exception {
+
+        ConditionWatcher.waitForCondition(new FirebaseAuthSignOutInstruction());
+
         onView(withId(R.id.textInputEditTextEmail)).perform(typeText("test@test.com"), closeSoftKeyboard());
         onView(withId(R.id.textInputEditTextPassword)).perform(typeText("123456aaaaaa"), closeSoftKeyboard());
         onView(withId(R.id.buttonLogin)).perform(click());
 
         onView(withText(R.string.default_error_title)).inRoot(isDialog()).check(matches(isDisplayed()));
     }
-
-    @Test
-    public void whenAuthOk_andClickOnLoginButton_shouldDecksActivity() {
-        onView(withId(R.id.textInputEditTextEmail)).perform(typeText("test@test.com"), closeSoftKeyboard());
-        onView(withId(R.id.textInputEditTextPassword)).perform(typeText("123456"), closeSoftKeyboard());
-        onView(withId(R.id.buttonLogin)).perform(click());
-
-        FirebaseAuth.getInstance().signOut();
-    }
-
 }
