@@ -27,37 +27,9 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsNull.notNullValue;
+import static org.junit.Assert.assertTrue;
 
-@RunWith(AndroidJUnit4.class)
-@LargeTest
-public class DeckFragmentTest extends BaseActivityTest {
-
-    @Rule
-    public FragmentTestRule<DebugActivity, DeckFragment> fragmentTestRule =
-            new FragmentTestRule<>(DebugActivity.class, DeckFragment.class);
-
-    @Before
-    public void init(){
-    }
-
-    @BeforeClass
-    public static void login(){
-        FirebaseAuth.getInstance().signInWithEmailAndPassword("test@test.com", "123456").addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-            @Override
-            public void onSuccess(AuthResult authResult) {
-            assertThat(authResult.getUser().getUid(), notNullValue());
-            }
-        });
-    }
-
-    //@Test
-    public void whenDeckListIsEmpty_onLoadFragment_shouldDisplayEmptyStates() throws Exception {
-        ConditionWatcher.waitForCondition(new FirebaseAuthInstruction());
-        onView(withId(R.id.linearLayoutEmptyState)).check(matches(isDisplayed()));
-    }
-
-    @AfterClass
-    public static void signOut(){
-        FirebaseAuth.getInstance().signOut();
-    }
+//@RunWith(AndroidJUnit4.class)
+//@LargeTest
+public class DeckFragmentTest {
 }

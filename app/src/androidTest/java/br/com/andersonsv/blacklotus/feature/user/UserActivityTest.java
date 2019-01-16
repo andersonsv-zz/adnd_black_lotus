@@ -20,6 +20,7 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.RootMatchers.isDialog;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
@@ -120,22 +121,7 @@ public class UserActivityTest extends BaseActivityTest {
         onView(withId(R.id.textInputEditTextPasswordConfirmation)).perform(typeText("123456"),closeSoftKeyboard());
         onView(withId(R.id.buttonSignUp)).perform(click());
 
-        onView(allOf(withId(android.support.design.R.id.snackbar_text)))
-                .check(matches(isDisplayed()));
-    }
-
-    @Test
-   public void whenInsertNewUserOk_andClickSignUp_shouldMainActivityDeckList() {
-
-        String email = "user" + randomInt() + "@test.com";
-
-        onView(withId(R.id.textInputEditTextName)).perform(typeText("Name"),closeSoftKeyboard());
-        onView(withId(R.id.textInputEditTextEmail)).perform(typeText(email),closeSoftKeyboard());
-        onView(withId(R.id.textInputEditTextPassword)).perform(typeText("123456"),closeSoftKeyboard());
-        onView(withId(R.id.textInputEditTextPasswordConfirmation)).perform(typeText("123456"),closeSoftKeyboard());
-        onView(withId(R.id.buttonSignUp)).perform(click());
-
-        FirebaseAuth.getInstance().signOut();
+        onView(withText(R.string.default_error_title)).inRoot(isDialog()).check(matches(isDisplayed()));
     }
 
     private String randomInt() {

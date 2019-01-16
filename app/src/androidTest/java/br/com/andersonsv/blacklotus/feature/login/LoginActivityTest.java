@@ -18,6 +18,7 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.RootMatchers.isDialog;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
@@ -70,7 +71,8 @@ public class LoginActivityTest extends BaseActivityTest {
         onView(withId(R.id.textInputEditTextEmail)).perform(typeText("test@test.com"), closeSoftKeyboard());
         onView(withId(R.id.textInputEditTextPassword)).perform(typeText("123456aaaaaa"), closeSoftKeyboard());
         onView(withId(R.id.buttonLogin)).perform(click());
-        onView(withText("Error")).check(matches(isDisplayed()));
+
+        onView(withText(R.string.default_error_title)).inRoot(isDialog()).check(matches(isDisplayed()));
     }
 
     @Test
@@ -78,7 +80,6 @@ public class LoginActivityTest extends BaseActivityTest {
         onView(withId(R.id.textInputEditTextEmail)).perform(typeText("test@test.com"), closeSoftKeyboard());
         onView(withId(R.id.textInputEditTextPassword)).perform(typeText("123456"), closeSoftKeyboard());
         onView(withId(R.id.buttonLogin)).perform(click());
-        onView(withText("Decks")).check(matches(isDisplayed()));
 
         FirebaseAuth.getInstance().signOut();
     }

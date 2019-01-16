@@ -1,5 +1,6 @@
 package br.com.andersonsv.blacklotus.feature.user;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
@@ -28,6 +29,7 @@ import java.util.List;
 
 import br.com.andersonsv.blacklotus.R;
 import br.com.andersonsv.blacklotus.feature.base.BaseActivity;
+import br.com.andersonsv.blacklotus.feature.login.LoginActivity;
 import br.com.andersonsv.blacklotus.feature.main.MainActivity;
 import br.com.andersonsv.blacklotus.util.NetworkUtils;
 import butterknife.BindView;
@@ -70,6 +72,8 @@ public class UserActivity extends BaseActivity implements Validator.ValidationLi
 
     private Validator mValidator;
 
+    private Context context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,7 +113,7 @@ public class UserActivity extends BaseActivity implements Validator.ValidationLi
                 @Override
                 public void onFailure(@NonNull Exception e) {
                     mProgressBar.setVisibility(View.GONE);
-                    snackLong(mLayout, e.getLocalizedMessage());
+                    alertDialogMessage(UserActivity.this, getResources().getString(R.string.default_error_title), e.getLocalizedMessage());
                 }
             })
             .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
