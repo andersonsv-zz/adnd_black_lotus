@@ -1,7 +1,5 @@
 package br.com.andersonsv.blacklotus.feature.card;
 
-import android.support.test.uiautomator.UiDevice;
-
 import com.android21buttons.fragmenttestrule.FragmentTestRule;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
@@ -15,13 +13,11 @@ import org.junit.Rule;
 import br.com.andersonsv.blacklotus.feature.BaseActivityTest;
 import br.com.andersonsv.blacklotus.feature.base.DebugActivity;
 
-import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsNull.notNullValue;
 
 public class SearchCardFragmentTest extends BaseActivityTest {
 
-    UiDevice mDevice;
 
     @Rule
     public FragmentTestRule<DebugActivity, CardEditorFragment> fragmentTestRule =
@@ -43,8 +39,6 @@ public class SearchCardFragmentTest extends BaseActivityTest {
 
     @Before
     public void setUp() {
-        mDevice = UiDevice.getInstance(getInstrumentation());
-        assertThat(mDevice, notNullValue());
     }
 
     @AfterClass
