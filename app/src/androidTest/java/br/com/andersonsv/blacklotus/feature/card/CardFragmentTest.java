@@ -26,7 +26,7 @@ import static org.hamcrest.core.IsNull.notNullValue;
 public class CardFragmentTest extends BaseActivityTest {
 
     @Rule
-    public FragmentTestRule<DebugActivity, CardFragment> fragmentTestRule =
+    public final FragmentTestRule<DebugActivity, CardFragment> fragmentTestRule =
             new FragmentTestRule<>(DebugActivity.class, CardFragment.class, true,true, false);
     @BeforeClass
     public static void login(){

@@ -36,7 +36,7 @@ import static org.hamcrest.core.IsNull.notNullValue;
 public class DeckEditorFragmentTest extends BaseActivityTest {
 
     @Rule
-    public FragmentTestRule<DebugActivity, DeckEditorFragment> fragmentTestRule =
+    public final FragmentTestRule<DebugActivity, DeckEditorFragment> fragmentTestRule =
             new FragmentTestRule<>(DebugActivity.class, DeckEditorFragment.class, true,true, false);
 
     @BeforeClass

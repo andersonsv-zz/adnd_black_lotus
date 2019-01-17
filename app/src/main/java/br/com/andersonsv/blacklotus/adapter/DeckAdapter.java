@@ -30,7 +30,7 @@ public class DeckAdapter extends FirestoreAdapter<DeckAdapter.ViewHolder> {
         void onDeckEdited(DocumentSnapshot deck);
     }
 
-    private OnDeckSelectedListener mListener;
+    private final OnDeckSelectedListener mListener;
 
     public DeckAdapter(Query query, OnDeckSelectedListener listener) {
         super(query);

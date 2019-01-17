@@ -22,7 +22,6 @@ public class CsvWriter {
     public static File generateCsvFile(File target, String file, List<CardModel> cardModelList, Resources resources){
         try {
             File mFile = new File(target, CSV_DECK + file + CSV_EXTENSION);
-            mFile.createNewFile();
 
             BufferedWriter br = new BufferedWriter(new FileWriter(mFile));
             StringBuilder sb = new StringBuilder();

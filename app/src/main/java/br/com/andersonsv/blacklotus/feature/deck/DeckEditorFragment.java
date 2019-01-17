@@ -128,18 +128,21 @@ public class DeckEditorFragment extends BaseFragment implements Validator.Valida
 
     @OnClick(R.id.buttonAddColor)
     public void addColor(View view){
-        new SpectrumDialog.Builder(view.getContext())
-            .setColors(R.array.deck_colors)
-            .setTitle(R.string.deck_add_color_title)
-            .setDismissOnColorSelected(false)
-            .setPositiveButtonText(R.string.deck_select_color_confirm)
-            .setOnColorSelectedListener(new SpectrumDialog.OnColorSelectedListener() {
-                @Override public void onColorSelected(boolean positiveResult, @ColorInt int color) {
-                if (positiveResult) {
-                    checkNextColor(color);
-                }
-                }
-            }).build().show(getFragmentManager(), "dialog_demo_1");
+        if (getFragmentManager() != null) {
+            new SpectrumDialog.Builder(view.getContext())
+                    .setColors(R.array.deck_colors)
+                    .setTitle(R.string.deck_add_color_title)
+                    .setDismissOnColorSelected(false)
+                    .setPositiveButtonText(R.string.deck_select_color_confirm)
+                    .setOnColorSelectedListener(new SpectrumDialog.OnColorSelectedListener() {
+                        @Override
+                        public void onColorSelected(boolean positiveResult, @ColorInt int color) {
+                            if (positiveResult) {
+                                checkNextColor(color);
+                            }
+                        }
+                    }).build().show(getFragmentManager(), "dialog_demo_1");
+        }
     }
 
     @OnClick(R.id.textViewClear)

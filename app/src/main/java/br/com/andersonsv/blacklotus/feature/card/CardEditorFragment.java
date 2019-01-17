@@ -110,6 +110,8 @@ public class CardEditorFragment extends BaseFragment {
 
             if (bundle.containsKey(CARD_DATA)) {
                 Card card = bundle.getParcelable(CARD_DATA);
+
+                if(card != null)
                 mCard = convertDataToModel(card);
 
             }
@@ -149,9 +151,11 @@ public class CardEditorFragment extends BaseFragment {
 
     private void setupView() {
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String qtdSameCardInDeck = prefs.getString(Constants.KEY_QTD_SAME_CARD_IN_DECK, "50");
-        mQuantity.setMax(Integer.valueOf(qtdSameCardInDeck));
+        if (getActivity() != null) {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            String qtdSameCardInDeck = prefs.getString(Constants.KEY_QTD_SAME_CARD_IN_DECK, "50");
+            mQuantity.setMax(Integer.valueOf(qtdSameCardInDeck));
+        }
 
         if (mCard.getImage() != null) {
             Picasso.with(getContext())
@@ -176,7 +180,7 @@ public class CardEditorFragment extends BaseFragment {
 
         String powerToughness = "-";
         if (power != 0 && toughness != 0){
-            powerToughness = StringUtils.formatStringInt(getContext().getString(R.string.card_editor_format_power_toughness), Arrays.asList( power, toughness));
+            powerToughness = StringUtils.formatStringInt(getString(R.string.card_editor_format_power_toughness), Arrays.asList( power, toughness));
         }
 
         mPowerToughness.setText(powerToughness);

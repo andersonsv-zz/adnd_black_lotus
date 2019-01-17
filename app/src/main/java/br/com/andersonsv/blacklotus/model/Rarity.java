@@ -24,7 +24,7 @@ public enum Rarity  {
     private String typeId;
     private int color;
 
-    private static Map<String, Rarity> rarityByType = new HashMap<>();
+    private static final Map<String, Rarity> rarityByType = new HashMap<>();
 
     Rarity(String typeId, int color) {
         this.typeId = typeId;

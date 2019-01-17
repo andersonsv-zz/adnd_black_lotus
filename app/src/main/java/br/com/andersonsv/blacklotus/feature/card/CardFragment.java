@@ -36,7 +36,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -88,7 +87,7 @@ public class CardFragment extends BaseFragment implements CardAdapter.OnCardSele
     @BindView(R.id.cardLayout)
     ConstraintLayout layout;
 
-    private List<CardModel> cardModelList = new ArrayList<>();
+    private final List<CardModel> cardModelList = new ArrayList<>();
 
     private static final int REQUEST_CODE_WRITE_EXTERNAL_STORAGE_PERMISSION = 1;
     private static final String SHARED_PROVIDER_AUTHORITY = BuildConfig.APPLICATION_ID + ".myfileprovider";
@@ -257,7 +256,8 @@ public class CardFragment extends BaseFragment implements CardAdapter.OnCardSele
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (permissions != null && permissions.length > 0) {
+        if (permissions.length > 0 && getContext() != null) {
+
             if (ActivityCompat.checkSelfPermission(getContext(), permissions[0]) == PackageManager.PERMISSION_GRANTED) {
                 sendCsvToShare();
             }
@@ -286,7 +286,7 @@ public class CardFragment extends BaseFragment implements CardAdapter.OnCardSele
             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if (task != null && task.isSuccessful()) {
+                    if (task.isSuccessful() && task.getResult() != null) {
 
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             cardModelList.add(document.toObject(CardModel.class));

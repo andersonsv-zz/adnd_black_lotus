@@ -29,11 +29,13 @@ import static br.com.andersonsv.blacklotus.util.Constants.VALIDATION_TEXT_INPUT_
 public class BaseFragment extends Fragment {
 
     protected void setLinearLayoutVerticalWithDivider(final RecyclerView recyclerView){
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.getContext(), LinearLayoutManager.VERTICAL, false);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(),
-                linearLayoutManager.getOrientation());
-        recyclerView.addItemDecoration(dividerItemDecoration);
-        recyclerView.setLayoutManager(linearLayoutManager);
+        if (getContext() != null) {
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+            DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(),
+                    linearLayoutManager.getOrientation());
+            recyclerView.addItemDecoration(dividerItemDecoration);
+            recyclerView.setLayoutManager(linearLayoutManager);
+        }
     }
 
     protected void snack(View view, String message){
@@ -45,23 +47,24 @@ public class BaseFragment extends Fragment {
     }
 
     protected void showSaveDialog(String title, String message){
-        final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
-        builder.setTitle(title);
-        builder.setMessage(message);
+        if (getContext() != null) {
+            final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
-        builder.setNeutralButton(getContext().getResources().getString(R.string.default_close), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface arg0, int arg1) {
-                arg0.dismiss();
-            }
-        }).show();
+            builder.setTitle(title);
+            builder.setMessage(message);
 
+            builder.setNeutralButton(getResources().getString(R.string.default_close), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface arg0, int arg1) {
+                    arg0.dismiss();
+                }
+            }).show();
+        }
     }
 
     protected void openActivity(Class destination){
         Intent intent = new Intent(getActivity(), destination);
         startActivity(intent);
-        getActivity().finish();
     }
 
     protected void checkFormValidation(List<ValidationError> errors){
@@ -91,9 +94,11 @@ public class BaseFragment extends Fragment {
     }
 
     protected void openFragment(Fragment fragment) {
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.container, fragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
+        if (getFragmentManager() != null) {
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.container, fragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }
     }
 }
