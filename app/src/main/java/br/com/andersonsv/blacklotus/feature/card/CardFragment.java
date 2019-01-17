@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.ShareCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.RecyclerView;
@@ -88,6 +89,7 @@ public class CardFragment extends BaseFragment implements CardAdapter.OnCardSele
     private List<CardModel> cardModelList = new ArrayList<>();
 
     private static final int REQUEST_CODE_WRITE_EXTERNAL_STORAGE_PERMISSION = 1;
+    private static final String SHARED_PROVIDER_AUTHORITY = BuildConfig.APPLICATION_ID + ".myfileprovider";
 
     public static CardFragment newInstance() {
         return new CardFragment();
@@ -234,15 +236,19 @@ public class CardFragment extends BaseFragment implements CardAdapter.OnCardSele
         File target = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         String outString = new SimpleDateFormat(getResources().getString(R.string.date_convert_short)).format(new Date());
 
-        CsvWriter.generateCsvFile(target, outString, cardModelList, getResources());
+        File file = CsvWriter.generateCsvFile(target, outString, cardModelList, getResources());
 
-        Uri contentUri = FileProvider.getUriForFile(getActivity(), "br.com.andersonsv.blacklotus.app.fileprovider", target);
+        // Get the shared file's Uri
+        final Uri uri = FileProvider.getUriForFile(getContext(), SHARED_PROVIDER_AUTHORITY, file);
 
-        Intent sendIntent = new Intent();
-        sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_STREAM, contentUri);
-        sendIntent.setType(CsvWriter.TYPE_CSV);
-        startActivity(sendIntent);
+        // Create a intent
+        final ShareCompat.IntentBuilder intentBuilder = ShareCompat.IntentBuilder.from(getActivity())
+                .setType(CsvWriter.TYPE_CSV)
+                .addStream(uri);
+
+        // Start the intent
+        final Intent chooserIntent = intentBuilder.createChooserIntent();
+        startActivity(chooserIntent);
     }
 
     @Override
@@ -292,4 +298,6 @@ public class CardFragment extends BaseFragment implements CardAdapter.OnCardSele
                 }
             });
     }
+
+
 }
