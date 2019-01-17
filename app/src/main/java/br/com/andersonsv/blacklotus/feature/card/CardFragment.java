@@ -36,9 +36,11 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import br.com.andersonsv.blacklotus.BuildConfig;
 import br.com.andersonsv.blacklotus.R;
@@ -234,9 +236,11 @@ public class CardFragment extends BaseFragment implements CardAdapter.OnCardSele
 
     private void sendCsvToShare() {
         File target = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-        String outString = new SimpleDateFormat(getResources().getString(R.string.date_convert_short)).format(new Date());
+        SimpleDateFormat simpleDate = new SimpleDateFormat("yyyyMMddHHmm",
+                Locale.US);
 
-        File file = CsvWriter.generateCsvFile(target, outString, cardModelList, getResources());
+        String dateCsv = simpleDate.format(new Date());
+        File file = CsvWriter.generateCsvFile(target, dateCsv, cardModelList, getResources());
 
         // Get the shared file's Uri
         final Uri uri = FileProvider.getUriForFile(getContext(), SHARED_PROVIDER_AUTHORITY, file);
