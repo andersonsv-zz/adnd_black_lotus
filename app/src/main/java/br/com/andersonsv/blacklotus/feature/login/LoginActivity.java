@@ -129,9 +129,7 @@ public class LoginActivity extends BaseActivity implements Validator.ValidationL
                 @Override
                 public void onFailure(@NonNull Exception e){
                     mProgressBar.setVisibility(View.GONE);
-                    String error = getString(R.string.login_auth_error);
-                    alertDialogMessage(LoginActivity.this, getResources().getString(R.string.default_error_title), error);
-
+                    alertDialogMessage(LoginActivity.this, getResources().getString(R.string.default_error_title), e.getLocalizedMessage());
                 }
             });
     }
