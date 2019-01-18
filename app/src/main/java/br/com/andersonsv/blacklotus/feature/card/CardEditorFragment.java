@@ -268,8 +268,7 @@ public class CardEditorFragment extends BaseFragment {
                 cardFragment.setArguments(bundle);
                 openFragment(cardFragment);
 
-                mProgressBar.setVisibility(View.GONE);
-                }
+git                 }
             })
             .addOnFailureListener(new OnFailureListener() {
                 @Override
