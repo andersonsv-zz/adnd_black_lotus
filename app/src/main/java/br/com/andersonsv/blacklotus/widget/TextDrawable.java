@@ -25,9 +25,9 @@ public class TextDrawable extends Drawable {
     private static final int MONOSPACE = 3;
 
     /* Resources for scaling values to the given device */
-    private Resources mResources;
+    private final Resources mResources;
     /* Paint to hold most drawing primitives for the text */
-    private TextPaint mTextPaint;
+    private final TextPaint mTextPaint;
     /* Layout is used to measure and draw the text */
     private StaticLayout mTextLayout;
     /* Alignment of the text inside its bounds */
@@ -37,7 +37,7 @@ public class TextDrawable extends Drawable {
     /* Stateful text color list */
     private ColorStateList mTextColors;
     /* Container for the bounds to be reported to widgets */
-    private Rect mTextBounds;
+    private final Rect mTextBounds;
     /* Text string to draw */
     private CharSequence mText = "";
 
@@ -131,7 +131,7 @@ public class TextDrawable extends Drawable {
     public void setText(CharSequence text) {
         if (text == null) text = "";
 
-        mText = text;
+        mText = "  " + text;
 
         measureContent();
     }
@@ -229,7 +229,7 @@ public class TextDrawable extends Drawable {
      * {@link #setTypeface(Typeface, int)} to get the appearance
      * that you actually want.
      */
-    public void setTypeface(Typeface tf) {
+    private void setTypeface(Typeface tf) {
         if (mTextPaint.getTypeface() != tf) {
             mTextPaint.setTypeface(tf);
 
@@ -244,7 +244,7 @@ public class TextDrawable extends Drawable {
      * style that you specified.
      *
      */
-    public void setTypeface(Typeface tf, int style) {
+    private void setTypeface(Typeface tf, int style) {
         if (style > 0) {
             if (tf == null) {
                 tf = Typeface.defaultFromStyle(style);
@@ -285,7 +285,7 @@ public class TextDrawable extends Drawable {
      * Set the text color as a state list
      * @param colorStateList ColorStateList of text colors, such as inflated from an R.color resource
      */
-    public void setTextColor(ColorStateList colorStateList) {
+    private void setTextColor(ColorStateList colorStateList) {
         mTextColors = colorStateList;
         updateTextColors(getState());
     }

@@ -209,11 +209,10 @@ public class DeckFragment extends BaseFragment implements DeckAdapter.OnDeckSele
                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
+                            if (task.isSuccessful() && task.getResult() != null) {
                                 for (QueryDocumentSnapshot document : task.getResult()) {
                                     document.getReference().delete();
                                 }
-
                             }
                         }
                    });

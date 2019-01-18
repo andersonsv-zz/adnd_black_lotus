@@ -149,8 +149,10 @@ public class SearchCardFragment extends BaseFragment implements SearchView.OnQue
         call.enqueue(new Callback<Cards>() {
             @Override
             public void onResponse(@NonNull Call<Cards> call, @NonNull Response<Cards> response) {
-                if (response.isSuccessful()){
+                if (response.isSuccessful() && response.body() != null){
+
                     mAdapter.setCards(response.body().getCards());
+
                     mProgressBar.setVisibility(View.GONE);
                     mEmptyTextView.setVisibility(View.GONE);
 
@@ -174,15 +176,17 @@ public class SearchCardFragment extends BaseFragment implements SearchView.OnQue
     }
 
 
-    public void searchDefaultLanguage(String query) {
+    private void searchDefaultLanguage(String query) {
         CardService service = RetrofitClientInstance.getRetrofitInstance().create(CardService.class);
 
         Call<Cards> call = service.getCards(query.toLowerCase(), 10);
         call.enqueue(new Callback<Cards>() {
             @Override
             public void onResponse(@NonNull Call<Cards> call, @NonNull Response<Cards> response) {
-                if (response.isSuccessful()){
+                if (response.isSuccessful() && response.body() != null) {
+
                     mAdapter.setCards(response.body().getCards());
+
                     mProgressBar.setVisibility(View.GONE);
                     mEmptyTextView.setVisibility(View.GONE);
 

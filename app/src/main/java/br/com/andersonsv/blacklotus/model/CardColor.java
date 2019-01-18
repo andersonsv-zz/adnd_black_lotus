@@ -23,14 +23,14 @@ public enum CardColor {
 
     }
 
-    private static Map<String, CardColor> colorById = new HashMap<>();
-    private static Map<String, CardColor> colorByCode = new HashMap<>();
+    private static final Map<String, CardColor> colorById = new HashMap<>();
+    private static final Map<String, CardColor> colorByCode = new HashMap<>();
 
-    public String getColorId() {
+    private String getColorId() {
         return colorId;
     }
 
-    public String getColorCode() {
+    private String getColorCode() {
         return colorCode;
     }
 

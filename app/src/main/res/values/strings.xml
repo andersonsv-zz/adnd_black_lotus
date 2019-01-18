@@ -15,7 +15,7 @@
     <string name="default_error_title">Error</string>
     <string name="default_deleted">Deleted</string>
     <string name="default_loading">Loading</string>
-    <string name="default_error">An error ocurred %s</string>
+    <string name="default_error">An error occurred %s</string>
 
     <!-- Content description -->
     <string name="default_card_content_description">Card image</string>
@@ -120,7 +120,7 @@
     <!-- Search -->
     <string name="search_card_help">Enter the name of the card in the search.\n
     If you have activated the second language, you can indicate the toggle (SL)</string>
-    <string name="search_card_error">An error occured</string>
+    <string name="search_card_error">An error occurred</string>
 
     <!-- Forgot -->
     <string name="forgot_title">Recover password</string>

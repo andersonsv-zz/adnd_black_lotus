@@ -1,6 +1,8 @@
 package br.com.andersonsv.blacklotus.feature;
 
 import android.support.design.widget.TextInputLayout;
+import android.support.test.espresso.matcher.BoundedMatcher;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -36,7 +38,7 @@ public class BaseActivityTest {
         };
     }
 
-    public static Matcher<View> childAtPosition(
+    protected static Matcher<View> childAtPosition(
             final Matcher<View> parentMatcher, final int position) {
 
         return new TypeSafeMatcher<View>() {
@@ -54,4 +56,28 @@ public class BaseActivityTest {
             }
         };
     }
+
+    protected static Matcher<View> hasItem(final Matcher<View> matcher) {
+        return new BoundedMatcher<View, RecyclerView>(RecyclerView.class) {
+
+            @Override public void describeTo(Description description) {
+                description.appendText("has item: ");
+                matcher.describeTo(description);
+            }
+
+            @Override protected boolean matchesSafely(RecyclerView view) {
+                RecyclerView.Adapter adapter = view.getAdapter();
+                for (int position = 0; position < adapter.getItemCount(); position++) {
+                    int type = adapter.getItemViewType(position);
+                    RecyclerView.ViewHolder holder = adapter.createViewHolder(view, type);
+                    adapter.onBindViewHolder(holder, position);
+                    if (matcher.matches(holder.itemView)) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        };
+    }
+
 }

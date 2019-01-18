@@ -19,15 +19,10 @@ public class CsvWriter {
     private static final String NEW_LINE = "\n";
     public static final String TYPE_CSV = "text/csv";
 
-    public static void generateCsvFile(File target, String file, List<CardModel> cardModelList, Resources resources){
-        File mFile = new File(target, CSV_DECK + file + CSV_EXTENSION);
+    public static File generateCsvFile(File target, String file, List<CardModel> cardModelList, Resources resources){
         try {
-            mFile.createNewFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            File mFile = new File(target, CSV_DECK + file + CSV_EXTENSION);
 
-        try {
             BufferedWriter br = new BufferedWriter(new FileWriter(mFile));
             StringBuilder sb = new StringBuilder();
 
@@ -48,8 +43,11 @@ public class CsvWriter {
             }
             br.write(sb.toString());
             br.close();
+
+            return mFile;
         } catch (IOException e) {
             e.printStackTrace();
+            return null;
         }
     }
 }

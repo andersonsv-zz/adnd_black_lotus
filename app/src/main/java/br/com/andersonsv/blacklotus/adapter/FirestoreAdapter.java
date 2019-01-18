@@ -22,9 +22,9 @@ public abstract class FirestoreAdapter <VH extends RecyclerView.ViewHolder>
     private Query mQuery;
     private ListenerRegistration mRegistration;
 
-    private ArrayList<DocumentSnapshot> mSnapshots = new ArrayList<>();
+    private final ArrayList<DocumentSnapshot> mSnapshots = new ArrayList<>();
 
-    public FirestoreAdapter(Query query) {
+    FirestoreAdapter(Query query) {
         mQuery = query;
     }
 
@@ -89,7 +89,7 @@ public abstract class FirestoreAdapter <VH extends RecyclerView.ViewHolder>
         return mSnapshots.size();
     }
 
-    protected DocumentSnapshot getSnapshot(int index) {
+    DocumentSnapshot getSnapshot(int index) {
         return mSnapshots.get(index);
     }
 
@@ -97,12 +97,12 @@ public abstract class FirestoreAdapter <VH extends RecyclerView.ViewHolder>
         return mSnapshots;
     }
 
-    protected void onDocumentAdded(DocumentChange change) {
+    private void onDocumentAdded(DocumentChange change) {
         mSnapshots.add(change.getNewIndex(), change.getDocument());
         notifyItemInserted(change.getNewIndex());
     }
 
-    protected void onDocumentModified(DocumentChange change) {
+    private void onDocumentModified(DocumentChange change) {
         if (change.getOldIndex() == change.getNewIndex()) {
             // Item changed but remained in same position
             mSnapshots.set(change.getOldIndex(), change.getDocument());
@@ -115,7 +115,7 @@ public abstract class FirestoreAdapter <VH extends RecyclerView.ViewHolder>
         }
     }
 
-    protected void onDocumentRemoved(DocumentChange change) {
+    private void onDocumentRemoved(DocumentChange change) {
         mSnapshots.remove(change.getOldIndex());
         notifyItemRemoved(change.getOldIndex());
     }

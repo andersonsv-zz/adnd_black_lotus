@@ -71,7 +71,11 @@ public class ForgotPasswordActivity extends BaseActivity implements Validator.Va
     public void onValidationSucceeded() {
         mProgressBar.setVisibility(View.VISIBLE);
 
-        final String email = mEmail.getText().toString();
+        String email = null;
+
+        if (mEmail.getText() != null) {
+            email = mEmail.getText().toString();
+        }
 
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 

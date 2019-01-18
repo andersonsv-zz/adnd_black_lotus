@@ -9,12 +9,12 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 import br.com.andersonsv.blacklotus.R;
 import br.com.andersonsv.blacklotus.condition.FirebaseAuthInstruction;
@@ -39,12 +39,8 @@ import static org.hamcrest.core.IsNull.notNullValue;
 public class CardEditorFragmentTest extends BaseActivityTest {
 
     @Rule
-    public FragmentTestRule<DebugActivity, CardEditorFragment> fragmentTestRule =
+    public final FragmentTestRule<DebugActivity, CardEditorFragment> fragmentTestRule =
             new FragmentTestRule<>(DebugActivity.class, CardEditorFragment.class, true,true, false);
-
-    @Before
-    public void init(){
-    }
 
     @BeforeClass
     public static void login(){
@@ -124,7 +120,7 @@ public class CardEditorFragmentTest extends BaseActivityTest {
                 null, "{W}",
                 "Lorem ipsum", "Test",
                 "0", "0",
-                "Set name", Arrays.asList("Card"));
+                "Set name", Collections.singletonList("Card"));
 
         bundle.putParcelable(CARD_DATA, card);
         bundle.putParcelable(DECK_PARCELABLE, generateDeckData());

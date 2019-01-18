@@ -26,7 +26,7 @@ public class Card implements Parcelable {
     };
 
     @SerializedName("id")
-    private final String id;
+    private String id;
 
     @SerializedName("name")
     private final String name;
@@ -153,6 +153,10 @@ public class Card implements Parcelable {
 
     public String getToughness() {
         return toughness;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public boolean getLand(){

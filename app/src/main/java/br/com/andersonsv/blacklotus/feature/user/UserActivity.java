@@ -1,6 +1,5 @@
 package br.com.andersonsv.blacklotus.feature.user;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
@@ -70,8 +69,6 @@ public class UserActivity extends BaseActivity implements Validator.ValidationLi
     CoordinatorLayout mLayout;
 
     private Validator mValidator;
-
-    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,10 +145,21 @@ public class UserActivity extends BaseActivity implements Validator.ValidationLi
         }else {
 
             mProgressBar.setVisibility(View.VISIBLE);
+            String email = null;
+            String password = null;
+            String name = null;
 
-            final String email = mEmail.getText().toString();
-            final String password = mPassword.getText().toString();
-            final String name = mName.getText().toString();
+            if (mEmail.getText() != null) {
+                email = mEmail.getText().toString();
+            }
+
+            if (mPassword.getText() != null) {
+                password = mPassword.getText().toString();
+            }
+
+            if (mName.getText() != null) {
+                name = mName.getText().toString();
+            }
 
             createUser(email, password, name);
         }

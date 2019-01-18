@@ -35,7 +35,7 @@ public class CardAdapter extends FirestoreAdapter<CardAdapter.ViewHolder>{
         void onSelected(DocumentSnapshot card);
     }
 
-    private OnCardSelectedListener mListener;
+    private final OnCardSelectedListener mListener;
 
     public CardAdapter(Query query, CardAdapter.OnCardSelectedListener listener) {
         super(query);
@@ -83,78 +83,82 @@ public class CardAdapter extends FirestoreAdapter<CardAdapter.ViewHolder>{
                   final CardAdapter.OnCardSelectedListener listener) {
 
             final CardModel model = snapshot.toObject(CardModel.class);
-            model.setId(snapshot.getId());
 
-            Resources resources = itemView.getResources();
+            if (model != null) {
+                model.setId(snapshot.getId());
 
-            mCardName.setText(model.getName());
-            mQuantity.setText(model.getQuantity().toString());
-            mType.setText(model.getType());
+                Resources resources = itemView.getResources();
 
-            Rarity rarity = Rarity.getByType(model.getRarity());
+                mCardName.setText(model.getName());
+                mQuantity.setText(model.getQuantity().toString());
+                mType.setText(model.getType());
 
-            if(rarity != null){
-                mRarity.setText(rarity.getTypeId());
+                Rarity rarity = Rarity.getByType(model.getRarity());
 
-                int color = resources.getColor(rarity.getColor());
-                mRarity.setTextColor(color);
-            }
+                if(rarity != null){
+                    mRarity.setText(rarity.getTypeId());
 
-            if (model.getImage() != null) {
-                Picasso.with(itemView.getContext())
-                        .load(model.getImage())
-                        .into(mCardImage);
-            }
-
-            mCardImage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    View layoutDialog = View.inflate(itemView.getContext(), R.layout.dialog_card_image, null);
-                    ImageView imgRefInflated = layoutDialog.findViewById(R.id.imageViewDialog);
-
-                    if (model.getImage() != null){
-                        Picasso.with(itemView.getContext()).load(model.getImage()).into(imgRefInflated);
-                    } else {
-                        imgRefInflated.setImageDrawable(itemView.getContext().getDrawable(R.drawable.ic_image_not_found));
-                    }
-
-                    final Dialog dialog = new Dialog(itemView.getContext(),android.R.style.Theme_Light_NoTitleBar_Fullscreen); //default fullscreen titlebar
-
-                    dialog.setContentView(layoutDialog);
-                    dialog.show();
-
-                    imgRefInflated.setOnClickListener(new View.OnClickListener() {
-                        public void onClick(View paramView) {
-                            dialog.cancel();
-                        }
-                    });
+                    int color = resources.getColor(rarity.getColor());
+                    mRarity.setTextColor(color);
                 }
-            });
 
-            if( model.getCost() != null) {
-                String text = replaceTypetImgSrc(model.getCost());
+                if (model.getImage() != null) {
+                    Picasso.with(itemView.getContext())
+                            .load(model.getImage())
+                            .into(mCardImage);
+                }
 
-                Html.ImageGetter imageGetter =  new Html.ImageGetter() {
+                mCardImage.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public Drawable getDrawable(String source) {
-                        return new ImageHtmlUtil(mContext).generate(source);
-                    }
-                };
+                    public void onClick(View view) {
 
-                Spanned spanned = Html.fromHtml(text, imageGetter, null);
-                mCost.setText(spanned);
+                        View layoutDialog = View.inflate(itemView.getContext(), R.layout.dialog_card_image, null);
+                        ImageView imgRefInflated = layoutDialog.findViewById(R.id.imageViewDialog);
+
+                        if (model.getImage() != null){
+                            Picasso.with(itemView.getContext()).load(model.getImage()).into(imgRefInflated);
+                        } else {
+                            imgRefInflated.setImageDrawable(itemView.getContext().getDrawable(R.drawable.ic_image_not_found));
+                        }
+
+                        final Dialog dialog = new Dialog(itemView.getContext(),android.R.style.Theme_Light_NoTitleBar_Fullscreen); //default fullscreen titlebar
+
+                        dialog.setContentView(layoutDialog);
+                        dialog.show();
+
+                        imgRefInflated.setOnClickListener(new View.OnClickListener() {
+                            public void onClick(View paramView) {
+                                dialog.cancel();
+                            }
+                        });
+                    }
+                });
+
+                if( model.getCost() != null) {
+                    String text = replaceTypetImgSrc(model.getCost());
+
+                    Html.ImageGetter imageGetter =  new Html.ImageGetter() {
+                        @Override
+                        public Drawable getDrawable(String source) {
+                            return new ImageHtmlUtil(mContext).generate(source);
+                        }
+                    };
+
+                    Spanned spanned = Html.fromHtml(text, imageGetter, null);
+                    mCost.setText(spanned);
+                }
+
+                // Click listener
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (listener != null) {
+                            listener.onSelected(snapshot);
+                        }
+                    }
+                });
             }
 
-            // Click listener
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (listener != null) {
-                        listener.onSelected(snapshot);
-                    }
-                }
-            });
         }
     }
 }

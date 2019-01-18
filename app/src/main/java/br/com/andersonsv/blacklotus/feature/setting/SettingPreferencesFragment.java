@@ -12,13 +12,11 @@ import br.com.andersonsv.blacklotus.util.Constants;
 public class SettingPreferencesFragment extends PreferenceFragmentCompat {
 
 
-    ListPreference secondLanguage;
-
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {
         setPreferencesFromResource(R.xml.app_preferences, s);
 
-        secondLanguage = (ListPreference) findPreference(Constants.KEY_SECOND_LANGUAGE);
+        ListPreference secondLanguage = (ListPreference) findPreference(Constants.KEY_SECOND_LANGUAGE);
 
         if(secondLanguage.getValue() != null){
             secondLanguage.setTitle(secondLanguage.getValue());
@@ -26,7 +24,7 @@ public class SettingPreferencesFragment extends PreferenceFragmentCompat {
         secondLanguage.setOnPreferenceChangeListener(onPreferenceChangeListener);
     }
 
-    private static Preference.OnPreferenceChangeListener onPreferenceChangeListener
+    private static final Preference.OnPreferenceChangeListener onPreferenceChangeListener
             = new Preference.OnPreferenceChangeListener() {
         @Override
         public boolean onPreferenceChange(Preference preference, Object value) {

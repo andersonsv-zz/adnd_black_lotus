@@ -96,6 +96,8 @@ public class CardEditorFragment extends BaseFragment {
     @BindView(R.id.cardEditorLayout)
     ConstraintLayout layout;
 
+    private Menu mMenu;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -110,6 +112,8 @@ public class CardEditorFragment extends BaseFragment {
 
             if (bundle.containsKey(CARD_DATA)) {
                 Card card = bundle.getParcelable(CARD_DATA);
+                card.setId(null);
+                if(card != null)
                 mCard = convertDataToModel(card);
 
             }
@@ -119,12 +123,17 @@ public class CardEditorFragment extends BaseFragment {
             setupView();
         }
         setHasOptionsMenu(true);
+
         return rootView;
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.card_menu, menu);
+        mMenu = menu;
+
+        if (mCard.getId() != null) {
+            inflater.inflate(R.menu.card_menu, menu);
+        }
         super.onCreateOptionsMenu(menu,inflater);
     }
 
@@ -149,9 +158,11 @@ public class CardEditorFragment extends BaseFragment {
 
     private void setupView() {
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String qtdSameCardInDeck = prefs.getString(Constants.KEY_QTD_SAME_CARD_IN_DECK, "50");
-        mQuantity.setMax(Integer.valueOf(qtdSameCardInDeck));
+        if (getActivity() != null) {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            String qtdSameCardInDeck = prefs.getString(Constants.KEY_QTD_SAME_CARD_IN_DECK, "50");
+            mQuantity.setMax(Integer.valueOf(qtdSameCardInDeck));
+        }
 
         if (mCard.getImage() != null) {
             Picasso.with(getContext())
@@ -176,7 +187,7 @@ public class CardEditorFragment extends BaseFragment {
 
         String powerToughness = "-";
         if (power != 0 && toughness != 0){
-            powerToughness = StringUtils.formatStringInt(getContext().getString(R.string.card_editor_format_power_toughness), Arrays.asList( power, toughness));
+            powerToughness = StringUtils.formatStringInt(getString(R.string.card_editor_format_power_toughness), Arrays.asList( power, toughness));
         }
 
         mPowerToughness.setText(powerToughness);
@@ -246,7 +257,7 @@ public class CardEditorFragment extends BaseFragment {
         mDb.collection(BuildConfig.FIREBASE_COLLECTION)
             .document(BuildConfig.FIREBASE_DOCUMENT)
             .collection(CARD_LIST)
-            .add(mCard.objectMap(null))
+            .add(mCard.objectMap(mDeck.getId()))
             .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                 @Override
                 public void onSuccess(DocumentReference documentReference) {

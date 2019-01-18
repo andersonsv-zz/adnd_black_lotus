@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.ShareCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.RecyclerView;
@@ -38,6 +39,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import br.com.andersonsv.blacklotus.BuildConfig;
 import br.com.andersonsv.blacklotus.R;
@@ -85,9 +87,10 @@ public class CardFragment extends BaseFragment implements CardAdapter.OnCardSele
     @BindView(R.id.cardLayout)
     ConstraintLayout layout;
 
-    private List<CardModel> cardModelList = new ArrayList<>();
+    private final List<CardModel> cardModelList = new ArrayList<>();
 
     private static final int REQUEST_CODE_WRITE_EXTERNAL_STORAGE_PERMISSION = 1;
+    private static final String SHARED_PROVIDER_AUTHORITY = BuildConfig.APPLICATION_ID + ".myfileprovider";
 
     public static CardFragment newInstance() {
         return new CardFragment();
@@ -232,22 +235,29 @@ public class CardFragment extends BaseFragment implements CardAdapter.OnCardSele
 
     private void sendCsvToShare() {
         File target = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-        String outString = new SimpleDateFormat(getResources().getString(R.string.date_convert_short)).format(new Date());
+        SimpleDateFormat simpleDate = new SimpleDateFormat("yyyyMMddHHmm",
+                Locale.US);
 
-        CsvWriter.generateCsvFile(target, outString, cardModelList, getResources());
+        String dateCsv = simpleDate.format(new Date());
+        File file = CsvWriter.generateCsvFile(target, dateCsv, cardModelList, getResources());
 
-        Uri contentUri = FileProvider.getUriForFile(getActivity(), "br.com.andersonsv.blacklotus.app.fileprovider", target);
+        // Get the shared file's Uri
+        final Uri uri = FileProvider.getUriForFile(getContext(), SHARED_PROVIDER_AUTHORITY, file);
 
-        Intent sendIntent = new Intent();
-        sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_STREAM, contentUri);
-        sendIntent.setType(CsvWriter.TYPE_CSV);
-        startActivity(sendIntent);
+        // Create a intent
+        final ShareCompat.IntentBuilder intentBuilder = ShareCompat.IntentBuilder.from(getActivity())
+                .setType(CsvWriter.TYPE_CSV)
+                .addStream(uri);
+
+        // Start the intent
+        final Intent chooserIntent = intentBuilder.createChooserIntent();
+        startActivity(chooserIntent);
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (permissions != null && permissions.length > 0) {
+        if (permissions.length > 0 && getContext() != null) {
+
             if (ActivityCompat.checkSelfPermission(getContext(), permissions[0]) == PackageManager.PERMISSION_GRANTED) {
                 sendCsvToShare();
             }
@@ -276,7 +286,7 @@ public class CardFragment extends BaseFragment implements CardAdapter.OnCardSele
             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if (task.isSuccessful()) {
+                    if (task.isSuccessful() && task.getResult() != null) {
 
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             cardModelList.add(document.toObject(CardModel.class));
@@ -292,4 +302,6 @@ public class CardFragment extends BaseFragment implements CardAdapter.OnCardSele
                 }
             });
     }
+
+
 }

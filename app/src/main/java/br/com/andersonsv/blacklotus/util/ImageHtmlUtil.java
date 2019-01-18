@@ -13,7 +13,7 @@ import br.com.andersonsv.blacklotus.widget.TextDrawable;
 
 public class ImageHtmlUtil {
 
-    private Context mContext;
+    private final Context mContext;
 
     public ImageHtmlUtil(Context context){
         mContext = context;
