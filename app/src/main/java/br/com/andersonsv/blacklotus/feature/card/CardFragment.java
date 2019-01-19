@@ -14,6 +14,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.ShareCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -45,6 +47,7 @@ import br.com.andersonsv.blacklotus.BuildConfig;
 import br.com.andersonsv.blacklotus.R;
 import br.com.andersonsv.blacklotus.adapter.CardAdapter;
 import br.com.andersonsv.blacklotus.feature.base.BaseFragment;
+import br.com.andersonsv.blacklotus.feature.deck.DeckFragment;
 import br.com.andersonsv.blacklotus.firebase.CardModel;
 import br.com.andersonsv.blacklotus.firebase.DeckModel;
 import br.com.andersonsv.blacklotus.provider.DeckWidgetProvider;
@@ -119,6 +122,8 @@ public class CardFragment extends BaseFragment implements CardAdapter.OnCardSele
         sendCardsToWidget();
 
         setHasOptionsMenu(true);
+
+        mBackButton = true;
 
         return rootView;
     }
@@ -229,6 +234,11 @@ public class CardFragment extends BaseFragment implements CardAdapter.OnCardSele
                     sendCsvToShare();
                 }
              break;
+
+            case android.R.id.home:
+                Fragment mainFragment = DeckFragment.newInstance();
+                openFragment(mainFragment);
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -302,6 +312,5 @@ public class CardFragment extends BaseFragment implements CardAdapter.OnCardSele
                 }
             });
     }
-
 
 }

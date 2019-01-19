@@ -10,6 +10,8 @@ import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -27,6 +29,8 @@ import static br.com.andersonsv.blacklotus.util.Constants.VALIDATION_APP_COMPAT_
 import static br.com.andersonsv.blacklotus.util.Constants.VALIDATION_TEXT_INPUT_EDIT_TEXT;
 
 public class BaseFragment extends Fragment {
+
+    public boolean mBackButton = false;
 
     protected void setLinearLayoutVerticalWithDivider(final RecyclerView recyclerView){
         if (getContext() != null) {
@@ -99,6 +103,26 @@ public class BaseFragment extends Fragment {
             transaction.replace(R.id.container, fragment);
             transaction.addToBackStack(null);
             transaction.commit();
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        ActionBar mActionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+
+        mActionBar.setDisplayHomeAsUpEnabled(true);
+        mActionBar.setHomeButtonEnabled(true);
+
+        if (mActionBar != null) {
+            if (mBackButton) {
+                mActionBar.setDisplayHomeAsUpEnabled(true);
+                mActionBar.setHomeButtonEnabled(true);
+            } else {
+                mActionBar.setDisplayHomeAsUpEnabled(false);
+                mActionBar.setHomeButtonEnabled(false);
+            }
         }
     }
 }

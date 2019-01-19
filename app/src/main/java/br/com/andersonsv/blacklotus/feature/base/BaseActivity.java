@@ -28,7 +28,6 @@ public class BaseActivity extends AppCompatActivity {
     protected void openActivity(Class destination){
         Intent intent = new Intent(this, destination);
         startActivity(intent);
-        finish();
     }
 
     protected void checkFormValidation(List<ValidationError> errors){
