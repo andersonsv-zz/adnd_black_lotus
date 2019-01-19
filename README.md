@@ -37,5 +37,5 @@ os dados serão enviados separadamente.
  
  
  ### Rodar testes instrumentados.
-Certificar que o aparalho/emulador esteja conectado à internet
+Certificar que o aparelho/emulador esteja conectado à internet
  ./gradlew connectedAndroidTest
