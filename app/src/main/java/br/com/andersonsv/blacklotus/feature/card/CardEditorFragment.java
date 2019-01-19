@@ -35,6 +35,7 @@ import br.com.andersonsv.blacklotus.BuildConfig;
 import br.com.andersonsv.blacklotus.R;
 import br.com.andersonsv.blacklotus.data.Card;
 import br.com.andersonsv.blacklotus.feature.base.BaseFragment;
+import br.com.andersonsv.blacklotus.feature.deck.DeckFragment;
 import br.com.andersonsv.blacklotus.firebase.CardModel;
 import br.com.andersonsv.blacklotus.firebase.DeckModel;
 import br.com.andersonsv.blacklotus.model.Rarity;
@@ -122,6 +123,10 @@ public class CardEditorFragment extends BaseFragment {
             }
             setupView();
         }
+
+        getActivity().setTitle(R.string.navigation_card);
+
+        mBackButton = true;
         setHasOptionsMenu(true);
 
         return rootView;
@@ -268,7 +273,6 @@ public class CardEditorFragment extends BaseFragment {
                 cardFragment.setArguments(bundle);
                 openFragment(cardFragment);
 
-                mProgressBar.setVisibility(View.GONE);
                 }
             })
             .addOnFailureListener(new OnFailureListener() {
@@ -316,7 +320,17 @@ public class CardEditorFragment extends BaseFragment {
         switch (id) {
             case R.id.delete_card:
                 deleteCards();
-                return true;
+                break;
+            case android.R.id.home:
+
+                Fragment cardFragment = CardFragment.newInstance();
+
+                Bundle bundle = new Bundle();
+                bundle.putParcelable(DECK_PARCELABLE, mDeck);
+                cardFragment.setArguments(bundle);
+                openFragment(cardFragment);
+
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
