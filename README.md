@@ -19,10 +19,15 @@ Requisitos sistema.
     
 ### Passos para rodar o projeto.
 - Copiar o arquivo google-services.json (enviado separadamente) para o diretório [app] do projeto
+
 - Criar o arquivo gradle.properties com o conteúdo 
+
 RELEASE_STORE_FILE=src/main/res/raw/blacklotus.jks
+
 RELEASE_STORE_PASSWORD=[password]
+
 RELEASE_KEY_ALIAS=[alias]
+
 RELEASE_KEY_PASSWORD=[password]
 
 os dados serão enviados separadamente.
