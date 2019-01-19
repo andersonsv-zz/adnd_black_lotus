@@ -56,7 +56,8 @@
     <string name="navigation_del_deck">Delete deck</string>
     <string name="navigation_del_card">Delete card(s)</string>
     <string name="navigation_cancel">Cancel</string>
-
+    <string name="navigation_card">Card</string>
+    <string name="navigation_cards">Cards</string>
 
     <!-- Decks -->
     <string name="decks_number_cards">%s card(s)</string>

@@ -123,6 +123,8 @@ public class CardFragment extends BaseFragment implements CardAdapter.OnCardSele
 
         setHasOptionsMenu(true);
 
+        getActivity().setTitle(R.string.navigation_cards);
+
         mBackButton = true;
 
         return rootView;

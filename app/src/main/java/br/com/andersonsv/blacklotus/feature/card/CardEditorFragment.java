@@ -123,6 +123,9 @@ public class CardEditorFragment extends BaseFragment {
             }
             setupView();
         }
+
+        getActivity().setTitle(R.string.navigation_card);
+
         mBackButton = true;
         setHasOptionsMenu(true);
 
