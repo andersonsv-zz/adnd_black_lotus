@@ -75,9 +75,6 @@ public class DeckFragmentTest extends BaseActivityTest {
 
         DeckFragment deckFragment = new DeckFragment();
         fragmentTestRule.launchFragment(deckFragment);
-        Thread.sleep(3000);
-
-
 
         ViewInteraction appCompatImageView = onView(
                 allOf(withId(R.id.recyclerViewDeck),
