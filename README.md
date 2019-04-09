@@ -1,7 +1,5 @@
 # Black Lotus - App
 
-[![Watch the video](https://i.imgur.com/vKb2F1B.png)](app.mp4)
-
 **Autor**: Anderson Simões Vieira.
 
 **Data**: 16/01/2019.
