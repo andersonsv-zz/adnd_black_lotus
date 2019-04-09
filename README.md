@@ -1,8 +1,6 @@
 # Black Lotus - App
 
-<video width="320" height="240" controls>
-  <source src="app.mp4" type="video/mp4">
-</video>
+[![Watch the video](https://i.imgur.com/vKb2F1B.png)](app.mp4)
 
 **Autor**: Anderson Simões Vieira.
 
